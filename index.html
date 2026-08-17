@@ -1,12 +1,1494 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <title>Creativos One</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Creativos One</title>
+
+<style>
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+body{
+    font-family:Arial,Helvetica,sans-serif;
+    background:#f4f6f8;
+    color:#17202a;
+}
+
+button,input,select,textarea{
+    font-family:inherit;
+}
+
+button{
+    cursor:pointer;
+}
+
+.app{
+    display:flex;
+    min-height:100vh;
+}
+
+/* SIDEBAR */
+
+.sidebar{
+    width:250px;
+    background:#111827;
+    color:white;
+    padding:22px 15px;
+    position:fixed;
+    left:0;
+    top:0;
+    bottom:0;
+    overflow-y:auto;
+}
+
+.logo{
+    padding:5px 12px 25px;
+}
+
+.logo h1{
+    font-size:23px;
+}
+
+.logo span{
+    color:#9ca3af;
+    font-size:12px;
+}
+
+.menu-title{
+    color:#6b7280;
+    font-size:11px;
+    margin:20px 12px 8px;
+    text-transform:uppercase;
+}
+
+.menu button{
+    display:block;
+    width:100%;
+    border:0;
+    background:transparent;
+    color:#d1d5db;
+    padding:12px;
+    text-align:left;
+    border-radius:8px;
+    margin-bottom:4px;
+    font-size:14px;
+}
+
+.menu button:hover,
+.menu button.active{
+    background:#2563eb;
+    color:white;
+}
+
+/* MAIN */
+
+.main{
+    margin-left:250px;
+    width:calc(100% - 250px);
+    min-height:100vh;
+}
+
+.topbar{
+    background:white;
+    border-bottom:1px solid #e5e7eb;
+    padding:17px 25px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    position:sticky;
+    top:0;
+    z-index:10;
+}
+
+.topbar h2{
+    font-size:20px;
+}
+
+.date{
+    font-size:13px;
+    color:#6b7280;
+}
+
+.content{
+    padding:25px;
+}
+
+/* CARDS */
+
+.cards{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:16px;
+    margin-bottom:25px;
+}
+
+.card{
+    background:white;
+    border:1px solid #e5e7eb;
+    border-radius:12px;
+    padding:20px;
+}
+
+.card-label{
+    color:#6b7280;
+    font-size:13px;
+    margin-bottom:9px;
+}
+
+.card-value{
+    font-size:25px;
+    font-weight:bold;
+}
+
+.card-small{
+    margin-top:7px;
+    font-size:12px;
+    color:#6b7280;
+}
+
+/* SECTIONS */
+
+.section{
+    background:white;
+    border:1px solid #e5e7eb;
+    border-radius:12px;
+    margin-bottom:20px;
+    overflow:hidden;
+}
+
+.section-header{
+    padding:18px 20px;
+    border-bottom:1px solid #e5e7eb;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.section-header h3{
+    font-size:16px;
+}
+
+.section-body{
+    padding:20px;
+}
+
+/* BUTTONS */
+
+.btn{
+    border:0;
+    border-radius:7px;
+    padding:10px 14px;
+    font-size:13px;
+}
+
+.btn-primary{
+    background:#2563eb;
+    color:white;
+}
+
+.btn-primary:hover{
+    background:#1d4ed8;
+}
+
+.btn-secondary{
+    background:#e5e7eb;
+    color:#111827;
+}
+
+.btn-danger{
+    background:#fee2e2;
+    color:#991b1b;
+}
+
+.btn-success{
+    background:#dcfce7;
+    color:#166534;
+}
+
+/* TABLE */
+
+.table-wrapper{
+    overflow-x:auto;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    min-width:650px;
+}
+
+th,td{
+    padding:12px 10px;
+    border-bottom:1px solid #e5e7eb;
+    text-align:left;
+    font-size:13px;
+}
+
+th{
+    color:#6b7280;
+    font-size:12px;
+}
+
+.empty{
+    text-align:center;
+    padding:35px;
+    color:#9ca3af;
+}
+
+/* STATUS */
+
+.status{
+    display:inline-block;
+    padding:5px 9px;
+    border-radius:20px;
+    font-size:11px;
+    font-weight:bold;
+}
+
+.status-pendiente{
+    background:#fef3c7;
+    color:#92400e;
+}
+
+.status-diseno{
+    background:#dbeafe;
+    color:#1e40af;
+}
+
+.status-produccion{
+    background:#ede9fe;
+    color:#5b21b6;
+}
+
+.status-listo{
+    background:#dcfce7;
+    color:#166534;
+}
+
+.status-entregado{
+    background:#e5e7eb;
+    color:#374151;
+}
+
+.status-vencido{
+    background:#fee2e2;
+    color:#991b1b;
+}
+
+/* FORMS */
+
+.form-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:15px;
+}
+
+.form-group{
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+}
+
+.form-group.full{
+    grid-column:1/-1;
+}
+
+.form-group label{
+    font-size:12px;
+    color:#4b5563;
+    font-weight:bold;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea{
+    border:1px solid #d1d5db;
+    border-radius:7px;
+    padding:10px;
+    font-size:14px;
+    outline:none;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus{
+    border-color:#2563eb;
+}
+
+textarea{
+    min-height:90px;
+    resize:vertical;
+}
+
+.form-actions{
+    display:flex;
+    justify-content:flex-end;
+    gap:10px;
+    margin-top:20px;
+}
+
+/* MODAL */
+
+.modal{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.55);
+    z-index:100;
+    padding:20px;
+    overflow:auto;
+}
+
+.modal.active{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.modal-box{
+    background:white;
+    width:100%;
+    max-width:650px;
+    border-radius:12px;
+    padding:25px;
+}
+
+.modal-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:20px;
+}
+
+.close{
+    border:0;
+    background:none;
+    font-size:25px;
+    color:#6b7280;
+}
+
+/* SEARCH */
+
+.search{
+    width:250px;
+    padding:9px 11px;
+    border:1px solid #d1d5db;
+    border-radius:7px;
+}
+
+/* QUOTE */
+
+.quote-total{
+    margin-top:20px;
+    border-top:1px solid #e5e7eb;
+    padding-top:15px;
+}
+
+.total-row{
+    display:flex;
+    justify-content:space-between;
+    margin-bottom:8px;
+}
+
+.total-final{
+    font-size:22px;
+    font-weight:bold;
+}
+
+/* MOBILE */
+
+.mobile-menu{
+    display:none;
+    border:0;
+    background:none;
+    font-size:24px;
+}
+
+@media(max-width:900px){
+
+    .sidebar{
+        transform:translateX(-100%);
+        transition:.25s;
+        z-index:50;
+    }
+
+    .sidebar.open{
+        transform:translateX(0);
+    }
+
+    .main{
+        margin-left:0;
+        width:100%;
+    }
+
+    .mobile-menu{
+        display:block;
+    }
+
+    .cards{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .content{
+        padding:15px;
+    }
+}
+
+@media(max-width:600px){
+
+    .cards{
+        grid-template-columns:1fr 1fr;
+        gap:10px;
+    }
+
+    .card{
+        padding:15px;
+    }
+
+    .card-value{
+        font-size:18px;
+    }
+
+    .topbar{
+        padding:14px 15px;
+    }
+
+    .topbar h2{
+        font-size:17px;
+    }
+
+    .date{
+        display:none;
+    }
+
+    .form-grid{
+        grid-template-columns:1fr;
+    }
+
+    .search{
+        width:100%;
+    }
+
+    .section-header{
+        gap:10px;
+        flex-wrap:wrap;
+    }
+}
+</style>
 </head>
 
 <body>
-    <h1>Creativos One funciona</h1>
-    <p>Primera prueba del sistema.</p>
-</body>
-</html>
+
+<div class="app">
+
+<!-- SIDEBAR -->
+
+<aside class="sidebar" id="sidebar">
+
+<div class="logo">
+    <h1>Creativos One</h1>
+    <span>Sistema empresarial v0.1</span>
+</div>
+
+<div class="menu">
+
+<div class="menu-title">Principal</div>
+
+<button onclick="showPage('dashboard')" class="active">
+    📊 Dashboard
+</button>
+
+<div class="menu-title">Clientes</div>
+
+<button onclick="showPage('clientes')">
+    👥 Clientes
+</button>
+
+<div class="menu-title">Ventas</div>
+
+<button onclick="showPage('cotizaciones')">
+    💰 Cotizaciones
+</button>
+
+<button onclick="showPage('pedidos')">
+    📋 Pedidos
+</button>
+
+<div class="menu-title">Finanzas</div>
+
+<button onclick="showPage('cobros')">
+    💳 Cobros
+</button>
+
+</div>
+
+</aside>
+
+<!-- MAIN -->
+
+<main class="main">
+
+<header class="topbar">
+
+<div style="display:flex;align-items:center;gap:12px">
+
+<button class="mobile-menu" onclick="toggleMenu()">☰</button>
+
+<h2 id="pageTitle">Dashboard</h2>
+
+</div>
+
+<div class="date" id="currentDate"></div>
+
+</header>
+
+<div class="content">
+
+<!-- DASHBOARD -->
+
+<section id="page-dashboard" class="page">
+
+<div class="cards">
+
+<div class="card">
+<div class="card-label">Ventas del mes</div>
+<div class="card-value" id="dashboardVentas">$0</div>
+<div class="card-small">Total de cotizaciones</div>
+</div>
+
+<div class="card">
+<div class="card-label">Cobrado</div>
+<div class="card-value" id="dashboardCobrado">$0</div>
+<div class="card-small">Pagos registrados</div>
+</div>
+
+<div class="card">
+<div class="card-label">Por cobrar</div>
+<div class="card-value" id="dashboardPendiente">$0</div>
+<div class="card-small">Saldos pendientes</div>
+</div>
+
+<div class="card">
+<div class="card-label">Trabajos activos</div>
+<div class="card-value" id="dashboardActivos">0</div>
+<div class="card-small">En producción</div>
+</div>
+
+</div>
+
+<div class="section">
+
+<div class="section-header">
+<h3>Resumen del negocio</h3>
+</div>
+
+<div class="section-body">
+
+<div class="table-wrapper">
+
+<table>
+
+<thead>
+<tr>
+<th>Indicador</th>
+<th>Valor</th>
+</tr>
+</thead>
+
+<tbody>
+
+<tr>
+<td>Clientes registrados</td>
+<td id="resClientes">0</td>
+</tr>
+
+<tr>
+<td>Cotizaciones</td>
+<td id="resCotizaciones">0</td>
+</tr>
+
+<tr>
+<td>Pedidos</td>
+<td id="resPedidos">0</td>
+</tr>
+
+<tr>
+<td>Pedidos pendientes</td>
+<td id="resPendientes">0</td>
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="section">
+
+<div class="section-header">
+
+<h3>Últimos pedidos</h3>
+
+<button class="btn btn-primary"
+onclick="showPage('pedidos')">
+Ver pedidos
+</button>
+
+</div>
+
+<div class="section-body">
+
+<div id="dashboardPedidos"></div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- CLIENTES -->
+
+<section id="page-clientes" class="page" style="display:none">
+
+<div class="section">
+
+<div class="section-header">
+
+<h3>Clientes</h3>
+
+<button class="btn btn-primary"
+onclick="openClientModal()">
++ Nuevo cliente
+</button>
+
+</div>
+
+<div class="section-body">
+
+<input
+class="search"
+id="clientSearch"
+placeholder="Buscar cliente..."
+oninput="renderClients()"
+>
+
+<br><br>
+
+<div class="table-wrapper">
+
+<table>
+
+<thead>
+
+<tr>
+<th>Cliente</th>
+<th>Empresa</th>
+<th>WhatsApp</th>
+<th>Tipo</th>
+<th>Acciones</th>
+</tr>
+
+</thead>
+
+<tbody id="clientsTable"></tbody>
+
+</table>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- COTIZACIONES -->
+
+<section id="page-cotizaciones" class="page" style="display:none">
+
+<div class="section">
+
+<div class="section-header">
+
+<h3>Cotizaciones</h3>
+
+<button class="btn btn-primary"
+onclick="openQuoteModal()">
++ Nueva cotización
+</button>
+
+</div>
+
+<div class="section-body">
+
+<div class="table-wrapper">
+
+<table>
+
+<thead>
+
+<tr>
+<th>Número</th>
+<th>Cliente</th>
+<th>Descripción</th>
+<th>Total</th>
+<th>Anticipo</th>
+<th>Saldo</th>
+</tr>
+
+</thead>
+
+<tbody id="quotesTable"></tbody>
+
+</table>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- PEDIDOS -->
+
+<section id="page-pedidos" class="page" style="display:none">
+
+<div class="section">
+
+<div class="section-header">
+
+<h3>Pedidos / Producción</h3>
+
+<button class="btn btn-primary"
+onclick="openOrderModal()">
++ Nuevo pedido
+</button>
+
+</div>
+
+<div class="section-body">
+
+<div class="table-wrapper">
+
+<table>
+
+<thead>
+
+<tr>
+<th>Pedido</th>
+<th>Cliente</th>
+<th>Trabajo</th>
+<th>Estado</th>
+<th>Fecha</th>
+<th>Acciones</th>
+</tr>
+
+</thead>
+
+<tbody id="ordersTable"></tbody>
+
+</table>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- COBROS -->
+
+<section id="page-cobros" class="page" style="display:none">
+
+<div class="section">
+
+<div class="section-header">
+
+<h3>Control de cobros</h3>
+
+</div>
+
+<div class="section-body">
+
+<div class="table-wrapper">
+
+<table>
+
+<thead>
+
+<tr>
+<th>Cliente</th>
+<th>Concepto</th>
+<th>Total</th>
+<th>Pagado</th>
+<th>Saldo</th>
+<th>Estado</th>
+</tr>
+
+</thead>
+
+<tbody id="paymentsTable"></tbody>
+
+</table>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+</div>
+
+</main>
+
+</div>
+
+
+<!-- CLIENT MODAL -->
+
+<div class="modal" id="clientModal">
+
+<div class="modal-box">
+
+<div class="modal-header">
+
+<h3>Nuevo cliente</h3>
+
+<button class="close"
+onclick="closeModal('clientModal')">
+×
+</button>
+
+</div>
+
+<form onsubmit="saveClient(event)">
+
+<div class="form-grid">
+
+<div class="form-group">
+<label>Nombre</label>
+<input id="clientName" required>
+</div>
+
+<div class="form-group">
+<label>Empresa</label>
+<input id="clientCompany">
+</div>
+
+<div class="form-group">
+<label>WhatsApp</label>
+<input id="clientPhone">
+</div>
+
+<div class="form-group">
+<label>Correo</label>
+<input id="clientEmail">
+</div>
+
+<div class="form-group">
+<label>Tipo de cliente</label>
+
+<select id="clientType">
+
+<option>Particular</option>
+<option>Independiente</option>
+<option>Emprendedor</option>
+<option>Empresa</option>
+<option>Agencia</option>
+<option>Comerciante</option>
+<option>Otro</option>
+
+</select>
+
+</div>
+
+<div class="form-group">
+<label>NIT / Documento</label>
+<input id="clientDocument">
+</div>
+
+<div class="form-group full">
+
+<label>Observaciones</label>
+
+<textarea id="clientNotes"></textarea>
+
+</div>
+
+</div>
+
+<div class="form-actions">
+
+<button type="button"
+class="btn btn-secondary"
+onclick="closeModal('clientModal')">
+Cancelar
+</button>
+
+<button class="btn btn-primary">
+Guardar cliente
+</button>
+
+</div>
+
+</form>
+
+</div>
+
+</div>
+
+
+<!-- QUOTE MODAL -->
+
+<div class="modal" id="quoteModal">
+
+<div class="modal-box">
+
+<div class="modal-header">
+
+<h3>Nueva cotización</h3>
+
+<button class="close"
+onclick="closeModal('quoteModal')">
+×
+</button>
+
+</div>
+
+<form onsubmit="saveQuote(event)">
+
+<div class="form-grid">
+
+<div class="form-group">
+
+<label>Cliente</label>
+
+<select id="quoteClient" required></select>
+
+</div>
+
+<div class="form-group">
+
+<label>Producto / Servicio</label>
+
+<input id="quoteProduct" required>
+
+</div>
+
+<div class="form-group full">
+
+<label>Descripción</label>
+
+<textarea id="quoteDescription"></textarea>
+
+</div>
+
+<div class="form-group">
+
+<label>Materiales</label>
+
+<input
+type="number"
+id="quoteMaterials"
+value="0"
+min="0"
+oninput="calculateQuote()"
+>
+
+</div>
+
+<div class="form-group">
+
+<label>Mano de obra</label>
+
+<input
+type="number"
+id="quoteLabor"
+value="0"
+min="0"
+oninput="calculateQuote()"
+>
+
+</div>
+
+<div class="form-group">
+
+<label>Otros costos</label>
+
+<input
+type="number"
+id="quoteOther"
+value="0"
+min="0"
+oninput="calculateQuote()"
+>
+
+</div>
+
+<div class="form-group">
+
+<label>Utilidad %</label>
+
+<input
+type="number"
+id="quoteProfit"
+value="40"
+min="0"
+oninput="calculateQuote()"
+>
+
+</div>
+
+</div>
+
+<div class="quote-total">
+
+<div class="total-row">
+<span>Costo</span>
+<strong id="quoteCost">$0</strong>
+</div>
+
+<div class="total-row">
+<span>Utilidad</span>
+<strong id="quoteProfitValue">$0</strong>
+</div>
+
+<div class="total-row">
+<span>Total</span>
+<strong class="total-final" id="quoteTotal">$0</strong>
+</div>
+
+<div class="total-row">
+<span>Anticipo 50%</span>
+<strong id="quoteAdvance">$0</strong>
+</div>
+
+<div class="total-row">
+<span>Saldo 50%</span>
+<strong id="quoteBalance">$0</strong>
+</div>
+
+</div>
+
+<div class="form-actions">
+
+<button
+type="button"
+class="btn btn-secondary"
+onclick="closeModal('quoteModal')">
+Cancelar
+</button>
+
+<button class="btn btn-primary">
+Guardar cotización
+</button>
+
+</div>
+
+</form>
+
+</div>
+
+</div>
+
+
+<!-- ORDER MODAL -->
+
+<div class="modal" id="orderModal">
+
+<div class="modal-box">
+
+<div class="modal-header">
+
+<h3>Nuevo pedido</h3>
+
+<button class="close"
+onclick="closeModal('orderModal')">
+×
+</button>
+
+</div>
+
+<form onsubmit="saveOrder(event)">
+
+<div class="form-grid">
+
+<div class="form-group">
+
+<label>Cliente</label>
+
+<select id="orderClient" required></select>
+
+</div>
+
+<div class="form-group">
+
+<label>Trabajo</label>
+
+<input id="orderWork" required>
+
+</div>
+
+<div class="form-group">
+
+<label>Fecha de entrega</label>
+
+<input type="date" id="orderDate">
+
+</div>
+
+<div class="form-group">
+
+<label>Estado</label>
+
+<select id="orderStatus">
+
+<option value="Pendiente">Pendiente</option>
+<option value="Diseño">Diseño</option>
+<option value="Producción">Producción</option>
+<option value="Listo">Listo</option>
+<option value="Entregado">Entregado</option>
+
+</select>
+
+</div>
+
+<div class="form-group full">
+
+<label>Notas</label>
+
+<textarea id="orderNotes"></textarea>
+
+</div>
+
+</div>
+
+<div class="form-actions">
+
+<button
+type="button"
+class="btn btn-secondary"
+onclick="closeModal('orderModal')">
+Cancelar
+</button>
+
+<button class="btn btn-primary">
+Guardar pedido
+</button>
+
+</div>
+
+</form>
+
+</div>
+
+</div>
+
+
+<script>
+
+/* =========================
+   DATABASE LOCAL
+========================= */
+
+let clients =
+JSON.parse(localStorage.getItem("creativos_clients")) || [];
+
+let quotes =
+JSON.parse(localStorage.getItem("creativos_quotes")) || [];
+
+let orders =
+JSON.parse(localStorage.getItem("creativos_orders")) || [];
+
+
+/* =========================
+   UTILIDADES
+========================= */
+
+function saveData(){
+
+localStorage.setItem(
+"creativos_clients",
+JSON.stringify(clients)
+);
+
+localStorage.setItem(
+"creativos_quotes",
+JSON.stringify(quotes)
+);
+
+localStorage.setItem(
+"creativos_orders",
+JSON.stringify(orders)
+);
+
+}
+
+
+function money(value){
+
+return new Intl.NumberFormat(
+"es-CO",
+{
+style:"currency",
+currency:"COP",
+maximumFractionDigits:0
+}
+).format(value || 0);
+
+}
+
+
+function today(){
+
+return new Date().toLocaleDateString(
+"es-CO",
+{
+day:"2-digit",
+month:"2-digit",
+year:"numeric"
+}
+);
+
+}
+
+document.getElementById(
+"currentDate"
+).textContent=today();
+
+
+/* =========================
+   NAVEGACIÓN
+========================= */
+
+function showPage(page){
+
+document.querySelectorAll(".page")
+.forEach(p=>p.style.display="none");
+
+document.getElementById(
+"page-"+page
+).style.display="block";
+
+const titles={
+dashboard:"Dashboard",
+clientes:"Clientes",
+cotizaciones:"Cotizaciones",
+pedidos:"Pedidos / Producción",
+cobros:"Cobros"
+};
+
+document.getElementById(
+"pageTitle"
+).textContent=titles[page];
+
+document.querySelectorAll(".menu button")
+.forEach(b=>b.classList.remove("active"));
+
+event?.currentTarget?.classList.add("active");
+
+renderAll();
+
+if(window.innerWidth<=900){
+document.getElementById("sidebar")
+.classList.remove("open");
+}
+
+}
+
+
+function toggleMenu(){
+
+document.getElementById(
+"sidebar"
+).classList.toggle("open");
+
+}
+
+
+/* =========================
+   MODALES
+========================= */
+
+function openModal(id){
+
+document.getElementById(id)
+.classList.add("active");
+
+}
+
+function closeModal(id){
+
+document.getElementById(id)
+.classList.remove("active");
+
+}
+
+
+function openClientModal(){
+
+document.getElementById("clientName").value="";
+document.getElementById("clientCompany").value="";
+document.getElementById("clientPhone").value="";
+document.getElementById("clientEmail").value="";
+document.getElementById("clientDocument").value="";
+document.getElementById("clientNotes").value="";
+
+openModal("clientModal");
+
+}
+
+
+function openQuoteModal(){
+
+populateClientSelect("quoteClient");
+
+document.getElementById("quoteMaterials").value=0;
+document.getElementById("quoteLabor").value=0;
+document.getElementById("quoteOther").value=0;
+document.getElementById("quoteProfit").value=40;
+
+calculateQuote();
+
+openModal("quoteModal");
+
+}
+
+
+function openOrderModal(){
+
+populateClientSelect("orderClient");
+
+openModal("orderModal");
+
+}
+
+
+/* =========================
+   CLIENTES
+========================= */
+
+function saveClient(e){
+
+e.preventDefault();
+
+const client={
+
+id:Date.now(),
+
+name:document.getElementById("clientName").value,
+
+company:document.getElementById("clientCompany").value,
+
+phone:document.getElementById("clientPhone").value,
+
+email:document.getElementById("clientEmail").value,
+
+type:document.getElementById("clientType").value,
+
+document:document.getElementById("clientDocument").value,
+
+notes:document.getElementById("clientNotes").value,
+
+created:new Date().toISOString()
+
+};
+
+clients.push(client);
+
+saveData();
+
+closeModal("clientModal");
+
+renderAll();
+
+alert("Cliente guardado correctamente.");
+
+}
+
+
+function renderClients(){
+
+const table=
+document.getElementById("clientsTable");
+
+const search=
+(document.getElementById("clientSearch")?.value || "")
+.toLowerCase();
+
+const filtered=clients.filter(c=>
+
+(c.name+" "+c.company+" "+c.phone)
+.toLowerCase()
+.includes(search)
+
+);
+
+if(filtered.length===0){
+
+table.innerHTML=`
+<tr>
+<td colspan="5" class="empty">
+No hay clientes registrados.
+</td>
+</tr>`;
+
+return;
+
+}
+
+table.innerHTML=filtered.map(c=>`
+
+<tr>
+
+<td>
+<strong>${escapeHTML(c.name)}</strong>
+</td>
+
+<td>${escapeHTML(c.company || "-")}</td>
+
+<td>${escapeHTML(c.phone || "-")}</td>
+
+<td>${escapeHTML(c.type)}</td>
+
+<td>
+
+<button
+class="btn btn-danger"
+onclick="deleteClient(${c.id})">
+Eliminar
+</button>
+
+</td>
+
+</tr>
+
+`).join("");
+
+}
+
+
+function deleteClient(id){
+
+if(!confirm("¿Eliminar este cliente?")) return;
+
+clients=clients.filter(c=>c.id!==id);
+
+save
