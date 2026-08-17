@@ -7,16 +7,31 @@
 <title>Creativos One</title>
 
 <style>
+
+* {
+    box-sizing: border-box;
+}
+
 body {
     margin: 0;
     font-family: Arial, sans-serif;
     background: #f3f4f6;
+    color: #111827;
 }
 
 header {
     background: #111827;
     color: white;
     padding: 20px;
+}
+
+header h1 {
+    margin: 0;
+}
+
+header p {
+    margin: 5px 0 0;
+    color: #d1d5db;
 }
 
 nav {
@@ -26,13 +41,26 @@ nav {
 }
 
 button {
-    padding: 12px 18px;
-    margin-right: 8px;
+    padding: 11px 16px;
+    margin-right: 6px;
+    margin-bottom: 6px;
     border: 0;
     border-radius: 6px;
     background: #2563eb;
     color: white;
     cursor: pointer;
+}
+
+button:hover {
+    opacity: .9;
+}
+
+button.secondary {
+    background: #6b7280;
+}
+
+button.danger {
+    background: #dc2626;
 }
 
 main {
@@ -43,7 +71,44 @@ main {
     background: white;
     padding: 20px;
     border-radius: 10px;
-    margin-top: 15px;
+    margin-bottom: 20px;
+    box-shadow: 0 1px 3px rgba(0,0,0,.08);
+}
+
+.search {
+    width: 100%;
+    max-width: 500px;
+    padding: 12px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    margin: 10px 0 20px;
+}
+
+.client {
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 12px;
+}
+
+.client-name {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.client-company {
+    color: #4b5563;
+    margin-top: 4px;
+}
+
+.client-info {
+    margin-top: 10px;
+    font-size: 14px;
+    line-height: 1.7;
+}
+
+.client-actions {
+    margin-top: 12px;
 }
 
 .modal {
@@ -53,6 +118,8 @@ main {
     background: rgba(0,0,0,.6);
     align-items: center;
     justify-content: center;
+    padding: 20px;
+    z-index: 100;
 }
 
 .modal.active {
@@ -63,34 +130,132 @@ main {
     background: white;
     padding: 25px;
     border-radius: 10px;
-    width: 90%;
-    max-width: 500px;
-}
-
-input {
     width: 100%;
-    padding: 12px;
-    margin: 8px 0 15px;
-    box-sizing: border-box;
+    max-width: 600px;
+    max-height: 90vh;
+    overflow-y: auto;
 }
 
-.close {
-    background: #6b7280;
+.modal-box h2 {
+    margin-top: 0;
 }
+
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group.full {
+    grid-column: 1 / -1;
+}
+
+label {
+    font-size: 13px;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+input,
+select,
+textarea {
+    width: 100%;
+    padding: 11px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    font-family: Arial, sans-serif;
+}
+
+textarea {
+    min-height: 90px;
+    resize: vertical;
+}
+
+.form-actions {
+    margin-top: 20px;
+    text-align: right;
+}
+
+.empty {
+    color: #6b7280;
+    text-align: center;
+    padding: 30px;
+}
+
+.stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+}
+
+.stat {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.stat-number {
+    font-size: 28px;
+    font-weight: bold;
+    margin-top: 8px;
+}
+
+.stat-label {
+    color: #6b7280;
+    font-size: 13px;
+}
+
+@media (max-width: 700px) {
+
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .form-group.full {
+        grid-column: auto;
+    }
+
+    .stats {
+        grid-template-columns: 1fr;
+    }
+
+    main {
+        padding: 12px;
+    }
+
+    .modal {
+        padding: 10px;
+    }
+
+}
+
 </style>
 </head>
 
+
 <body>
 
+
 <header>
+
     <h1>Creativos One</h1>
-    <p>Sistema empresarial</p>
+
+    <p>
+        Sistema empresarial v0.3
+    </p>
+
 </header>
+
 
 <nav>
 
     <button onclick="mostrarInicio()">
-        Inicio
+        Dashboard
     </button>
 
     <button onclick="mostrarClientes()">
@@ -103,60 +268,357 @@ input {
 
 </nav>
 
+
 <main>
 
-    <div id="contenido" class="card">
 
-        <h2>Dashboard</h2>
+    <!-- DASHBOARD -->
 
-        <p>
-            Creativos One está funcionando correctamente.
-        </p>
+    <div id="dashboard">
+
+        <div class="stats">
+
+            <div class="stat">
+
+                <div class="stat-label">
+                    Clientes registrados
+                </div>
+
+                <div
+                    id="totalClientes"
+                    class="stat-number">
+
+                    0
+
+                </div>
+
+            </div>
+
+
+            <div class="stat">
+
+                <div class="stat-label">
+                    Cotizaciones
+                </div>
+
+                <div class="stat-number">
+                    0
+                </div>
+
+            </div>
+
+
+            <div class="stat">
+
+                <div class="stat-label">
+                    Trabajos activos
+                </div>
+
+                <div class="stat-number">
+                    0
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="card">
+
+            <h2>
+                Bienvenido a Creativos One
+            </h2>
+
+            <p>
+                Este será el centro de operaciones
+                de tu empresa.
+            </p>
+
+            <p>
+                Comenzaremos por organizar clientes,
+                ventas, producción y finanzas.
+            </p>
+
+        </div>
 
     </div>
+
+
+    <!-- CLIENTES -->
+
+    <div
+        id="clientes"
+        style="display:none">
+
+        <div class="card">
+
+            <h2>
+                Clientes
+            </h2>
+
+            <button onclick="abrirCliente()">
+                + Nuevo cliente
+            </button>
+
+            <br>
+
+            <input
+                id="busqueda"
+                class="search"
+                type="text"
+                placeholder="Buscar por nombre, empresa, teléfono o ciudad..."
+                oninput="mostrarClientes()"
+            >
+
+        </div>
+
+
+        <div id="listaClientes">
+
+        </div>
+
+    </div>
+
 
 </main>
 
 
-<!-- VENTANA NUEVO CLIENTE -->
+<!-- MODAL CLIENTE -->
 
-<div id="modalCliente" class="modal">
+<div
+    id="modalCliente"
+    class="modal">
 
     <div class="modal-box">
 
-        <h2>Nuevo cliente</h2>
+        <h2>
+            Nuevo cliente
+        </h2>
 
-        <label>
-            Nombre
-        </label>
 
-        <input
-            id="nombreCliente"
-            type="text"
-            placeholder="Nombre del cliente"
-        >
+        <div class="form-grid">
 
-        <label>
-            Empresa
-        </label>
 
-        <input
-            id="empresaCliente"
-            type="text"
-            placeholder="Empresa"
-        >
+            <div class="form-group">
 
-        <button onclick="guardarCliente()">
-            Guardar cliente
-        </button>
+                <label>
+                    Nombre *
+                </label>
 
-        <button
-            class="close"
-            onclick="cerrarCliente()">
+                <input
+                    id="nombreCliente"
+                    type="text"
+                    placeholder="Nombre completo"
+                >
 
-            Cancelar
+            </div>
 
-        </button>
+
+            <div class="form-group">
+
+                <label>
+                    Empresa
+                </label>
+
+                <input
+                    id="empresaCliente"
+                    type="text"
+                    placeholder="Nombre de empresa"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    NIT / Documento
+                </label>
+
+                <input
+                    id="documentoCliente"
+                    type="text"
+                    placeholder="NIT o documento"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    WhatsApp
+                </label>
+
+                <input
+                    id="telefonoCliente"
+                    type="tel"
+                    placeholder="Número de WhatsApp"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Correo
+                </label>
+
+                <input
+                    id="correoCliente"
+                    type="email"
+                    placeholder="correo@ejemplo.com"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Ciudad
+                </label>
+
+                <input
+                    id="ciudadCliente"
+                    type="text"
+                    placeholder="Ciudad"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Tipo de cliente
+                </label>
+
+                <select id="tipoCliente">
+
+                    <option>
+                        Particular
+                    </option>
+
+                    <option>
+                        Independiente
+                    </option>
+
+                    <option>
+                        Emprendedor
+                    </option>
+
+                    <option>
+                        Negocio
+                    </option>
+
+                    <option>
+                        Empresa
+                    </option>
+
+                    <option>
+                        Agencia
+                    </option>
+
+                    <option>
+                        Empresa de transporte
+                    </option>
+
+                    <option>
+                        Cliente recurrente
+                    </option>
+
+                    <option>
+                        Otro
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Origen del cliente
+                </label>
+
+                <select id="origenCliente">
+
+                    <option>
+                        WhatsApp
+                    </option>
+
+                    <option>
+                        Referido
+                    </option>
+
+                    <option>
+                        Visita comercial
+                    </option>
+
+                    <option>
+                        Llamada
+                    </option>
+
+                    <option>
+                        Instagram
+                    </option>
+
+                    <option>
+                        Facebook
+                    </option>
+
+                    <option>
+                        Cliente antiguo
+                    </option>
+
+                    <option>
+                        Otro
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div class="form-group full">
+
+                <label>
+                    Observaciones
+                </label>
+
+                <textarea
+                    id="observacionesCliente"
+                    placeholder="Información importante sobre el cliente..."
+                ></textarea>
+
+            </div>
+
+
+        </div>
+
+
+        <div class="form-actions">
+
+            <button
+                class="secondary"
+                onclick="cerrarCliente()">
+
+                Cancelar
+
+            </button>
+
+
+            <button
+                onclick="guardarCliente()">
+
+                Guardar cliente
+
+            </button>
+
+        </div>
 
     </div>
 
@@ -165,89 +627,193 @@ input {
 
 <script>
 
-let clientes = [];
+
+/* =====================================
+   CARGAR CLIENTES
+===================================== */
+
+let clientes = JSON.parse(
+    localStorage.getItem("creativos_clientes")
+) || [];
 
 
-/* INICIO */
+/* =====================================
+   DASHBOARD
+===================================== */
 
 function mostrarInicio() {
 
-    document.getElementById("contenido").innerHTML = `
+    document.getElementById("dashboard")
+        .style.display = "block";
 
-        <h2>Dashboard</h2>
+    document.getElementById("clientes")
+        .style.display = "none";
 
-        <p>
-            Bienvenido a Creativos One.
-        </p>
-
-        <p>
-            Clientes registrados:
-            <strong>${clientes.length}</strong>
-        </p>
-
-    `;
+    actualizarEstadisticas();
 
 }
 
 
-/* CLIENTES */
+/* =====================================
+   CLIENTES
+===================================== */
 
 function mostrarClientes() {
 
-    let lista = "";
+    document.getElementById("dashboard")
+        .style.display = "none";
 
-    if (clientes.length === 0) {
+    document.getElementById("clientes")
+        .style.display = "block";
 
-        lista = "<p>No hay clientes registrados.</p>";
 
-    } else {
+    const busqueda =
+        document
+        .getElementById("busqueda")
+        .value
+        .toLowerCase()
+        .trim();
 
-        clientes.forEach(function(cliente) {
 
-            lista += `
+    const filtrados =
+        clientes.filter(function(cliente) {
 
-                <div style="
-                    padding:10px;
-                    border-bottom:1px solid #ddd;
-                ">
+            const texto = (
 
-                    <strong>
-                        ${cliente.nombre}
-                    </strong>
+                cliente.nombre +
+                " " +
+                cliente.empresa +
+                " " +
+                cliente.telefono +
+                " " +
+                cliente.ciudad
+
+            ).toLowerCase();
+
+
+            return texto.includes(busqueda);
+
+        });
+
+
+    const contenedor =
+        document.getElementById(
+            "listaClientes"
+        );
+
+
+    if (filtrados.length === 0) {
+
+        contenedor.innerHTML = `
+
+            <div class="card empty">
+
+                No hay clientes registrados.
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    contenedor.innerHTML = "";
+
+
+    filtrados
+        .slice()
+        .reverse()
+        .forEach(function(cliente) {
+
+
+            const elemento =
+                document.createElement("div");
+
+
+            elemento.className = "client";
+
+
+            elemento.innerHTML = `
+
+                <div class="client-name">
+                    ${escapar(cliente.nombre)}
+                </div>
+
+                <div class="client-company">
+                    ${escapar(cliente.empresa || "Sin empresa")}
+                </div>
+
+                <div class="client-info">
+
+                    <strong>WhatsApp:</strong>
+                    ${escapar(cliente.telefono || "-")}
 
                     <br>
 
-                    ${cliente.empresa}
+                    <strong>Correo:</strong>
+                    ${escapar(cliente.correo || "-")}
+
+                    <br>
+
+                    <strong>Ciudad:</strong>
+                    ${escapar(cliente.ciudad || "-")}
+
+                    <br>
+
+                    <strong>Tipo:</strong>
+                    ${escapar(cliente.tipo)}
+
+                    <br>
+
+                    <strong>Origen:</strong>
+                    ${escapar(cliente.origen)}
+
+                    ${
+                        cliente.documento
+                        ? `<br>
+                           <strong>NIT / Documento:</strong>
+                           ${escapar(cliente.documento)}`
+                        : ""
+                    }
+
+                    ${
+                        cliente.observaciones
+                        ? `<br>
+                           <strong>Observaciones:</strong>
+                           ${escapar(cliente.observaciones)}`
+                        : ""
+                    }
+
+                </div>
+
+
+                <div class="client-actions">
+
+                    <button
+                        class="danger"
+                        onclick="eliminarCliente(${cliente.id})">
+
+                        Eliminar
+
+                    </button>
 
                 </div>
 
             `;
 
+
+            contenedor.appendChild(elemento);
+
         });
-
-    }
-
-
-    document.getElementById("contenido").innerHTML = `
-
-        <h2>Clientes</h2>
-
-        <button onclick="abrirCliente()">
-            + Nuevo cliente
-        </button>
-
-        <div style="margin-top:20px">
-
-            ${lista}
-
-        </div>
-
-    `;
 
 }
 
 
-/* ABRIR */
+/* =====================================
+   ABRIR FORMULARIO
+===================================== */
 
 function abrirCliente() {
 
@@ -258,7 +824,9 @@ function abrirCliente() {
 }
 
 
-/* CERRAR */
+/* =====================================
+   CERRAR FORMULARIO
+===================================== */
 
 function cerrarCliente() {
 
@@ -269,9 +837,12 @@ function cerrarCliente() {
 }
 
 
-/* GUARDAR */
+/* =====================================
+   GUARDAR CLIENTE
+===================================== */
 
 function guardarCliente() {
+
 
     const nombre =
         document
@@ -280,48 +851,215 @@ function guardarCliente() {
         .trim();
 
 
-    const empresa =
-        document
-        .getElementById("empresaCliente")
-        .value
-        .trim();
-
-
     if (nombre === "") {
 
-        alert("Escribe el nombre del cliente.");
+        alert(
+            "Debes escribir el nombre del cliente."
+        );
 
         return;
 
     }
 
 
-    clientes.push({
+    const cliente = {
+
+        id: Date.now(),
 
         nombre: nombre,
 
-        empresa: empresa
+        empresa:
+            document
+            .getElementById("empresaCliente")
+            .value
+            .trim(),
 
-    });
+        documento:
+            document
+            .getElementById("documentoCliente")
+            .value
+            .trim(),
+
+        telefono:
+            document
+            .getElementById("telefonoCliente")
+            .value
+            .trim(),
+
+        correo:
+            document
+            .getElementById("correoCliente")
+            .value
+            .trim(),
+
+        ciudad:
+            document
+            .getElementById("ciudadCliente")
+            .value
+            .trim(),
+
+        tipo:
+            document
+            .getElementById("tipoCliente")
+            .value,
+
+        origen:
+            document
+            .getElementById("origenCliente")
+            .value,
+
+        observaciones:
+            document
+            .getElementById("observacionesCliente")
+            .value
+            .trim(),
+
+        fecha:
+            new Date().toISOString()
+
+    };
 
 
-    document
-        .getElementById("nombreCliente")
-        .value = "";
+    clientes.push(cliente);
 
 
-    document
-        .getElementById("empresaCliente")
-        .value = "";
+    localStorage.setItem(
+        "creativos_clientes",
+        JSON.stringify(clientes)
+    );
 
+
+    limpiarFormulario();
 
     cerrarCliente();
 
     mostrarClientes();
 
+    actualizarEstadisticas();
+
+
+    alert(
+        "Cliente guardado correctamente."
+    );
+
 }
 
+
+/* =====================================
+   LIMPIAR FORMULARIO
+===================================== */
+
+function limpiarFormulario() {
+
+    document
+        .getElementById("nombreCliente")
+        .value = "";
+
+    document
+        .getElementById("empresaCliente")
+        .value = "";
+
+    document
+        .getElementById("documentoCliente")
+        .value = "";
+
+    document
+        .getElementById("telefonoCliente")
+        .value = "";
+
+    document
+        .getElementById("correoCliente")
+        .value = "";
+
+    document
+        .getElementById("ciudadCliente")
+        .value = "";
+
+    document
+        .getElementById("observacionesCliente")
+        .value = "";
+
+}
+
+
+/* =====================================
+   ELIMINAR
+===================================== */
+
+function eliminarCliente(id) {
+
+
+    const confirmar =
+        confirm(
+            "¿Seguro que deseas eliminar este cliente?"
+        );
+
+
+    if (!confirmar) {
+
+        return;
+
+    }
+
+
+    clientes =
+        clientes.filter(function(cliente) {
+
+            return cliente.id !== id;
+
+        });
+
+
+    localStorage.setItem(
+        "creativos_clientes",
+        JSON.stringify(clientes)
+    );
+
+
+    mostrarClientes();
+
+    actualizarEstadisticas();
+
+}
+
+
+/* =====================================
+   ESTADÍSTICAS
+===================================== */
+
+function actualizarEstadisticas() {
+
+    document
+        .getElementById("totalClientes")
+        .textContent = clientes.length;
+
+}
+
+
+/* =====================================
+   PROTECCIÓN DE TEXTO
+===================================== */
+
+function escapar(texto) {
+
+    return String(texto || "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+
+}
+
+
+/* =====================================
+   INICIO
+===================================== */
+
+actualizarEstadisticas();
+
 </script>
+
 
 </body>
 </html>
