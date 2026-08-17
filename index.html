@@ -1,8 +1,14 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
 
 <title>Creativos One</title>
 
@@ -38,6 +44,9 @@ nav{
     background:white;
     padding:15px;
     border-bottom:1px solid #ddd;
+    position:sticky;
+    top:0;
+    z-index:20;
 }
 
 button{
@@ -71,6 +80,10 @@ button.orange{
     background:#d97706;
 }
 
+button.dark{
+    background:#374151;
+}
+
 main{
     padding:20px;
 }
@@ -85,7 +98,7 @@ main{
 
 .stats{
     display:grid;
-    grid-template-columns:repeat(5,1fr);
+    grid-template-columns:repeat(6,1fr);
     gap:15px;
     margin-bottom:20px;
 }
@@ -174,8 +187,8 @@ main{
     padding:25px;
     border-radius:10px;
     width:100%;
-    max-width:700px;
-    max-height:90vh;
+    max-width:850px;
+    max-height:92vh;
     overflow-y:auto;
 }
 
@@ -224,33 +237,33 @@ textarea{
     text-align:right;
 }
 
-.total-box{
-    background:#f3f4f6;
-    padding:15px;
-    border-radius:8px;
-    margin-top:15px;
-}
-
-.total-row{
-    display:flex;
-    justify-content:space-between;
-    padding:5px 0;
-}
-
-.total-final{
-    font-size:20px;
-    font-weight:bold;
-    border-top:1px solid #d1d5db;
-    margin-top:8px;
-    padding-top:10px;
-}
-
 .badge{
     display:inline-block;
     padding:5px 9px;
     border-radius:15px;
     background:#e5e7eb;
     font-size:12px;
+    margin:2px;
+}
+
+.badge.blue{
+    background:#dbeafe;
+    color:#1d4ed8;
+}
+
+.badge.green{
+    background:#d1fae5;
+    color:#047857;
+}
+
+.badge.orange{
+    background:#fef3c7;
+    color:#b45309;
+}
+
+.badge.red{
+    background:#fee2e2;
+    color:#b91c1c;
 }
 
 .empty{
@@ -263,28 +276,158 @@ textarea{
     margin-top:0;
 }
 
-.production-box{
+.production-card{
+    background:white;
+    border:1px solid #e5e7eb;
+    border-radius:10px;
+    padding:18px;
+    margin-bottom:15px;
+}
+
+.production-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    gap:15px;
+}
+
+.production-number{
+    font-size:20px;
+    font-weight:bold;
+}
+
+.production-client{
+    color:#4b5563;
+    margin-top:4px;
+}
+
+.progress-container{
+    margin:18px 0;
+}
+
+.progress-track{
+    height:10px;
+    background:#e5e7eb;
+    border-radius:10px;
+    overflow:hidden;
+}
+
+.progress-bar{
+    height:100%;
+    background:#2563eb;
+    transition:.3s;
+}
+
+.progress-text{
+    font-size:13px;
+    margin-top:6px;
+    color:#4b5563;
+}
+
+.workflow{
+    display:flex;
+    gap:5px;
+    overflow-x:auto;
+    padding:10px 0;
+}
+
+.workflow-step{
+    min-width:110px;
+    text-align:center;
+    padding:10px 5px;
+    border-radius:7px;
+    background:#f3f4f6;
+    font-size:11px;
+}
+
+.workflow-step.done{
+    background:#d1fae5;
+    color:#047857;
+}
+
+.workflow-step.current{
+    background:#dbeafe;
+    color:#1d4ed8;
+    font-weight:bold;
+}
+
+.checklist{
+    margin-top:15px;
     background:#f9fafb;
     border:1px solid #e5e7eb;
     border-radius:8px;
+    padding:15px;
+}
+
+.check-item{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:9px 0;
+    border-bottom:1px solid #e5e7eb;
+}
+
+.check-item:last-child{
+    border-bottom:0;
+}
+
+.check-item input{
+    width:18px;
+    height:18px;
+}
+
+.production-data{
+    background:#f9fafb;
     padding:12px;
+    border-radius:8px;
     margin-top:12px;
+    line-height:1.7;
+    font-size:14px;
 }
 
-.production-box strong{
+.progress-big{
+    font-size:28px;
+    font-weight:bold;
+}
+
+.kpi-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:12px;
+}
+
+.kpi{
+    background:#f9fafb;
+    border:1px solid #e5e7eb;
+    padding:15px;
+    border-radius:8px;
+}
+
+.kpi strong{
     display:block;
-    margin-bottom:8px;
+    font-size:22px;
+    margin-top:5px;
 }
 
-@media(max-width:900px){
+hr{
+    border:0;
+    border-top:1px solid #e5e7eb;
+    margin:20px 0;
+}
+
+@media(max-width:1000px){
 
     .stats{
-        grid-template-columns:repeat(2,1fr);
+        grid-template-columns:repeat(3,1fr);
     }
 
 }
 
 @media(max-width:700px){
+
+    .stats{
+        grid-template-columns:repeat(2,1fr);
+    }
 
     .form-grid{
         grid-template-columns:1fr;
@@ -302,9 +445,18 @@ textarea{
         padding:10px;
     }
 
+    .production-header{
+        flex-direction:column;
+    }
+
+    .kpi-grid{
+        grid-template-columns:1fr 1fr;
+    }
+
 }
 
 </style>
+
 </head>
 
 
@@ -316,7 +468,7 @@ textarea{
     <h1>Creativos One</h1>
 
     <p>
-        Sistema empresarial v0.5
+        Sistema empresarial v0.6 — Producción
     </p>
 
 </header>
@@ -340,6 +492,10 @@ textarea{
         Pedidos
     </button>
 
+    <button onclick="mostrarProduccion()">
+        Producción
+    </button>
+
     <button onclick="abrirCliente()">
         + Nuevo cliente
     </button>
@@ -358,7 +514,9 @@ textarea{
 <main>
 
 
-<!-- DASHBOARD -->
+<!-- ================================
+     DASHBOARD
+================================ -->
 
 <div id="dashboard">
 
@@ -435,6 +593,23 @@ textarea{
         <div class="stat">
 
             <div class="stat-label">
+                En producción
+            </div>
+
+            <div
+                id="totalProduccion"
+                class="stat-number">
+
+                0
+
+            </div>
+
+        </div>
+
+
+        <div class="stat">
+
+            <div class="stat-label">
                 Por cobrar
             </div>
 
@@ -454,24 +629,35 @@ textarea{
     <div class="card">
 
         <h2>
-            Bienvenido a Creativos One
+            Centro de operaciones
         </h2>
 
         <p>
-            Centro de operaciones de tu empresa.
+            Cliente → Cotización → Pedido →
+            Producción → Entrega
         </p>
 
-        <p>
-            Clientes → Cotizaciones → Pedidos →
-            Producción.
-        </p>
+    </div>
+
+
+    <div class="card">
+
+        <h2>
+            Resumen de producción
+        </h2>
+
+        <div
+            id="resumenProduccionDashboard">
+        </div>
 
     </div>
 
 </div>
 
 
-<!-- CLIENTES -->
+<!-- ================================
+     CLIENTES
+================================ -->
 
 <div
     id="clientes"
@@ -503,7 +689,9 @@ textarea{
 </div>
 
 
-<!-- COTIZACIONES -->
+<!-- ================================
+     COTIZACIONES
+================================ -->
 
 <div
     id="cotizaciones"
@@ -535,7 +723,9 @@ textarea{
 </div>
 
 
-<!-- PEDIDOS -->
+<!-- ================================
+     PEDIDOS
+================================ -->
 
 <div
     id="pedidos"
@@ -567,10 +757,49 @@ textarea{
 </div>
 
 
+<!-- ================================
+     PRODUCCIÓN
+================================ -->
+
+<div
+    id="produccion"
+    style="display:none">
+
+    <div class="card">
+
+        <h2 class="section-title">
+            Centro de Producción
+        </h2>
+
+        <p>
+            Gestiona cada pedido desde el diseño
+            hasta la entrega.
+        </p>
+
+        <input
+            id="busquedaProduccion"
+            class="search"
+            type="text"
+            placeholder="Buscar pedido, cliente o trabajo..."
+            oninput="renderProduccion()"
+        >
+
+    </div>
+
+
+    <div
+        id="listaProduccion">
+    </div>
+
+</div>
+
+
 </main>
 
 
-<!-- MODAL CLIENTE -->
+<!-- ================================
+     MODAL CLIENTE
+================================ -->
 
 <div
     id="modalCliente"
@@ -722,11 +951,10 @@ textarea{
                 </label>
 
                 <textarea
-                    id="observacionesCliente"
-                ></textarea>
+                    id="observacionesCliente">
+                </textarea>
 
             </div>
-
 
         </div>
 
@@ -754,7 +982,9 @@ textarea{
 </div>
 
 
-<!-- MODAL COTIZACIÓN -->
+<!-- ================================
+     MODAL COTIZACIÓN
+================================ -->
 
 <div
     id="modalCotizacion"
@@ -971,70 +1201,26 @@ textarea{
 
             <div class="form-group full">
 
-                <div class="total-box">
+                <div class="card">
 
-                    <div class="total-row">
-
-                        <span>
-                            Costo real
-                        </span>
-
-                        <strong id="costoReal">
-                            $0
-                        </strong>
-
+                    <div>
+                        Costo real:
+                        <strong id="costoReal">$0</strong>
                     </div>
 
-
-                    <div class="total-row">
-
-                        <span>
-                            Utilidad
-                        </span>
-
-                        <strong id="valorUtilidad">
-                            $0
-                        </strong>
-
+                    <div>
+                        Utilidad:
+                        <strong id="valorUtilidad">$0</strong>
                     </div>
 
-
-                    <div class="total-row total-final">
-
-                        <span>
-                            Precio de venta
-                        </span>
-
-                        <strong id="precioFinal">
-                            $0
-                        </strong>
-
+                    <div>
+                        Precio de venta:
+                        <strong id="precioFinal">$0</strong>
                     </div>
 
-
-                    <div class="total-row">
-
-                        <span>
-                            Anticipo
-                        </span>
-
-                        <strong id="anticipoMostrar">
-                            $0
-                        </strong>
-
-                    </div>
-
-
-                    <div class="total-row">
-
-                        <span>
-                            Saldo pendiente
-                        </span>
-
-                        <strong id="saldoFinal">
-                            $0
-                        </strong>
-
+                    <div>
+                        Saldo:
+                        <strong id="saldoFinal">$0</strong>
                     </div>
 
                 </div>
@@ -1049,11 +1235,10 @@ textarea{
                 </label>
 
                 <textarea
-                    id="observacionesCotizacion"
-                ></textarea>
+                    id="observacionesCotizacion">
+                </textarea>
 
             </div>
-
 
         </div>
 
@@ -1081,7 +1266,9 @@ textarea{
 </div>
 
 
-<!-- MODAL PEDIDO -->
+<!-- ================================
+     MODAL PEDIDO
+================================ -->
 
 <div
     id="modalPedido"
@@ -1177,12 +1364,12 @@ textarea{
             <div class="form-group full">
 
                 <label>
-                    Descripción del trabajo *
+                    Descripción *
                 </label>
 
                 <textarea
-                    id="pedidoDescripcion"
-                ></textarea>
+                    id="pedidoDescripcion">
+                </textarea>
 
             </div>
 
@@ -1190,7 +1377,7 @@ textarea{
             <div class="form-group">
 
                 <label>
-                    Valor del pedido
+                    Valor
                 </label>
 
                 <input
@@ -1227,7 +1414,7 @@ textarea{
 
                 <textarea
                     id="pedidoProduccion"
-                    placeholder="Medidas, materiales, colores, cantidades, referencias, etc."
+                    placeholder="Medidas, materiales, colores, cantidades, referencias..."
                 ></textarea>
 
             </div>
@@ -1240,11 +1427,10 @@ textarea{
                 </label>
 
                 <textarea
-                    id="pedidoObservaciones"
-                ></textarea>
+                    id="pedidoObservaciones">
+                </textarea>
 
             </div>
-
 
         </div>
 
@@ -1274,42 +1460,176 @@ textarea{
 
 <script>
 
-/* =====================================
-   DATOS EXISTENTES
-===================================== */
 
-let clientes = JSON.parse(
-    localStorage.getItem("creativos_clientes")
-) || [];
+/* =========================================
+   DATOS
+========================================= */
 
-
-let cotizaciones = JSON.parse(
-    localStorage.getItem("creativos_cotizaciones")
-) || [];
-
-
-let pedidos = JSON.parse(
-    localStorage.getItem("creativos_pedidos")
-) || [];
+let clientes =
+    JSON.parse(
+        localStorage.getItem(
+            "creativos_clientes"
+        )
+    ) || [];
 
 
-/* =====================================
+let cotizaciones =
+    JSON.parse(
+        localStorage.getItem(
+            "creativos_cotizaciones"
+        )
+    ) || [];
+
+
+let pedidos =
+    JSON.parse(
+        localStorage.getItem(
+            "creativos_pedidos"
+        )
+    ) || [];
+
+
+/*
+    Migración v0.6
+
+    Si un pedido anterior no tiene
+    información de producción,
+    se crean automáticamente sus
+    campos sin borrar el pedido.
+*/
+
+pedidos.forEach(function(pedido){
+
+    if(!pedido.produccion)
+        pedido.produccion="";
+
+    if(!pedido.observaciones)
+        pedido.observaciones="";
+
+    if(!pedido.checklist)
+        pedido.checklist={};
+
+    if(!pedido.fechaProduccion)
+        pedido.fechaProduccion=null;
+
+});
+
+
+guardarDatos();
+
+
+/* =========================================
+   FLUJO DE PRODUCCIÓN
+========================================= */
+
+const etapasProduccion=[
+
+    "Pendiente",
+
+    "Diseño",
+
+    "Confirmación del cliente",
+
+    "Preparación",
+
+    "Corte / Impresión",
+
+    "Producción",
+
+    "Control de calidad",
+
+    "Listo",
+
+    "Entregado"
+
+];
+
+
+const checklistProduccion=[
+
+    {
+        id:"informacion",
+        nombre:"Información recibida"
+    },
+
+    {
+        id:"medidas",
+        nombre:"Medidas confirmadas"
+    },
+
+    {
+        id:"material",
+        nombre:"Material confirmado"
+    },
+
+    {
+        id:"diseno",
+        nombre:"Diseño realizado"
+    },
+
+    {
+        id:"aprobacion",
+        nombre:"Diseño aprobado por cliente"
+    },
+
+    {
+        id:"archivo",
+        nombre:"Archivo preparado"
+    },
+
+    {
+        id:"produccionArchivo",
+        nombre:"Archivo enviado a producción"
+    },
+
+    {
+        id:"fabricacion",
+        nombre:"Producción terminada"
+    },
+
+    {
+        id:"calidad",
+        nombre:"Control de calidad"
+    },
+
+    {
+        id:"listo",
+        nombre:"Pedido listo"
+    },
+
+    {
+        id:"entregado",
+        nombre:"Entregado al cliente"
+    }
+
+];
+
+
+/* =========================================
    NAVEGACIÓN
-===================================== */
+========================================= */
 
 function ocultarSecciones(){
 
-    document.getElementById("dashboard")
-        .style.display="none";
+    document.getElementById(
+        "dashboard"
+    ).style.display="none";
 
-    document.getElementById("clientes")
-        .style.display="none";
+    document.getElementById(
+        "clientes"
+    ).style.display="none";
 
-    document.getElementById("cotizaciones")
-        .style.display="none";
+    document.getElementById(
+        "cotizaciones"
+    ).style.display="none";
 
-    document.getElementById("pedidos")
-        .style.display="none";
+    document.getElementById(
+        "pedidos"
+    ).style.display="none";
+
+    document.getElementById(
+        "produccion"
+    ).style.display="none";
 
 }
 
@@ -1318,8 +1638,9 @@ function mostrarInicio(){
 
     ocultarSecciones();
 
-    document.getElementById("dashboard")
-        .style.display="block";
+    document.getElementById(
+        "dashboard"
+    ).style.display="block";
 
     actualizarDashboard();
 
@@ -1330,8 +1651,9 @@ function mostrarClientes(){
 
     ocultarSecciones();
 
-    document.getElementById("clientes")
-        .style.display="block";
+    document.getElementById(
+        "clientes"
+    ).style.display="block";
 
     renderClientes();
 
@@ -1342,8 +1664,9 @@ function mostrarCotizaciones(){
 
     ocultarSecciones();
 
-    document.getElementById("cotizaciones")
-        .style.display="block";
+    document.getElementById(
+        "cotizaciones"
+    ).style.display="block";
 
     renderCotizaciones();
 
@@ -1354,42 +1677,56 @@ function mostrarPedidos(){
 
     ocultarSecciones();
 
-    document.getElementById("pedidos")
-        .style.display="block";
+    document.getElementById(
+        "pedidos"
+    ).style.display="block";
 
     renderPedidos();
 
 }
 
 
-/* =====================================
+function mostrarProduccion(){
+
+    ocultarSecciones();
+
+    document.getElementById(
+        "produccion"
+    ).style.display="block";
+
+    renderProduccion();
+
+}
+
+
+/* =========================================
    CLIENTES
-===================================== */
+========================================= */
 
 function abrirCliente(){
 
-    document
-        .getElementById("modalCliente")
-        .classList.add("active");
+    document.getElementById(
+        "modalCliente"
+    ).classList.add("active");
 
 }
 
 
 function cerrarCliente(){
 
-    document
-        .getElementById("modalCliente")
-        .classList.remove("active");
+    document.getElementById(
+        "modalCliente"
+    ).classList.remove("active");
 
 }
 
 
 function guardarCliente(){
 
-    const nombre=
-        document
-        .getElementById("nombreCliente")
-        .value.trim();
+    const nombre =
+        document.getElementById(
+            "nombreCliente"
+        ).value.trim();
 
 
     if(!nombre){
@@ -1410,44 +1747,44 @@ function guardarCliente(){
         nombre:nombre,
 
         empresa:
-            document
-            .getElementById("empresaCliente")
-            .value.trim(),
+            document.getElementById(
+                "empresaCliente"
+            ).value.trim(),
 
         documento:
-            document
-            .getElementById("documentoCliente")
-            .value.trim(),
+            document.getElementById(
+                "documentoCliente"
+            ).value.trim(),
 
         telefono:
-            document
-            .getElementById("telefonoCliente")
-            .value.trim(),
+            document.getElementById(
+                "telefonoCliente"
+            ).value.trim(),
 
         correo:
-            document
-            .getElementById("correoCliente")
-            .value.trim(),
+            document.getElementById(
+                "correoCliente"
+            ).value.trim(),
 
         ciudad:
-            document
-            .getElementById("ciudadCliente")
-            .value.trim(),
+            document.getElementById(
+                "ciudadCliente"
+            ).value.trim(),
 
         tipo:
-            document
-            .getElementById("tipoCliente")
-            .value,
+            document.getElementById(
+                "tipoCliente"
+            ).value,
 
         origen:
-            document
-            .getElementById("origenCliente")
-            .value,
+            document.getElementById(
+                "origenCliente"
+            ).value,
 
         observaciones:
-            document
-            .getElementById("observacionesCliente")
-            .value.trim(),
+            document.getElementById(
+                "observacionesCliente"
+            ).value.trim(),
 
         fecha:new Date().toISOString()
 
@@ -1456,12 +1793,7 @@ function guardarCliente(){
 
     clientes.push(cliente);
 
-
-    localStorage.setItem(
-        "creativos_clientes",
-        JSON.stringify(clientes)
-    );
-
+    guardarDatos();
 
     limpiarFormularioCliente();
 
@@ -1481,35 +1813,55 @@ function guardarCliente(){
 
 function limpiarFormularioCliente(){
 
-    document.getElementById("nombreCliente").value="";
-    document.getElementById("empresaCliente").value="";
-    document.getElementById("documentoCliente").value="";
-    document.getElementById("telefonoCliente").value="";
-    document.getElementById("correoCliente").value="";
-    document.getElementById("ciudadCliente").value="";
-    document.getElementById("observacionesCliente").value="";
+    document.getElementById(
+        "nombreCliente"
+    ).value="";
+
+    document.getElementById(
+        "empresaCliente"
+    ).value="";
+
+    document.getElementById(
+        "documentoCliente"
+    ).value="";
+
+    document.getElementById(
+        "telefonoCliente"
+    ).value="";
+
+    document.getElementById(
+        "correoCliente"
+    ).value="";
+
+    document.getElementById(
+        "ciudadCliente"
+    ).value="";
+
+    document.getElementById(
+        "observacionesCliente"
+    ).value="";
 
 }
 
 
 function renderClientes(){
 
-    const contenedor=
+    const contenedor =
         document.getElementById(
             "listaClientes"
         );
 
 
-    const busqueda=
-        document
-        .getElementById("busquedaCliente")
-        .value.toLowerCase().trim();
+    const busqueda =
+        document.getElementById(
+            "busquedaCliente"
+        ).value.toLowerCase().trim();
 
 
-    const filtrados=
+    const filtrados =
         clientes.filter(function(cliente){
 
-            const texto=(
+            const texto = (
 
                 cliente.nombre+
                 " "+
@@ -1545,72 +1897,76 @@ function renderClientes(){
     contenedor.innerHTML="";
 
 
-    filtrados.slice().reverse()
-    .forEach(function(cliente){
+    filtrados
+        .slice()
+        .reverse()
+        .forEach(function(cliente){
 
-        const elemento=
-            document.createElement("div");
-
-
-        elemento.className="client";
-
-
-        elemento.innerHTML=`
-
-            <div class="client-name">
-                ${escapar(cliente.nombre)}
-            </div>
-
-            <div class="client-company">
-                ${escapar(
-                    cliente.empresa ||
-                    "Sin empresa"
-                )}
-            </div>
-
-            <div class="client-info">
-
-                <strong>WhatsApp:</strong>
-                ${escapar(
-                    cliente.telefono || "-"
-                )}
-
-                <br>
-
-                <strong>Correo:</strong>
-                ${escapar(
-                    cliente.correo || "-"
-                )}
-
-                <br>
-
-                <strong>Ciudad:</strong>
-                ${escapar(
-                    cliente.ciudad || "-"
-                )}
-
-                <br>
-
-                <strong>Tipo:</strong>
-                ${escapar(
-                    cliente.tipo || "-"
-                )}
-
-            </div>
-
-        `;
+            const elemento =
+                document.createElement("div");
 
 
-        contenedor.appendChild(elemento);
+            elemento.className="client";
 
-    });
+
+            elemento.innerHTML=`
+
+                <div class="client-name">
+                    ${escapar(cliente.nombre)}
+                </div>
+
+                <div class="client-company">
+                    ${escapar(
+                        cliente.empresa ||
+                        "Sin empresa"
+                    )}
+                </div>
+
+                <div class="client-info">
+
+                    <strong>WhatsApp:</strong>
+                    ${escapar(
+                        cliente.telefono || "-"
+                    )}
+
+                    <br>
+
+                    <strong>Correo:</strong>
+                    ${escapar(
+                        cliente.correo || "-"
+                    )}
+
+                    <br>
+
+                    <strong>Ciudad:</strong>
+                    ${escapar(
+                        cliente.ciudad || "-"
+                    )}
+
+                    <br>
+
+                    <strong>Tipo:</strong>
+                    ${escapar(
+                        cliente.tipo || "-"
+                    )}
+
+                </div>
+
+            `;
+
+
+            contenedor.appendChild(
+                elemento
+            );
+
+        });
 
 }
 
 
-/* =====================================
+/* =========================================
    COTIZACIONES
-===================================== */
+========================================= */
 
 function abrirCotizacion(){
 
@@ -1632,9 +1988,9 @@ function abrirCotizacion(){
     limpiarFormularioCotizacion();
 
 
-    document
-        .getElementById("modalCotizacion")
-        .classList.add("active");
+    document.getElementById(
+        "modalCotizacion"
+    ).classList.add("active");
 
 
     calcularCotizacion();
@@ -1644,16 +2000,16 @@ function abrirCotizacion(){
 
 function cerrarCotizacion(){
 
-    document
-        .getElementById("modalCotizacion")
-        .classList.remove("active");
+    document.getElementById(
+        "modalCotizacion"
+    ).classList.remove("active");
 
 }
 
 
 function llenarClientesCotizacion(){
 
-    const select=
+    const select =
         document.getElementById(
             "cotizacionCliente"
         );
@@ -1664,23 +2020,27 @@ function llenarClientesCotizacion(){
 
     clientes.forEach(function(cliente){
 
-        const opcion=
-            document.createElement("option");
+        const opcion =
+            document.createElement(
+                "option"
+            );
 
 
         opcion.value=cliente.id;
 
 
-        opcion.textContent=
+        opcion.textContent =
             cliente.nombre+
             (
                 cliente.empresa
-                ? " - "+cliente.empresa
-                : ""
+                ?" - "+cliente.empresa
+                :""
             );
 
 
-        select.appendChild(opcion);
+        select.appendChild(
+            opcion
+        );
 
     });
 
@@ -1689,37 +2049,37 @@ function llenarClientesCotizacion(){
 
 function calcularCotizacion(){
 
-    const materiales=
+    const materiales =
         Number(
             document.getElementById(
                 "materiales"
             ).value
-        )||0;
+        ) || 0;
 
 
-    const manoObra=
+    const manoObra =
         Number(
             document.getElementById(
                 "manoObra"
             ).value
-        )||0;
+        ) || 0;
 
 
-    const otros=
+    const otros =
         Number(
             document.getElementById(
                 "otrosCostos"
             ).value
-        )||0;
+        ) || 0;
 
 
-    const costoReal=
+    const costoReal =
         materiales+
         manoObra+
         otros;
 
 
-    const modo=
+    const modo =
         document.getElementById(
             "modoPrecio"
         ).value;
@@ -1742,24 +2102,26 @@ function calcularCotizacion(){
         ).style.display="none";
 
 
-        const porcentaje=
+        const porcentaje =
             Number(
                 document.getElementById(
                     "utilidad"
                 ).value
-            )||0;
+            ) || 0;
 
 
-        utilidad=
+        utilidad =
             costoReal*
             porcentaje/100;
 
 
-        precioFinal=
+        precioFinal =
             costoReal+
             utilidad;
 
-    }else{
+    }
+
+    else{
 
         document.getElementById(
             "campoUtilidad"
@@ -1771,30 +2133,30 @@ function calcularCotizacion(){
         ).style.display="flex";
 
 
-        precioFinal=
+        precioFinal =
             Number(
                 document.getElementById(
                     "precioManual"
                 ).value
-            )||0;
+            ) || 0;
 
 
-        utilidad=
+        utilidad =
             precioFinal-
             costoReal;
 
     }
 
 
-    const anticipo=
+    const anticipo =
         Number(
             document.getElementById(
                 "anticipo"
             ).value
-        )||0;
+        ) || 0;
 
 
-    const saldo=
+    const saldo =
         Math.max(
             0,
             precioFinal-anticipo
@@ -1803,31 +2165,25 @@ function calcularCotizacion(){
 
     document.getElementById(
         "costoReal"
-    ).textContent=
+    ).textContent =
         formatoMoneda(costoReal);
 
 
     document.getElementById(
         "valorUtilidad"
-    ).textContent=
+    ).textContent =
         formatoMoneda(utilidad);
 
 
     document.getElementById(
         "precioFinal"
-    ).textContent=
+    ).textContent =
         formatoMoneda(precioFinal);
 
 
     document.getElementById(
-        "anticipoMostrar"
-    ).textContent=
-        formatoMoneda(anticipo);
-
-
-    document.getElementById(
         "saldoFinal"
-    ).textContent=
+    ).textContent =
         formatoMoneda(saldo);
 
 }
@@ -1839,46 +2195,37 @@ function limpiarFormularioCotizacion(){
         "descripcionCotizacion"
     ).value="";
 
-
     document.getElementById(
         "materiales"
     ).value="0";
-
 
     document.getElementById(
         "manoObra"
     ).value="0";
 
-
     document.getElementById(
         "otrosCostos"
     ).value="0";
-
 
     document.getElementById(
         "utilidad"
     ).value="40";
 
-
     document.getElementById(
         "precioManual"
     ).value="0";
-
 
     document.getElementById(
         "anticipo"
     ).value="0";
 
-
     document.getElementById(
         "observacionesCotizacion"
     ).value="";
 
-
     document.getElementById(
         "modoPrecio"
     ).value="porcentaje";
-
 
     document.getElementById(
         "estadoCotizacion"
@@ -1889,7 +2236,7 @@ function limpiarFormularioCotizacion(){
 
 function guardarCotizacion(){
 
-    const clienteId=
+    const clienteId =
         Number(
             document.getElementById(
                 "cotizacionCliente"
@@ -1897,7 +2244,7 @@ function guardarCotizacion(){
         );
 
 
-    const descripcion=
+    const descripcion =
         document.getElementById(
             "descripcionCotizacion"
         ).value.trim();
@@ -1914,37 +2261,37 @@ function guardarCotizacion(){
     }
 
 
-    const materiales=
+    const materiales =
         Number(
             document.getElementById(
                 "materiales"
             ).value
-        )||0;
+        ) || 0;
 
 
-    const manoObra=
+    const manoObra =
         Number(
             document.getElementById(
                 "manoObra"
             ).value
-        )||0;
+        ) || 0;
 
 
-    const otros=
+    const otros =
         Number(
             document.getElementById(
                 "otrosCostos"
             ).value
-        )||0;
+        ) || 0;
 
 
-    const costoReal=
+    const costoReal =
         materiales+
         manoObra+
         otros;
 
 
-    const modo=
+    const modo =
         document.getElementById(
             "modoPrecio"
         ).value;
@@ -1959,56 +2306,58 @@ function guardarCotizacion(){
 
     if(modo==="porcentaje"){
 
-        porcentaje=
+        porcentaje =
             Number(
                 document.getElementById(
                     "utilidad"
                 ).value
-            )||0;
+            ) || 0;
 
 
-        utilidad=
+        utilidad =
             costoReal*
             porcentaje/100;
 
 
-        precioFinal=
+        precioFinal =
             costoReal+
             utilidad;
 
-    }else{
+    }
 
-        precioFinal=
+    else{
+
+        precioFinal =
             Number(
                 document.getElementById(
                     "precioManual"
                 ).value
-            )||0;
+            ) || 0;
 
 
-        utilidad=
+        utilidad =
             precioFinal-
             costoReal;
 
     }
 
 
-    const anticipo=
+    const anticipo =
         Number(
             document.getElementById(
                 "anticipo"
             ).value
-        )||0;
+        ) || 0;
 
 
-    const saldo=
+    const saldo =
         Math.max(
             0,
             precioFinal-anticipo
         );
 
 
-    const numero=
+    const numero =
         "COT-"+
         String(
             cotizaciones.length+1
@@ -2067,14 +2416,12 @@ function guardarCotizacion(){
     };
 
 
-    cotizaciones.push(cotizacion);
-
-
-    localStorage.setItem(
-        "creativos_cotizaciones",
-        JSON.stringify(cotizaciones)
+    cotizaciones.push(
+        cotizacion
     );
 
+
+    guardarDatos();
 
     cerrarCotizacion();
 
@@ -2094,50 +2441,56 @@ function guardarCotizacion(){
 
 function renderCotizaciones(){
 
-    const contenedor=
+    const contenedor =
         document.getElementById(
             "listaCotizaciones"
         );
 
 
-    const busqueda=
+    const busqueda =
         document.getElementById(
             "busquedaCotizacion"
         ).value.toLowerCase().trim();
 
 
-    const filtradas=
-        cotizaciones.filter(function(cotizacion){
+    const filtradas =
+        cotizaciones.filter(
+            function(cotizacion){
 
-            const cliente=
-                clientes.find(function(c){
+                const cliente =
+                    clientes.find(
+                        function(c){
 
-                    return c.id===
-                        cotizacion.clienteId;
+                            return c.id===
+                                cotizacion.clienteId;
 
-                });
-
-
-            const nombre=
-                cliente
-                ?cliente.nombre
-                :"";
+                        }
+                    );
 
 
-            const texto=(
-
-                cotizacion.numero+
-                " "+
-                nombre+
-                " "+
-                cotizacion.descripcion
-
-            ).toLowerCase();
+                const nombre =
+                    cliente
+                    ?cliente.nombre
+                    :"";
 
 
-            return texto.includes(busqueda);
+                const texto = (
 
-        });
+                    cotizacion.numero+
+                    " "+
+                    nombre+
+                    " "+
+                    cotizacion.descripcion
+
+                ).toLowerCase();
+
+
+                return texto.includes(
+                    busqueda
+                );
+
+            }
+        );
 
 
     if(filtradas.length===0){
@@ -2158,126 +2511,126 @@ function renderCotizaciones(){
     contenedor.innerHTML="";
 
 
-    filtradas.slice().reverse()
-    .forEach(function(cotizacion){
+    filtradas
+        .slice()
+        .reverse()
+        .forEach(function(cotizacion){
 
-        const cliente=
-            clientes.find(function(c){
+            const cliente =
+                clientes.find(
+                    function(c){
 
-                return c.id===
-                    cotizacion.clienteId;
+                        return c.id===
+                            cotizacion.clienteId;
 
-            });
-
-
-        const nombre=
-            cliente
-            ?cliente.nombre
-            :"Cliente eliminado";
+                    }
+                );
 
 
-        const elemento=
-            document.createElement("div");
+            const nombre =
+                cliente
+                ?cliente.nombre
+                :"Cliente eliminado";
 
 
-        elemento.className="quote";
+            const elemento =
+                document.createElement(
+                    "div"
+                );
 
 
-        const convertida=
-            cotizacion.convertida
-            ?"Sí"
-            :"No";
+            elemento.className="quote";
 
 
-        elemento.innerHTML=`
+            elemento.innerHTML=`
 
-            <div class="quote-title">
-                ${escapar(cotizacion.numero)}
-            </div>
+                <div class="quote-title">
 
-            <div class="quote-subtitle">
-
-                ${escapar(nombre)}
-                -
-                ${escapar(
-                    cotizacion.tipoTrabajo
-                )}
-
-            </div>
-
-
-            <div class="quote-info">
-
-                <strong>Trabajo:</strong>
-                ${escapar(
-                    cotizacion.descripcion
-                )}
-
-                <br>
-
-                <strong>Precio:</strong>
-                ${formatoMoneda(
-                    cotizacion.precioFinal
-                )}
-
-                <br>
-
-                <strong>Saldo:</strong>
-                ${formatoMoneda(
-                    cotizacion.saldo
-                )}
-
-                <br>
-
-                <strong>Estado:</strong>
-
-                <span class="badge">
                     ${escapar(
-                        cotizacion.estado
+                        cotizacion.numero
                     )}
-                </span>
 
-                <br>
+                </div>
 
-                <strong>Convertida en pedido:</strong>
-                ${convertida}
+                <div class="quote-subtitle">
 
-            </div>
+                    ${escapar(nombre)}
+                    -
+                    ${escapar(
+                        cotizacion.tipoTrabajo
+                    )}
+
+                </div>
+
+                <div class="quote-info">
+
+                    <strong>Trabajo:</strong>
+                    ${escapar(
+                        cotizacion.descripcion
+                    )}
+
+                    <br>
+
+                    <strong>Precio:</strong>
+                    ${formatoMoneda(
+                        cotizacion.precioFinal
+                    )}
+
+                    <br>
+
+                    <strong>Saldo:</strong>
+                    ${formatoMoneda(
+                        cotizacion.saldo
+                    )}
+
+                    <br>
+
+                    <strong>Estado:</strong>
+
+                    <span class="badge">
+                        ${escapar(
+                            cotizacion.estado
+                        )}
+                    </span>
+
+                </div>
 
 
-            <div class="quote-actions">
+                <div class="quote-actions">
 
-                ${
-                    !cotizacion.convertida
-                    ?`
+                    ${
+                        !cotizacion.convertida
+                        ?`
 
-                        <button
-                            class="green"
-                            onclick="convertirCotizacion(${cotizacion.id})">
+                            <button
+                                class="green"
+                                onclick="convertirCotizacion(${cotizacion.id})">
 
-                            Convertir en pedido
+                                Convertir en pedido
 
-                        </button>
+                            </button>
 
-                    `
-                    :""
-                }
+                        `
+                        :""
+                    }
 
-            </div>
+                </div>
 
-        `;
+            `;
 
 
-        contenedor.appendChild(elemento);
+            contenedor.appendChild(
+                elemento
+            );
 
-    });
+        });
 
 }
 
 
-/* =====================================
+/* =========================================
    PEDIDOS
-===================================== */
+========================================= */
 
 function abrirPedido(){
 
@@ -2308,29 +2661,28 @@ function abrirPedido(){
 
     llenarCotizacionesPedido();
 
-
     limpiarFormularioPedido();
 
 
-    document
-        .getElementById("modalPedido")
-        .classList.add("active");
+    document.getElementById(
+        "modalPedido"
+    ).classList.add("active");
 
 }
 
 
 function cerrarPedido(){
 
-    document
-        .getElementById("modalPedido")
-        .classList.remove("active");
+    document.getElementById(
+        "modalPedido"
+    ).classList.remove("active");
 
 }
 
 
 function llenarClientesPedido(){
 
-    const select=
+    const select =
         document.getElementById(
             "pedidoCliente"
         );
@@ -2341,14 +2693,16 @@ function llenarClientesPedido(){
 
     clientes.forEach(function(cliente){
 
-        const opcion=
-            document.createElement("option");
+        const opcion =
+            document.createElement(
+                "option"
+            );
 
 
         opcion.value=cliente.id;
 
 
-        opcion.textContent=
+        opcion.textContent =
             cliente.nombre+
             (
                 cliente.empresa
@@ -2357,7 +2711,9 @@ function llenarClientesPedido(){
             );
 
 
-        select.appendChild(opcion);
+        select.appendChild(
+            opcion
+        );
 
     });
 
@@ -2366,7 +2722,7 @@ function llenarClientesPedido(){
 
 function llenarCotizacionesPedido(){
 
-    const select=
+    const select =
         document.getElementById(
             "pedidoCotizacion"
         );
@@ -2375,8 +2731,10 @@ function llenarCotizacionesPedido(){
     select.innerHTML="";
 
 
-    const ninguna=
-        document.createElement("option");
+    const ninguna =
+        document.createElement(
+            "option"
+        );
 
 
     ninguna.value="";
@@ -2385,30 +2743,38 @@ function llenarCotizacionesPedido(){
         "Sin cotización";
 
 
-    select.appendChild(ninguna);
+    select.appendChild(
+        ninguna
+    );
 
 
-    cotizaciones.forEach(function(cotizacion){
+    cotizaciones.forEach(
+        function(cotizacion){
 
-        const opcion=
-            document.createElement("option");
+            const opcion =
+                document.createElement(
+                    "option"
+                );
 
 
-        opcion.value=
-            cotizacion.id;
+            opcion.value =
+                cotizacion.id;
 
 
-        opcion.textContent=
-            cotizacion.numero+
-            " - "+
-            formatoMoneda(
-                cotizacion.precioFinal
+            opcion.textContent =
+                cotizacion.numero+
+                " - "+
+                formatoMoneda(
+                    cotizacion.precioFinal
+                );
+
+
+            select.appendChild(
+                opcion
             );
 
-
-        select.appendChild(opcion);
-
-    });
+        }
+    );
 
 }
 
@@ -2419,26 +2785,21 @@ function limpiarFormularioPedido(){
         "pedidoDescripcion"
     ).value="";
 
-
     document.getElementById(
         "pedidoValor"
     ).value="0";
-
 
     document.getElementById(
         "pedidoAnticipo"
     ).value="0";
 
-
     document.getElementById(
         "pedidoProduccion"
     ).value="";
 
-
     document.getElementById(
         "pedidoObservaciones"
     ).value="";
-
 
     document.getElementById(
         "pedidoEstado"
@@ -2447,18 +2808,16 @@ function limpiarFormularioPedido(){
 }
 
 
-/* =====================================
-   CONVERTIR COTIZACIÓN
-===================================== */
-
 function convertirCotizacion(id){
 
-    const cotizacion=
-        cotizaciones.find(function(c){
+    const cotizacion =
+        cotizaciones.find(
+            function(c){
 
-            return c.id===id;
+                return c.id===id;
 
-        });
+            }
+        );
 
 
     if(!cotizacion){
@@ -2483,26 +2842,6 @@ function convertirCotizacion(id){
     }
 
 
-    const cliente=
-        clientes.find(function(c){
-
-            return c.id===
-                cotizacion.clienteId;
-
-        });
-
-
-    if(!cliente){
-
-        alert(
-            "El cliente de esta cotización no existe."
-        );
-
-        return;
-
-    }
-
-
     llenarClientesPedido();
 
     llenarCotizacionesPedido();
@@ -2510,43 +2849,43 @@ function convertirCotizacion(id){
 
     document.getElementById(
         "pedidoCliente"
-    ).value=
+    ).value =
         cotizacion.clienteId;
 
 
     document.getElementById(
         "pedidoCotizacion"
-    ).value=
+    ).value =
         cotizacion.id;
 
 
     document.getElementById(
         "pedidoTipoTrabajo"
-    ).value=
+    ).value =
         cotizacion.tipoTrabajo;
 
 
     document.getElementById(
         "pedidoDescripcion"
-    ).value=
+    ).value =
         cotizacion.descripcion;
 
 
     document.getElementById(
         "pedidoValor"
-    ).value=
+    ).value =
         cotizacion.precioFinal;
 
 
     document.getElementById(
         "pedidoAnticipo"
-    ).value=
+    ).value =
         cotizacion.anticipo;
 
 
     document.getElementById(
         "pedidoEstado"
-    ).value=
+    ).value =
         "Pendiente";
 
 
@@ -2557,13 +2896,13 @@ function convertirCotizacion(id){
 
     document.getElementById(
         "pedidoObservaciones"
-    ).value=
+    ).value =
         cotizacion.observaciones || "";
 
 
     document.getElementById(
         "tituloModalPedido"
-    ).textContent=
+    ).textContent =
         "Convertir cotización en pedido";
 
 
@@ -2572,26 +2911,22 @@ function convertirCotizacion(id){
     ).value="";
 
 
-    document
-        .getElementById("modalPedido")
-        .classList.add("active");
+    document.getElementById(
+        "modalPedido"
+    ).classList.add("active");
 
 }
 
 
-/* =====================================
-   GUARDAR PEDIDO
-===================================== */
-
 function guardarPedido(){
 
-    const idEdicion=
+    const idEdicion =
         document.getElementById(
             "pedidoIdEdicion"
         ).value;
 
 
-    const clienteId=
+    const clienteId =
         Number(
             document.getElementById(
                 "pedidoCliente"
@@ -2599,7 +2934,7 @@ function guardarPedido(){
         );
 
 
-    const descripcion=
+    const descripcion =
         document.getElementById(
             "pedidoDescripcion"
         ).value.trim();
@@ -2616,35 +2951,35 @@ function guardarPedido(){
     }
 
 
-    const cotizacionValor=
+    const cotizacionValor =
         document.getElementById(
             "pedidoCotizacion"
         ).value;
 
 
-    const cotizacionId=
+    const cotizacionId =
         cotizacionValor
         ?Number(cotizacionValor)
         :null;
 
 
-    const valor=
+    const valor =
         Number(
             document.getElementById(
                 "pedidoValor"
             ).value
-        )||0;
+        ) || 0;
 
 
-    const anticipo=
+    const anticipo =
         Number(
             document.getElementById(
                 "pedidoAnticipo"
             ).value
-        )||0;
+        ) || 0;
 
 
-    const saldo=
+    const saldo =
         Math.max(
             0,
             valor-anticipo
@@ -2653,56 +2988,64 @@ function guardarPedido(){
 
     if(idEdicion){
 
-        const pedido=
-            pedidos.find(function(p){
+        const pedido =
+            pedidos.find(
+                function(p){
 
-                return p.id===
-                    Number(idEdicion);
+                    return p.id===
+                        Number(idEdicion);
 
-            });
+                }
+            );
 
 
         if(pedido){
 
-            pedido.clienteId=clienteId;
+            pedido.clienteId =
+                clienteId;
 
-            pedido.cotizacionId=cotizacionId;
+            pedido.cotizacionId =
+                cotizacionId;
 
-            pedido.tipoTrabajo=
+            pedido.tipoTrabajo =
                 document.getElementById(
                     "pedidoTipoTrabajo"
                 ).value;
 
-            pedido.descripcion=descripcion;
+            pedido.descripcion =
+                descripcion;
 
-            pedido.valor=valor;
+            pedido.valor =
+                valor;
 
-            pedido.anticipo=anticipo;
+            pedido.anticipo =
+                anticipo;
 
-            pedido.saldo=saldo;
+            pedido.saldo =
+                saldo;
 
-            pedido.estado=
+            pedido.estado =
                 document.getElementById(
                     "pedidoEstado"
                 ).value;
 
-            pedido.produccion=
+            pedido.produccion =
                 document.getElementById(
                     "pedidoProduccion"
                 ).value.trim();
 
-            pedido.observaciones=
+            pedido.observaciones =
                 document.getElementById(
                     "pedidoObservaciones"
                 ).value.trim();
 
         }
 
+    }
 
-    }else{
+    else{
 
-
-        const numero=
+        const numero =
             "PED-"+
             String(
                 pedidos.length+1
@@ -2747,30 +3090,38 @@ function guardarPedido(){
                     "pedidoObservaciones"
                 ).value.trim(),
 
-            fecha:new Date().toISOString()
+            fecha:new Date().toISOString(),
+
+            fechaProduccion:null,
+
+            checklist:{}
 
         };
 
 
-        pedidos.push(pedido);
+        pedidos.push(
+            pedido
+        );
 
 
         if(cotizacionId){
 
-            const cotizacion=
-                cotizaciones.find(function(c){
+            const cotizacion =
+                cotizaciones.find(
+                    function(c){
 
-                    return c.id===
-                        cotizacionId;
+                        return c.id===
+                            cotizacionId;
 
-                });
+                    }
+                );
 
 
             if(cotizacion){
 
                 cotizacion.convertida=true;
 
-                cotizacion.pedidoId=
+                cotizacion.pedidoId =
                     pedido.id;
 
             }
@@ -2780,17 +3131,7 @@ function guardarPedido(){
     }
 
 
-    localStorage.setItem(
-        "creativos_pedidos",
-        JSON.stringify(pedidos)
-    );
-
-
-    localStorage.setItem(
-        "creativos_cotizaciones",
-        JSON.stringify(cotizaciones)
-    );
-
+    guardarDatos();
 
     cerrarPedido();
 
@@ -2808,58 +3149,60 @@ function guardarPedido(){
 }
 
 
-/* =====================================
-   RENDER PEDIDOS
-===================================== */
-
 function renderPedidos(){
 
-    const contenedor=
+    const contenedor =
         document.getElementById(
             "listaPedidos"
         );
 
 
-    const busqueda=
+    const busqueda =
         document.getElementById(
             "busquedaPedido"
         ).value.toLowerCase().trim();
 
 
-    const filtrados=
-        pedidos.filter(function(pedido){
+    const filtrados =
+        pedidos.filter(
+            function(pedido){
 
-            const cliente=
-                clientes.find(function(c){
+                const cliente =
+                    clientes.find(
+                        function(c){
 
-                    return c.id===
-                        pedido.clienteId;
+                            return c.id===
+                                pedido.clienteId;
 
-                });
-
-
-            const nombre=
-                cliente
-                ?cliente.nombre
-                :"";
+                        }
+                    );
 
 
-            const texto=(
-
-                pedido.numero+
-                " "+
-                nombre+
-                " "+
-                pedido.descripcion+
-                " "+
-                pedido.estado
-
-            ).toLowerCase();
+                const nombre =
+                    cliente
+                    ?cliente.nombre
+                    :"";
 
 
-            return texto.includes(busqueda);
+                const texto = (
 
-        });
+                    pedido.numero+
+                    " "+
+                    nombre+
+                    " "+
+                    pedido.descripcion+
+                    " "+
+                    pedido.estado
+
+                ).toLowerCase();
+
+
+                return texto.includes(
+                    busqueda
+                );
+
+            }
+        );
 
 
     if(filtrados.length===0){
@@ -2882,193 +3225,143 @@ function renderPedidos(){
     contenedor.innerHTML="";
 
 
-    filtrados.slice().reverse()
-    .forEach(function(pedido){
+    filtrados
+        .slice()
+        .reverse()
+        .forEach(function(pedido){
 
-        const cliente=
-            clientes.find(function(c){
+            const cliente =
+                clientes.find(
+                    function(c){
 
-                return c.id===
-                    pedido.clienteId;
+                        return c.id===
+                            pedido.clienteId;
 
-            });
-
-
-        const nombre=
-            cliente
-            ?cliente.nombre
-            :"Cliente eliminado";
+                    }
+                );
 
 
-        const cotizacion=
-            cotizaciones.find(function(c){
-
-                return c.id===
-                    pedido.cotizacionId;
-
-            });
+            const nombre =
+                cliente
+                ?cliente.nombre
+                :"Cliente eliminado";
 
 
-        const elemento=
-            document.createElement("div");
+            const elemento =
+                document.createElement(
+                    "div"
+                );
 
 
-        elemento.className="order";
+            elemento.className="order";
 
 
-        elemento.innerHTML=`
+            elemento.innerHTML=`
 
-            <div class="order-title">
+                <div class="order-title">
+                    ${escapar(pedido.numero)}
+                </div>
 
-                ${escapar(pedido.numero)}
-
-            </div>
-
-
-            <div class="order-subtitle">
-
-                ${escapar(nombre)}
-
-                -
-                ${escapar(
-                    pedido.tipoTrabajo
-                )}
-
-            </div>
-
-
-            <div class="order-info">
-
-                <strong>Trabajo:</strong>
-
-                ${escapar(
-                    pedido.descripcion
-                )}
-
-                <br>
-
-                <strong>Valor:</strong>
-
-                ${formatoMoneda(
-                    pedido.valor
-                )}
-
-                <br>
-
-                <strong>Anticipo:</strong>
-
-                ${formatoMoneda(
-                    pedido.anticipo
-                )}
-
-                <br>
-
-                <strong>Saldo:</strong>
-
-                ${formatoMoneda(
-                    pedido.saldo
-                )}
-
-                <br>
-
-                <strong>Estado:</strong>
-
-                <span class="badge">
-
+                <div class="order-subtitle">
+                    ${escapar(nombre)}
+                    -
                     ${escapar(
-                        pedido.estado
+                        pedido.tipoTrabajo
+                    )}
+                </div>
+
+                <div class="order-info">
+
+                    <strong>Trabajo:</strong>
+                    ${escapar(
+                        pedido.descripcion
                     )}
 
-                </span>
+                    <br>
 
-                ${
-                    cotizacion
-                    ?`
+                    <strong>Valor:</strong>
+                    ${formatoMoneda(
+                        pedido.valor
+                    )}
 
-                        <br>
+                    <br>
 
-                        <strong>
-                            Cotización:
-                        </strong>
+                    <strong>Saldo:</strong>
+                    ${formatoMoneda(
+                        pedido.saldo
+                    )}
 
+                    <br>
+
+                    <strong>Estado:</strong>
+
+                    <span class="badge blue">
                         ${escapar(
-                            cotizacion.numero
+                            pedido.estado
                         )}
+                    </span>
 
-                    `
-                    :""
-                }
-
-            </div>
+                </div>
 
 
-            <div class="production-box">
+                <div class="order-actions">
 
-                <strong>
-                    Información de producción
-                </strong>
+                    <button
+                        class="green"
+                        onclick="abrirProduccionPedido(${pedido.id})">
 
-                ${
-                    pedido.produccion
-                    ?escapar(
-                        pedido.produccion
-                    )
-                    :"Sin información todavía."
-                }
+                        Producción
 
-            </div>
+                    </button>
 
+                    <button
+                        class="orange"
+                        onclick="editarPedido(${pedido.id})">
 
-            <div class="order-actions">
+                        Editar
 
-                <button
-                    class="orange"
-                    onclick="editarPedido(${pedido.id})">
+                    </button>
 
-                    Editar
+                    <button
+                        class="danger"
+                        onclick="eliminarPedido(${pedido.id})">
 
-                </button>
+                        Eliminar
 
+                    </button>
 
-                <button
-                    class="danger"
-                    onclick="eliminarPedido(${pedido.id})">
+                </div>
 
-                    Eliminar
-
-                </button>
-
-            </div>
-
-        `;
+            `;
 
 
-        contenedor.appendChild(elemento);
+            contenedor.appendChild(
+                elemento
+            );
 
-    });
+        });
 
 }
 
 
-/* =====================================
+/* =========================================
    EDITAR PEDIDO
-===================================== */
+========================================= */
 
 function editarPedido(id){
 
-    const pedido=
-        pedidos.find(function(p){
+    const pedido =
+        pedidos.find(
+            function(p){
 
-            return p.id===id;
+                return p.id===id;
 
-        });
+            }
+        );
 
 
-    if(!pedido){
-
+    if(!pedido)
         return;
-
-    }
 
 
     llenarClientesPedido();
@@ -3078,107 +3371,99 @@ function editarPedido(id){
 
     document.getElementById(
         "pedidoIdEdicion"
-    ).value=pedido.id;
+    ).value =
+        pedido.id;
 
 
     document.getElementById(
         "pedidoCliente"
-    ).value=pedido.clienteId;
+    ).value =
+        pedido.clienteId;
 
 
     document.getElementById(
         "pedidoCotizacion"
-    ).value=
+    ).value =
         pedido.cotizacionId || "";
 
 
     document.getElementById(
         "pedidoTipoTrabajo"
-    ).value=
+    ).value =
         pedido.tipoTrabajo;
 
 
     document.getElementById(
         "pedidoDescripcion"
-    ).value=
+    ).value =
         pedido.descripcion;
 
 
     document.getElementById(
         "pedidoValor"
-    ).value=
+    ).value =
         pedido.valor;
 
 
     document.getElementById(
         "pedidoAnticipo"
-    ).value=
+    ).value =
         pedido.anticipo;
 
 
     document.getElementById(
         "pedidoEstado"
-    ).value=
+    ).value =
         pedido.estado;
 
 
     document.getElementById(
         "pedidoProduccion"
-    ).value=
+    ).value =
         pedido.produccion || "";
 
 
     document.getElementById(
         "pedidoObservaciones"
-    ).value=
+    ).value =
         pedido.observaciones || "";
 
 
     document.getElementById(
         "tituloModalPedido"
-    ).textContent=
+    ).textContent =
         "Editar pedido";
 
 
-    document
-        .getElementById("modalPedido")
-        .classList.add("active");
+    document.getElementById(
+        "modalPedido"
+    ).classList.add("active");
 
 }
 
 
-/* =====================================
-   ELIMINAR PEDIDO
-===================================== */
-
 function eliminarPedido(id){
 
-    const confirmar=
-        confirm(
-            "¿Seguro que deseas eliminar este pedido?"
-        );
-
-
-    if(!confirmar){
+    if(!confirm(
+        "¿Seguro que deseas eliminar este pedido?"
+    )){
 
         return;
 
     }
 
 
-    pedidos=
-        pedidos.filter(function(p){
+    pedidos =
+        pedidos.filter(
+            function(p){
 
-            return p.id!==id;
+                return p.id!==id;
 
-        });
+            }
+        );
 
 
-    localStorage.setItem(
-        "creativos_pedidos",
-        JSON.stringify(pedidos)
-    );
-
+    guardarDatos();
 
     actualizarDashboard();
 
@@ -3187,75 +3472,1092 @@ function eliminarPedido(id){
 }
 
 
-/* =====================================
+/* =========================================
+   PRODUCCIÓN
+========================================= */
+
+function abrirProduccionPedido(id){
+
+    mostrarProduccion();
+
+    setTimeout(
+        function(){
+
+            const pedido =
+                pedidos.find(
+                    function(p){
+
+                        return p.id===id;
+
+                    }
+                );
+
+
+            if(!pedido)
+                return;
+
+
+            document.getElementById(
+                "busquedaProduccion"
+            ).value =
+                pedido.numero;
+
+
+            renderProduccion();
+
+        },
+        50
+    );
+
+}
+
+
+function renderProduccion(){
+
+    const contenedor =
+        document.getElementById(
+            "listaProduccion"
+        );
+
+
+    const busqueda =
+        document.getElementById(
+            "busquedaProduccion"
+        ).value.toLowerCase().trim();
+
+
+    const activos =
+        pedidos.filter(
+            function(pedido){
+
+                const cliente =
+                    clientes.find(
+                        function(c){
+
+                            return c.id===
+                                pedido.clienteId;
+
+                        }
+                    );
+
+
+                const nombre =
+                    cliente
+                    ?cliente.nombre
+                    :"";
+
+
+                const texto = (
+
+                    pedido.numero+
+                    " "+
+                    nombre+
+                    " "+
+                    pedido.descripcion+
+                    " "+
+                    pedido.tipoTrabajo+
+                    " "+
+                    pedido.estado
+
+                ).toLowerCase();
+
+
+                return texto.includes(
+                    busqueda
+                );
+
+            }
+        );
+
+
+    if(activos.length===0){
+
+        contenedor.innerHTML=`
+
+            <div class="card empty">
+
+                No hay pedidos para producción.
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    contenedor.innerHTML="";
+
+
+    activos
+        .slice()
+        .reverse()
+        .forEach(
+            function(pedido){
+
+                contenedor.appendChild(
+                    crearTarjetaProduccion(
+                        pedido
+                    )
+                );
+
+            }
+        );
+
+}
+
+
+function crearTarjetaProduccion(pedido){
+
+    const cliente =
+        clientes.find(
+            function(c){
+
+                return c.id===
+                    pedido.clienteId;
+
+            }
+        );
+
+
+    const nombre =
+        cliente
+        ?cliente.nombre
+        :"Cliente eliminado";
+
+
+    const etapa =
+        obtenerEtapaProduccion(
+            pedido
+        );
+
+
+    const indice =
+        etapasProduccion.indexOf(
+            etapa
+        );
+
+
+    const progreso =
+        Math.round(
+            (
+                Math.max(
+                    0,
+                    indice
+                )/
+                (
+                    etapasProduccion.length-1
+                )
+            )*100
+        );
+
+
+    const checklist =
+        pedido.checklist ||
+        {};
+
+
+    const completados =
+        checklistProduccion.filter(
+            function(item){
+
+                return checklist[
+                    item.id
+                ]===true;
+
+            }
+        ).length;
+
+
+    const porcentajeChecklist =
+        Math.round(
+            (
+                completados/
+                checklistProduccion.length
+            )*100
+        );
+
+
+    const elemento =
+        document.createElement(
+            "div"
+        );
+
+
+    elemento.className=
+        "production-card";
+
+
+    let workflowHTML="";
+
+
+    etapasProduccion.forEach(
+        function(nombreEtapa,index){
+
+            let clase="";
+
+            if(index<indice)
+                clase="done";
+
+            if(index===indice)
+                clase="current";
+
+
+            workflowHTML+=`
+
+                <div
+                    class="workflow-step ${clase}">
+
+                    ${escapar(
+                        nombreEtapa
+                    )}
+
+                </div>
+
+            `;
+
+        }
+    );
+
+
+    let checklistHTML="";
+
+
+    checklistProduccion.forEach(
+        function(item){
+
+            const marcado =
+                checklist[
+                    item.id
+                ]===true
+                ?"checked"
+                :"";
+
+
+            checklistHTML+=`
+
+                <div class="check-item">
+
+                    <input
+                        type="checkbox"
+                        ${marcado}
+                        onchange="cambiarChecklist(
+                            ${pedido.id},
+                            '${item.id}',
+                            this.checked
+                        )"
+                    >
+
+                    <span>
+                        ${escapar(
+                            item.nombre
+                        )}
+                    </span>
+
+                </div>
+
+            `;
+
+        }
+    );
+
+
+    elemento.innerHTML=`
+
+        <div class="production-header">
+
+            <div>
+
+                <div class="production-number">
+
+                    ${escapar(
+                        pedido.numero
+                    )}
+
+                </div>
+
+                <div class="production-client">
+
+                    ${escapar(nombre)}
+
+                    ·
+
+                    ${escapar(
+                        pedido.tipoTrabajo
+                    )}
+
+                </div>
+
+            </div>
+
+
+            <div>
+
+                <span class="badge blue">
+
+                    ${escapar(
+                        etapa
+                    )}
+
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div class="progress-container">
+
+            <div class="progress-track">
+
+                <div
+                    class="progress-bar"
+                    style="width:${progreso}%">
+                </div>
+
+            </div>
+
+
+            <div class="progress-text">
+
+                Progreso del flujo:
+                <strong>
+                    ${progreso}%
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <div class="workflow">
+
+            ${workflowHTML}
+
+        </div>
+
+
+        <div class="production-data">
+
+            <strong>
+                Trabajo:
+            </strong>
+
+            ${escapar(
+                pedido.descripcion
+            )}
+
+            <br>
+
+            <strong>
+                Valor:
+            </strong>
+
+            ${formatoMoneda(
+                pedido.valor
+            )}
+
+            <br>
+
+            <strong>
+                Saldo:
+            </strong>
+
+            ${formatoMoneda(
+                pedido.saldo
+            )}
+
+            <br>
+
+            <strong>
+                Información:
+            </strong>
+
+            ${
+                pedido.produccion
+                ?escapar(
+                    pedido.produccion
+                )
+                :"Sin información adicional."
+            }
+
+        </div>
+
+
+        <div class="checklist">
+
+            <strong>
+                Checklist de producción
+            </strong>
+
+            <div
+                class="progress-text">
+
+                ${completados}
+                de
+                ${checklistProduccion.length}
+                completados
+                (${porcentajeChecklist}%)
+
+            </div>
+
+            <hr>
+
+            ${checklistHTML}
+
+        </div>
+
+
+        <div
+            style="margin-top:15px">
+
+            <label>
+                Cambiar etapa
+            </label>
+
+            <select
+                onchange="cambiarEtapa(
+                    ${pedido.id},
+                    this.value
+                )">
+
+                ${etapasProduccion
+                    .map(
+                        function(e){
+
+                            return `
+
+                                <option
+                                    ${
+                                        e===etapa
+                                        ?"selected"
+                                        :""
+                                    }>
+
+                                    ${escapar(e)}
+
+                                </option>
+
+                            `;
+
+                        }
+                    )
+                    .join("")
+                }
+
+            </select>
+
+        </div>
+
+
+        <div style="margin-top:15px">
+
+            <button
+                class="dark"
+                onclick="abrirProduccionDetalle(${pedido.id})">
+
+                Editar ficha de producción
+
+            </button>
+
+            <button
+                class="orange"
+                onclick="editarPedido(${pedido.id})">
+
+                Editar pedido
+
+            </button>
+
+        </div>
+
+    `;
+
+
+    return elemento;
+
+}
+
+
+function obtenerEtapaProduccion(pedido){
+
+    if(pedido.etapaProduccion){
+
+        return pedido.etapaProduccion;
+
+    }
+
+
+    /*
+        Compatibilidad con pedidos
+        creados en v0.5.
+    */
+
+    if(
+        etapasProduccion.includes(
+            pedido.estado
+        )
+    ){
+
+        if(
+            pedido.estado===
+            "Producción"
+        ){
+
+            return "Producción";
+
+        }
+
+
+        return pedido.estado;
+
+    }
+
+
+    return "Pendiente";
+
+}
+
+
+function cambiarEtapa(id,nuevaEtapa){
+
+    const pedido =
+        pedidos.find(
+            function(p){
+
+                return p.id===id;
+
+            }
+        );
+
+
+    if(!pedido)
+        return;
+
+
+    pedido.etapaProduccion =
+        nuevaEtapa;
+
+
+    /*
+        Mantenemos también el estado
+        anterior del pedido para que
+        Pedidos y Producción sigan
+        sincronizados.
+    */
+
+    if(
+        [
+            "Pendiente",
+            "Diseño",
+            "Confirmación del cliente",
+            "Producción",
+            "Listo",
+            "Entregado",
+            "Cancelado"
+        ].includes(nuevaEtapa)
+    ){
+
+        pedido.estado =
+            nuevaEtapa;
+
+    }
+
+
+    if(
+        nuevaEtapa!=="Pendiente" &&
+        !pedido.fechaProduccion
+    ){
+
+        pedido.fechaProduccion =
+            new Date().toISOString();
+
+    }
+
+
+    guardarDatos();
+
+    actualizarDashboard();
+
+    renderProduccion();
+
+}
+
+
+function cambiarChecklist(
+    pedidoId,
+    itemId,
+    marcado
+){
+
+    const pedido =
+        pedidos.find(
+            function(p){
+
+                return p.id===pedidoId;
+
+            }
+        );
+
+
+    if(!pedido)
+        return;
+
+
+    if(!pedido.checklist)
+        pedido.checklist={};
+
+
+    pedido.checklist[itemId] =
+        marcado;
+
+
+    /*
+        Si se marca producción terminada,
+        podemos llevar automáticamente
+        el pedido a control de calidad.
+    */
+
+    if(
+        itemId==="fabricacion" &&
+        marcado &&
+        obtenerEtapaProduccion(pedido)
+            ==="Producción"
+    ){
+
+        pedido.etapaProduccion =
+            "Control de calidad";
+
+        pedido.estado =
+            "Producción";
+
+    }
+
+
+    /*
+        Si se marca listo,
+        llevamos el pedido a Listo.
+    */
+
+    if(
+        itemId==="listo" &&
+        marcado
+    ){
+
+        pedido.etapaProduccion =
+            "Listo";
+
+        pedido.estado =
+            "Listo";
+
+    }
+
+
+    /*
+        Si se marca entregado,
+        cerramos el flujo.
+    */
+
+    if(
+        itemId==="entregado" &&
+        marcado
+    ){
+
+        pedido.etapaProduccion =
+            "Entregado";
+
+        pedido.estado =
+            "Entregado";
+
+    }
+
+
+    guardarDatos();
+
+    actualizarDashboard();
+
+    renderProduccion();
+
+}
+
+
+/* =========================================
+   FICHA DE PRODUCCIÓN
+========================================= */
+
+function abrirProduccionDetalle(id){
+
+    const pedido =
+        pedidos.find(
+            function(p){
+
+                return p.id===id;
+
+            }
+        );
+
+
+    if(!pedido)
+        return;
+
+
+    const cliente =
+        clientes.find(
+            function(c){
+
+                return c.id===
+                    pedido.clienteId;
+
+            }
+        );
+
+
+    const medidas =
+        prompt(
+            "MEDIDAS\n\nEscribe las medidas del trabajo:",
+            pedido.medidas || ""
+        );
+
+
+    if(medidas===null)
+        return;
+
+
+    const material =
+        prompt(
+            "MATERIAL\n\nEscribe el material:",
+            pedido.material || ""
+        );
+
+
+    if(material===null)
+        return;
+
+
+    const cantidad =
+        prompt(
+            "CANTIDAD\n\nCantidad de unidades:",
+            pedido.cantidad || "1"
+        );
+
+
+    if(cantidad===null)
+        return;
+
+
+    const acabado =
+        prompt(
+            "ACABADO\n\nDescribe el acabado:",
+            pedido.acabado || ""
+        );
+
+
+    if(acabado===null)
+        return;
+
+
+    const referencia =
+        prompt(
+            "REFERENCIA / DISEÑO\n\nDescribe la referencia:",
+            pedido.referencia || ""
+        );
+
+
+    if(referencia===null)
+        return;
+
+
+    pedido.medidas =
+        medidas.trim();
+
+
+    pedido.material =
+        material.trim();
+
+
+    pedido.cantidad =
+        cantidad.trim();
+
+
+    pedido.acabado =
+        acabado.trim();
+
+
+    pedido.referencia =
+        referencia.trim();
+
+
+    guardarDatos();
+
+    renderProduccion();
+
+
+    alert(
+        "Ficha de producción actualizada"+
+        (
+            cliente
+            ?" para "+cliente.nombre
+            :""
+        )+
+        "."
+    );
+
+}
+
+
+/* =========================================
    DASHBOARD
-===================================== */
+========================================= */
 
 function actualizarDashboard(){
 
     document.getElementById(
         "totalClientes"
-    ).textContent=
+    ).textContent =
         clientes.length;
 
 
     document.getElementById(
         "totalCotizaciones"
-    ).textContent=
+    ).textContent =
         cotizaciones.length;
 
 
-    const aprobadas=
-        cotizaciones.filter(function(c){
+    const aprobadas =
+        cotizaciones.filter(
+            function(c){
 
-            return c.estado==="Aprobada";
+                return c.estado==="Aprobada";
 
-        }).length;
+            }
+        ).length;
 
 
     document.getElementById(
         "totalAprobadas"
-    ).textContent=
+    ).textContent =
         aprobadas;
 
 
-    const activos=
-        pedidos.filter(function(p){
+    const activos =
+        pedidos.filter(
+            function(p){
 
-            return (
-                p.estado!=="Entregado" &&
-                p.estado!=="Cancelado"
-            );
+                return (
+                    p.estado!=="Entregado" &&
+                    p.estado!=="Cancelado"
+                );
 
-        }).length;
+            }
+        ).length;
 
 
     document.getElementById(
         "totalPedidos"
-    ).textContent=
+    ).textContent =
         activos;
 
 
-    const porCobrar=
-        pedidos.reduce(function(total,p){
+    const produccion =
+        pedidos.filter(
+            function(p){
 
-            return total+
-                Number(p.saldo || 0);
+                const etapa =
+                    obtenerEtapaProduccion(p);
 
-        },0);
+
+                return (
+                    etapa==="Preparación" ||
+                    etapa==="Corte / Impresión" ||
+                    etapa==="Producción" ||
+                    etapa==="Control de calidad"
+                );
+
+            }
+        ).length;
+
+
+    document.getElementById(
+        "totalProduccion"
+    ).textContent =
+        produccion;
+
+
+    const porCobrar =
+        pedidos.reduce(
+            function(total,p){
+
+                return total+
+                    Number(
+                        p.saldo || 0
+                    );
+
+            },
+            0
+        );
 
 
     document.getElementById(
         "totalPorCobrar"
-    ).textContent=
-        formatoMoneda(porCobrar);
+    ).textContent =
+        formatoMoneda(
+            porCobrar
+        );
+
+
+    renderResumenProduccion();
 
 }
 
 
-/* =====================================
+function renderResumenProduccion(){
+
+    const contenedor =
+        document.getElementById(
+            "resumenProduccionDashboard"
+        );
+
+
+    const activos =
+        pedidos.filter(
+            function(p){
+
+                return p.estado!=="Cancelado";
+
+            }
+        );
+
+
+    const pendientes =
+        activos.filter(
+            function(p){
+
+                return obtenerEtapaProduccion(p)
+                    ==="Pendiente";
+
+            }
+        ).length;
+
+
+    const diseno =
+        activos.filter(
+            function(p){
+
+                return obtenerEtapaProduccion(p)
+                    ==="Diseño";
+
+            }
+        ).length;
+
+
+    const produccion =
+        activos.filter(
+            function(p){
+
+                const e =
+                    obtenerEtapaProduccion(p);
+
+
+                return (
+                    e==="Preparación" ||
+                    e==="Corte / Impresión" ||
+                    e==="Producción"
+                );
+
+            }
+        ).length;
+
+
+    const calidad =
+        activos.filter(
+            function(p){
+
+                return obtenerEtapaProduccion(p)
+                    ==="Control de calidad";
+
+            }
+        ).length;
+
+
+    contenedor.innerHTML=`
+
+        <div class="kpi-grid">
+
+            <div class="kpi">
+
+                Pendientes
+
+                <strong>
+                    ${pendientes}
+                </strong>
+
+            </div>
+
+
+            <div class="kpi">
+
+                Diseño
+
+                <strong>
+                    ${diseno}
+                </strong>
+
+            </div>
+
+
+            <div class="kpi">
+
+                Producción
+
+                <strong>
+                    ${produccion}
+                </strong>
+
+            </div>
+
+
+            <div class="kpi">
+
+                Control de calidad
+
+                <strong>
+                    ${calidad}
+                </strong>
+
+            </div>
+
+        </div>
+
+    `;
+
+}
+
+
+/* =========================================
    UTILIDADES
-===================================== */
+========================================= */
+
+function guardarDatos(){
+
+    localStorage.setItem(
+        "creativos_clientes",
+        JSON.stringify(clientes)
+    );
+
+
+    localStorage.setItem(
+        "creativos_cotizaciones",
+        JSON.stringify(cotizaciones)
+    );
+
+
+    localStorage.setItem(
+        "creativos_pedidos",
+        JSON.stringify(pedidos)
+    );
+
+}
+
 
 function formatoMoneda(valor){
 
@@ -3283,9 +4585,9 @@ function escapar(texto){
 }
 
 
-/* =====================================
+/* =========================================
    INICIO
-===================================== */
+========================================= */
 
 actualizarDashboard();
 
@@ -3293,4 +4595,5 @@ actualizarDashboard();
 
 
 </body>
+
 </html>
