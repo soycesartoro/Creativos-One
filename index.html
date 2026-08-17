@@ -3,10 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Creativos One</title>
 
 <style>
-*{box-sizing:border-box}
+
+*{
+    box-sizing:border-box;
+}
 
 body{
     margin:0;
@@ -21,7 +25,10 @@ header{
     padding:20px;
 }
 
-header h1{margin:0}
+header h1{
+    margin:0;
+}
+
 header p{
     margin:5px 0 0;
     color:#d1d5db;
@@ -44,12 +51,29 @@ button{
     cursor:pointer;
 }
 
-button:hover{opacity:.9}
-button.secondary{background:#6b7280}
-button.danger{background:#dc2626}
-button.green{background:#059669}
+button:hover{
+    opacity:.9;
+}
 
-main{padding:20px}
+button.secondary{
+    background:#6b7280;
+}
+
+button.danger{
+    background:#dc2626;
+}
+
+button.green{
+    background:#059669;
+}
+
+button.orange{
+    background:#d97706;
+}
+
+main{
+    padding:20px;
+}
 
 .card{
     background:white;
@@ -61,7 +85,7 @@ main{padding:20px}
 
 .stats{
     display:grid;
-    grid-template-columns:repeat(4,1fr);
+    grid-template-columns:repeat(5,1fr);
     gap:15px;
     margin-bottom:20px;
 }
@@ -78,14 +102,14 @@ main{padding:20px}
 }
 
 .stat-number{
-    font-size:28px;
+    font-size:27px;
     font-weight:bold;
     margin-top:8px;
 }
 
 .search{
     width:100%;
-    max-width:500px;
+    max-width:550px;
     padding:12px;
     border:1px solid #d1d5db;
     border-radius:6px;
@@ -93,7 +117,8 @@ main{padding:20px}
 }
 
 .client,
-.quote{
+.quote,
+.order{
     border:1px solid #e5e7eb;
     border-radius:8px;
     padding:15px;
@@ -102,26 +127,30 @@ main{padding:20px}
 }
 
 .client-name,
-.quote-title{
+.quote-title,
+.order-title{
     font-size:18px;
     font-weight:bold;
 }
 
 .client-company,
-.quote-subtitle{
+.quote-subtitle,
+.order-subtitle{
     color:#4b5563;
     margin-top:4px;
 }
 
 .client-info,
-.quote-info{
+.quote-info,
+.order-info{
     margin-top:10px;
     font-size:14px;
     line-height:1.7;
 }
 
 .client-actions,
-.quote-actions{
+.quote-actions,
+.order-actions{
     margin-top:12px;
 }
 
@@ -136,19 +165,23 @@ main{padding:20px}
     z-index:100;
 }
 
-.modal.active{display:flex}
+.modal.active{
+    display:flex;
+}
 
 .modal-box{
     background:white;
     padding:25px;
     border-radius:10px;
     width:100%;
-    max-width:650px;
+    max-width:700px;
     max-height:90vh;
     overflow-y:auto;
 }
 
-.modal-box h2{margin-top:0}
+.modal-box h2{
+    margin-top:0;
+}
 
 .form-grid{
     display:grid;
@@ -226,10 +259,27 @@ textarea{
     padding:30px;
 }
 
-@media(max-width:800px){
+.section-title{
+    margin-top:0;
+}
+
+.production-box{
+    background:#f9fafb;
+    border:1px solid #e5e7eb;
+    border-radius:8px;
+    padding:12px;
+    margin-top:12px;
+}
+
+.production-box strong{
+    display:block;
+    margin-bottom:8px;
+}
+
+@media(max-width:900px){
 
     .stats{
-        grid-template-columns:1fr 1fr;
+        grid-template-columns:repeat(2,1fr);
     }
 
 }
@@ -244,10 +294,6 @@ textarea{
         grid-column:auto;
     }
 
-    .stats{
-        grid-template-columns:1fr 1fr;
-    }
-
     main{
         padding:12px;
     }
@@ -257,15 +303,24 @@ textarea{
     }
 
 }
+
 </style>
 </head>
 
+
 <body>
 
+
 <header>
+
     <h1>Creativos One</h1>
-    <p>Sistema empresarial v0.4</p>
+
+    <p>
+        Sistema empresarial v0.5
+    </p>
+
 </header>
+
 
 <nav>
 
@@ -281,6 +336,10 @@ textarea{
         Cotizaciones
     </button>
 
+    <button onclick="mostrarPedidos()">
+        Pedidos
+    </button>
+
     <button onclick="abrirCliente()">
         + Nuevo cliente
     </button>
@@ -289,9 +348,15 @@ textarea{
         + Nueva cotización
     </button>
 
+    <button onclick="abrirPedido()">
+        + Nuevo pedido
+    </button>
+
 </nav>
 
+
 <main>
+
 
 <!-- DASHBOARD -->
 
@@ -300,38 +365,105 @@ textarea{
     <div class="stats">
 
         <div class="stat">
-            <div class="stat-label">Clientes registrados</div>
-            <div id="totalClientes" class="stat-number">0</div>
+
+            <div class="stat-label">
+                Clientes
+            </div>
+
+            <div
+                id="totalClientes"
+                class="stat-number">
+
+                0
+
+            </div>
+
         </div>
 
-        <div class="stat">
-            <div class="stat-label">Cotizaciones</div>
-            <div id="totalCotizaciones" class="stat-number">0</div>
-        </div>
 
         <div class="stat">
-            <div class="stat-label">Cotizaciones aprobadas</div>
-            <div id="totalAprobadas" class="stat-number">0</div>
+
+            <div class="stat-label">
+                Cotizaciones
+            </div>
+
+            <div
+                id="totalCotizaciones"
+                class="stat-number">
+
+                0
+
+            </div>
+
         </div>
 
+
         <div class="stat">
-            <div class="stat-label">Valor cotizado</div>
-            <div id="valorCotizado" class="stat-number">$0</div>
+
+            <div class="stat-label">
+                Aprobadas
+            </div>
+
+            <div
+                id="totalAprobadas"
+                class="stat-number">
+
+                0
+
+            </div>
+
+        </div>
+
+
+        <div class="stat">
+
+            <div class="stat-label">
+                Pedidos activos
+            </div>
+
+            <div
+                id="totalPedidos"
+                class="stat-number">
+
+                0
+
+            </div>
+
+        </div>
+
+
+        <div class="stat">
+
+            <div class="stat-label">
+                Por cobrar
+            </div>
+
+            <div
+                id="totalPorCobrar"
+                class="stat-number">
+
+                $0
+
+            </div>
+
         </div>
 
     </div>
 
+
     <div class="card">
 
-        <h2>Bienvenido a Creativos One</h2>
+        <h2>
+            Bienvenido a Creativos One
+        </h2>
 
         <p>
-            Este será el centro de operaciones de tu empresa.
+            Centro de operaciones de tu empresa.
         </p>
 
         <p>
-            Ya tenemos clientes y ahora empezamos a
-            controlar las cotizaciones.
+            Clientes → Cotizaciones → Pedidos →
+            Producción.
         </p>
 
     </div>
@@ -341,11 +473,15 @@ textarea{
 
 <!-- CLIENTES -->
 
-<div id="clientes" style="display:none">
+<div
+    id="clientes"
+    style="display:none">
 
     <div class="card">
 
-        <h2>Clientes</h2>
+        <h2 class="section-title">
+            Clientes
+        </h2>
 
         <button onclick="abrirCliente()">
             + Nuevo cliente
@@ -356,10 +492,11 @@ textarea{
             class="search"
             type="text"
             placeholder="Buscar cliente..."
-            oninput="mostrarClientes()"
+            oninput="renderClientes()"
         >
 
     </div>
+
 
     <div id="listaClientes"></div>
 
@@ -368,11 +505,15 @@ textarea{
 
 <!-- COTIZACIONES -->
 
-<div id="cotizaciones" style="display:none">
+<div
+    id="cotizaciones"
+    style="display:none">
 
     <div class="card">
 
-        <h2>Cotizaciones</h2>
+        <h2 class="section-title">
+            Cotizaciones
+        </h2>
 
         <button onclick="abrirCotizacion()">
             + Nueva cotización
@@ -383,60 +524,157 @@ textarea{
             class="search"
             type="text"
             placeholder="Buscar cotización..."
-            oninput="mostrarCotizaciones()"
+            oninput="renderCotizaciones()"
         >
 
     </div>
 
+
     <div id="listaCotizaciones"></div>
 
 </div>
+
+
+<!-- PEDIDOS -->
+
+<div
+    id="pedidos"
+    style="display:none">
+
+    <div class="card">
+
+        <h2 class="section-title">
+            Pedidos
+        </h2>
+
+        <button onclick="abrirPedido()">
+            + Nuevo pedido
+        </button>
+
+        <input
+            id="busquedaPedido"
+            class="search"
+            type="text"
+            placeholder="Buscar pedido..."
+            oninput="renderPedidos()"
+        >
+
+    </div>
+
+
+    <div id="listaPedidos"></div>
+
+</div>
+
 
 </main>
 
 
 <!-- MODAL CLIENTE -->
 
-<div id="modalCliente" class="modal">
+<div
+    id="modalCliente"
+    class="modal">
 
     <div class="modal-box">
 
-        <h2>Nuevo cliente</h2>
+        <h2>
+            Nuevo cliente
+        </h2>
+
 
         <div class="form-grid">
 
-            <div class="form-group">
-                <label>Nombre *</label>
-                <input id="nombreCliente" type="text">
-            </div>
 
             <div class="form-group">
-                <label>Empresa</label>
-                <input id="empresaCliente" type="text">
+
+                <label>
+                    Nombre *
+                </label>
+
+                <input
+                    id="nombreCliente"
+                    type="text"
+                >
+
             </div>
 
-            <div class="form-group">
-                <label>NIT / Documento</label>
-                <input id="documentoCliente" type="text">
-            </div>
 
             <div class="form-group">
-                <label>WhatsApp</label>
-                <input id="telefonoCliente" type="tel">
+
+                <label>
+                    Empresa
+                </label>
+
+                <input
+                    id="empresaCliente"
+                    type="text"
+                >
+
             </div>
 
-            <div class="form-group">
-                <label>Correo</label>
-                <input id="correoCliente" type="email">
-            </div>
 
             <div class="form-group">
-                <label>Ciudad</label>
-                <input id="ciudadCliente" type="text">
+
+                <label>
+                    NIT / Documento
+                </label>
+
+                <input
+                    id="documentoCliente"
+                    type="text"
+                >
+
             </div>
 
+
             <div class="form-group">
-                <label>Tipo de cliente</label>
+
+                <label>
+                    WhatsApp
+                </label>
+
+                <input
+                    id="telefonoCliente"
+                    type="tel"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Correo
+                </label>
+
+                <input
+                    id="correoCliente"
+                    type="email"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Ciudad
+                </label>
+
+                <input
+                    id="ciudadCliente"
+                    type="text"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Tipo de cliente
+                </label>
 
                 <select id="tipoCliente">
 
@@ -451,10 +689,15 @@ textarea{
                     <option>Otro</option>
 
                 </select>
+
             </div>
 
+
             <div class="form-group">
-                <label>Origen del cliente</label>
+
+                <label>
+                    Origen
+                </label>
 
                 <select id="origenCliente">
 
@@ -468,29 +711,40 @@ textarea{
                     <option>Otro</option>
 
                 </select>
+
             </div>
 
+
             <div class="form-group full">
-                <label>Observaciones</label>
+
+                <label>
+                    Observaciones
+                </label>
 
                 <textarea
                     id="observacionesCliente"
-                    placeholder="Información importante sobre el cliente..."
                 ></textarea>
+
             </div>
 
+
         </div>
+
 
         <div class="form-actions">
 
             <button
                 class="secondary"
                 onclick="cerrarCliente()">
+
                 Cancelar
+
             </button>
 
             <button onclick="guardarCliente()">
+
                 Guardar cliente
+
             </button>
 
         </div>
@@ -502,19 +756,28 @@ textarea{
 
 <!-- MODAL COTIZACIÓN -->
 
-<div id="modalCotizacion" class="modal">
+<div
+    id="modalCotizacion"
+    class="modal">
 
     <div class="modal-box">
 
-        <h2>Nueva cotización</h2>
+        <h2>
+            Nueva cotización
+        </h2>
+
 
         <div class="form-grid">
 
+
             <div class="form-group full">
 
-                <label>Cliente *</label>
+                <label>
+                    Cliente *
+                </label>
 
-                <select id="cotizacionCliente">
+                <select
+                    id="cotizacionCliente">
                 </select>
 
             </div>
@@ -522,7 +785,9 @@ textarea{
 
             <div class="form-group">
 
-                <label>Tipo de trabajo</label>
+                <label>
+                    Tipo de trabajo
+                </label>
 
                 <select id="tipoTrabajo">
 
@@ -544,7 +809,9 @@ textarea{
 
             <div class="form-group">
 
-                <label>Estado</label>
+                <label>
+                    Estado
+                </label>
 
                 <select id="estadoCotizacion">
 
@@ -560,11 +827,13 @@ textarea{
 
             <div class="form-group full">
 
-                <label>Descripción del trabajo *</label>
+                <label>
+                    Descripción *
+                </label>
 
                 <textarea
                     id="descripcionCotizacion"
-                    placeholder="Describe qué se realizará..."
+                    placeholder="Describe el trabajo..."
                 ></textarea>
 
             </div>
@@ -572,7 +841,9 @@ textarea{
 
             <div class="form-group">
 
-                <label>Materiales ($)</label>
+                <label>
+                    Materiales ($)
+                </label>
 
                 <input
                     id="materiales"
@@ -587,7 +858,9 @@ textarea{
 
             <div class="form-group">
 
-                <label>Mano de obra ($)</label>
+                <label>
+                    Mano de obra ($)
+                </label>
 
                 <input
                     id="manoObra"
@@ -602,7 +875,9 @@ textarea{
 
             <div class="form-group">
 
-                <label>Otros costos ($)</label>
+                <label>
+                    Otros costos ($)
+                </label>
 
                 <input
                     id="otrosCostos"
@@ -617,7 +892,9 @@ textarea{
 
             <div class="form-group">
 
-                <label>Modo de precio</label>
+                <label>
+                    Modo de precio
+                </label>
 
                 <select
                     id="modoPrecio"
@@ -640,7 +917,9 @@ textarea{
                 id="campoUtilidad"
                 class="form-group">
 
-                <label>Utilidad (%)</label>
+                <label>
+                    Utilidad (%)
+                </label>
 
                 <input
                     id="utilidad"
@@ -658,7 +937,9 @@ textarea{
                 class="form-group"
                 style="display:none">
 
-                <label>Precio final ($)</label>
+                <label>
+                    Precio final ($)
+                </label>
 
                 <input
                     id="precioManual"
@@ -673,7 +954,9 @@ textarea{
 
             <div class="form-group">
 
-                <label>Anticipo ($)</label>
+                <label>
+                    Anticipo ($)
+                </label>
 
                 <input
                     id="anticipo"
@@ -761,14 +1044,16 @@ textarea{
 
             <div class="form-group full">
 
-                <label>Observaciones</label>
+                <label>
+                    Observaciones
+                </label>
 
                 <textarea
                     id="observacionesCotizacion"
-                    placeholder="Condiciones, tiempos, notas..."
                 ></textarea>
 
             </div>
+
 
         </div>
 
@@ -783,8 +1068,7 @@ textarea{
 
             </button>
 
-            <button
-                onclick="guardarCotizacion()">
+            <button onclick="guardarCotizacion()">
 
                 Guardar cotización
 
@@ -797,35 +1081,235 @@ textarea{
 </div>
 
 
+<!-- MODAL PEDIDO -->
+
+<div
+    id="modalPedido"
+    class="modal">
+
+    <div class="modal-box">
+
+        <h2 id="tituloModalPedido">
+            Nuevo pedido
+        </h2>
+
+
+        <input
+            id="pedidoIdEdicion"
+            type="hidden"
+        >
+
+
+        <div class="form-grid">
+
+
+            <div class="form-group full">
+
+                <label>
+                    Cliente *
+                </label>
+
+                <select
+                    id="pedidoCliente">
+                </select>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Cotización de origen
+                </label>
+
+                <select
+                    id="pedidoCotizacion">
+                </select>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Tipo de trabajo
+                </label>
+
+                <select id="pedidoTipoTrabajo">
+
+                    <option>Publicidad física</option>
+                    <option>Aviso</option>
+                    <option>Señalización</option>
+                    <option>Calcomanías</option>
+                    <option>Rombos normativos</option>
+                    <option>UN / identificación normativa</option>
+                    <option>Cintas reflectivas</option>
+                    <option>Limpieza / preparación</option>
+                    <option>Diseño</option>
+                    <option>Otro</option>
+
+                </select>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Estado
+                </label>
+
+                <select id="pedidoEstado">
+
+                    <option>Pendiente</option>
+                    <option>Diseño</option>
+                    <option>Confirmación del cliente</option>
+                    <option>Producción</option>
+                    <option>Listo</option>
+                    <option>Entregado</option>
+                    <option>Cancelado</option>
+
+                </select>
+
+            </div>
+
+
+            <div class="form-group full">
+
+                <label>
+                    Descripción del trabajo *
+                </label>
+
+                <textarea
+                    id="pedidoDescripcion"
+                ></textarea>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Valor del pedido
+                </label>
+
+                <input
+                    id="pedidoValor"
+                    type="number"
+                    min="0"
+                    value="0"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Anticipo
+                </label>
+
+                <input
+                    id="pedidoAnticipo"
+                    type="number"
+                    min="0"
+                    value="0"
+                >
+
+            </div>
+
+
+            <div class="form-group full">
+
+                <label>
+                    Información de producción
+                </label>
+
+                <textarea
+                    id="pedidoProduccion"
+                    placeholder="Medidas, materiales, colores, cantidades, referencias, etc."
+                ></textarea>
+
+            </div>
+
+
+            <div class="form-group full">
+
+                <label>
+                    Observaciones
+                </label>
+
+                <textarea
+                    id="pedidoObservaciones"
+                ></textarea>
+
+            </div>
+
+
+        </div>
+
+
+        <div class="form-actions">
+
+            <button
+                class="secondary"
+                onclick="cerrarPedido()">
+
+                Cancelar
+
+            </button>
+
+            <button onclick="guardarPedido()">
+
+                Guardar pedido
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
 <script>
 
-/* =================================
-   DATOS
-================================= */
+/* =====================================
+   DATOS EXISTENTES
+===================================== */
 
 let clientes = JSON.parse(
     localStorage.getItem("creativos_clientes")
 ) || [];
+
 
 let cotizaciones = JSON.parse(
     localStorage.getItem("creativos_cotizaciones")
 ) || [];
 
 
-/* =================================
+let pedidos = JSON.parse(
+    localStorage.getItem("creativos_pedidos")
+) || [];
+
+
+/* =====================================
    NAVEGACIÓN
-================================= */
+===================================== */
 
 function ocultarSecciones(){
 
     document.getElementById("dashboard")
-        .style.display = "none";
+        .style.display="none";
 
     document.getElementById("clientes")
-        .style.display = "none";
+        .style.display="none";
 
     document.getElementById("cotizaciones")
-        .style.display = "none";
+        .style.display="none";
+
+    document.getElementById("pedidos")
+        .style.display="none";
 
 }
 
@@ -835,7 +1319,7 @@ function mostrarInicio(){
     ocultarSecciones();
 
     document.getElementById("dashboard")
-        .style.display = "block";
+        .style.display="block";
 
     actualizarDashboard();
 
@@ -847,7 +1331,7 @@ function mostrarClientes(){
     ocultarSecciones();
 
     document.getElementById("clientes")
-        .style.display = "block";
+        .style.display="block";
 
     renderClientes();
 
@@ -859,16 +1343,28 @@ function mostrarCotizaciones(){
     ocultarSecciones();
 
     document.getElementById("cotizaciones")
-        .style.display = "block";
+        .style.display="block";
 
     renderCotizaciones();
 
 }
 
 
-/* =================================
+function mostrarPedidos(){
+
+    ocultarSecciones();
+
+    document.getElementById("pedidos")
+        .style.display="block";
+
+    renderPedidos();
+
+}
+
+
+/* =====================================
    CLIENTES
-================================= */
+===================================== */
 
 function abrirCliente(){
 
@@ -890,55 +1386,67 @@ function cerrarCliente(){
 
 function guardarCliente(){
 
-    const nombre =
-        document.getElementById("nombreCliente")
+    const nombre=
+        document
+        .getElementById("nombreCliente")
         .value.trim();
 
-    if(nombre === ""){
 
-        alert("Debes escribir el nombre del cliente.");
+    if(!nombre){
+
+        alert(
+            "Debes escribir el nombre del cliente."
+        );
 
         return;
 
     }
 
 
-    const cliente = {
+    const cliente={
 
         id:Date.now(),
 
         nombre:nombre,
 
         empresa:
-            document.getElementById("empresaCliente")
+            document
+            .getElementById("empresaCliente")
             .value.trim(),
 
         documento:
-            document.getElementById("documentoCliente")
+            document
+            .getElementById("documentoCliente")
             .value.trim(),
 
         telefono:
-            document.getElementById("telefonoCliente")
+            document
+            .getElementById("telefonoCliente")
             .value.trim(),
 
         correo:
-            document.getElementById("correoCliente")
+            document
+            .getElementById("correoCliente")
             .value.trim(),
 
         ciudad:
-            document.getElementById("ciudadCliente")
+            document
+            .getElementById("ciudadCliente")
             .value.trim(),
 
         tipo:
-            document.getElementById("tipoCliente")
+            document
+            .getElementById("tipoCliente")
             .value,
 
         origen:
-            document.getElementById("origenCliente")
+            document
+            .getElementById("origenCliente")
             .value,
 
         observaciones:
-            document.getElementById("observacionesCliente")
+            document
+            .getElementById("observacionesCliente")
             .value.trim(),
 
         fecha:new Date().toISOString()
@@ -963,7 +1471,10 @@ function guardarCliente(){
 
     renderClientes();
 
-    alert("Cliente guardado correctamente.");
+
+    alert(
+        "Cliente guardado correctamente."
+    );
 
 }
 
@@ -983,25 +1494,29 @@ function limpiarFormularioCliente(){
 
 function renderClientes(){
 
-    const contenedor =
-        document.getElementById("listaClientes");
+    const contenedor=
+        document.getElementById(
+            "listaClientes"
+        );
 
-    const busqueda =
-        document.getElementById("busquedaCliente")
+
+    const busqueda=
+        document
+        .getElementById("busquedaCliente")
         .value.toLowerCase().trim();
 
 
-    const filtrados =
+    const filtrados=
         clientes.filter(function(cliente){
 
-            const texto = (
+            const texto=(
 
-                cliente.nombre +
-                " " +
-                cliente.empresa +
-                " " +
-                cliente.telefono +
-                " " +
+                cliente.nombre+
+                " "+
+                cliente.empresa+
+                " "+
+                cliente.telefono+
+                " "+
                 cliente.ciudad
 
             ).toLowerCase();
@@ -1012,9 +1527,9 @@ function renderClientes(){
         });
 
 
-    if(filtrados.length === 0){
+    if(filtrados.length===0){
 
-        contenedor.innerHTML = `
+        contenedor.innerHTML=`
 
             <div class="card empty">
                 No hay clientes registrados.
@@ -1033,44 +1548,58 @@ function renderClientes(){
     filtrados.slice().reverse()
     .forEach(function(cliente){
 
-        const elemento =
+        const elemento=
             document.createElement("div");
+
 
         elemento.className="client";
 
-        elemento.innerHTML = `
+
+        elemento.innerHTML=`
 
             <div class="client-name">
                 ${escapar(cliente.nombre)}
             </div>
 
             <div class="client-company">
-                ${escapar(cliente.empresa || "Sin empresa")}
+                ${escapar(
+                    cliente.empresa ||
+                    "Sin empresa"
+                )}
             </div>
 
             <div class="client-info">
 
                 <strong>WhatsApp:</strong>
-                ${escapar(cliente.telefono || "-")}
+                ${escapar(
+                    cliente.telefono || "-"
+                )}
 
                 <br>
 
                 <strong>Correo:</strong>
-                ${escapar(cliente.correo || "-")}
+                ${escapar(
+                    cliente.correo || "-"
+                )}
 
                 <br>
 
                 <strong>Ciudad:</strong>
-                ${escapar(cliente.ciudad || "-")}
+                ${escapar(
+                    cliente.ciudad || "-"
+                )}
 
                 <br>
 
                 <strong>Tipo:</strong>
-                ${escapar(cliente.tipo)}
+                ${escapar(
+                    cliente.tipo || "-"
+                )}
 
             </div>
 
         `;
+
 
         contenedor.appendChild(elemento);
 
@@ -1079,16 +1608,16 @@ function renderClientes(){
 }
 
 
-/* =================================
+/* =====================================
    COTIZACIONES
-================================= */
+===================================== */
 
 function abrirCotizacion(){
 
-    if(clientes.length === 0){
+    if(clientes.length===0){
 
         alert(
-            "Primero debes registrar al menos un cliente."
+            "Primero debes registrar un cliente."
         );
 
         mostrarClientes();
@@ -1102,9 +1631,11 @@ function abrirCotizacion(){
 
     limpiarFormularioCotizacion();
 
+
     document
         .getElementById("modalCotizacion")
         .classList.add("active");
+
 
     calcularCotizacion();
 
@@ -1122,7 +1653,7 @@ function cerrarCotizacion(){
 
 function llenarClientesCotizacion(){
 
-    const select =
+    const select=
         document.getElementById(
             "cotizacionCliente"
         );
@@ -1133,18 +1664,21 @@ function llenarClientesCotizacion(){
 
     clientes.forEach(function(cliente){
 
-        const opcion =
+        const opcion=
             document.createElement("option");
+
 
         opcion.value=cliente.id;
 
-        opcion.textContent =
-            cliente.nombre +
+
+        opcion.textContent=
+            cliente.nombre+
             (
                 cliente.empresa
-                ? " - " + cliente.empresa
+                ? " - "+cliente.empresa
                 : ""
             );
+
 
         select.appendChild(opcion);
 
@@ -1153,146 +1687,209 @@ function llenarClientesCotizacion(){
 }
 
 
-/* =================================
-   CÁLCULOS
-================================= */
-
 function calcularCotizacion(){
 
-    const materiales =
+    const materiales=
         Number(
-            document.getElementById("materiales").value
-        ) || 0;
+            document.getElementById(
+                "materiales"
+            ).value
+        )||0;
 
 
-    const manoObra =
+    const manoObra=
         Number(
-            document.getElementById("manoObra").value
-        ) || 0;
+            document.getElementById(
+                "manoObra"
+            ).value
+        )||0;
 
 
-    const otros =
+    const otros=
         Number(
-            document.getElementById("otrosCostos").value
-        ) || 0;
+            document.getElementById(
+                "otrosCostos"
+            ).value
+        )||0;
 
 
-    const costoReal =
-        materiales + manoObra + otros;
+    const costoReal=
+        materiales+
+        manoObra+
+        otros;
 
 
-    const modo =
-        document.getElementById("modoPrecio").value;
+    const modo=
+        document.getElementById(
+            "modoPrecio"
+        ).value;
 
 
-    let utilidad = 0;
+    let utilidad=0;
 
-    let precioFinal = 0;
-
-
-    if(modo === "porcentaje"){
-
-        document.getElementById("campoUtilidad")
-            .style.display="flex";
-
-        document.getElementById("campoPrecioManual")
-            .style.display="none";
+    let precioFinal=0;
 
 
-        const porcentaje =
+    if(modo==="porcentaje"){
+
+        document.getElementById(
+            "campoUtilidad"
+        ).style.display="flex";
+
+
+        document.getElementById(
+            "campoPrecioManual"
+        ).style.display="none";
+
+
+        const porcentaje=
             Number(
-                document.getElementById("utilidad").value
-            ) || 0;
+                document.getElementById(
+                    "utilidad"
+                ).value
+            )||0;
 
 
-        utilidad =
-            costoReal * porcentaje / 100;
+        utilidad=
+            costoReal*
+            porcentaje/100;
 
 
-        precioFinal =
-            costoReal + utilidad;
+        precioFinal=
+            costoReal+
+            utilidad;
 
     }else{
 
-        document.getElementById("campoUtilidad")
-            .style.display="none";
-
-        document.getElementById("campoPrecioManual")
-            .style.display="flex";
+        document.getElementById(
+            "campoUtilidad"
+        ).style.display="none";
 
 
-        precioFinal =
+        document.getElementById(
+            "campoPrecioManual"
+        ).style.display="flex";
+
+
+        precioFinal=
             Number(
-                document.getElementById("precioManual").value
-            ) || 0;
+                document.getElementById(
+                    "precioManual"
+                ).value
+            )||0;
 
 
-        utilidad =
-            precioFinal - costoReal;
+        utilidad=
+            precioFinal-
+            costoReal;
 
     }
 
 
-    const anticipo =
+    const anticipo=
         Number(
-            document.getElementById("anticipo").value
-        ) || 0;
+            document.getElementById(
+                "anticipo"
+            ).value
+        )||0;
 
 
-    const saldo =
-        Math.max(0,precioFinal - anticipo);
+    const saldo=
+        Math.max(
+            0,
+            precioFinal-anticipo
+        );
 
 
-    document.getElementById("costoReal")
-        .textContent=formatoMoneda(costoReal);
+    document.getElementById(
+        "costoReal"
+    ).textContent=
+        formatoMoneda(costoReal);
 
-    document.getElementById("valorUtilidad")
-        .textContent=formatoMoneda(utilidad);
 
-    document.getElementById("precioFinal")
-        .textContent=formatoMoneda(precioFinal);
+    document.getElementById(
+        "valorUtilidad"
+    ).textContent=
+        formatoMoneda(utilidad);
 
-    document.getElementById("anticipoMostrar")
-        .textContent=formatoMoneda(anticipo);
 
-    document.getElementById("saldoFinal")
-        .textContent=formatoMoneda(saldo);
+    document.getElementById(
+        "precioFinal"
+    ).textContent=
+        formatoMoneda(precioFinal);
+
+
+    document.getElementById(
+        "anticipoMostrar"
+    ).textContent=
+        formatoMoneda(anticipo);
+
+
+    document.getElementById(
+        "saldoFinal"
+    ).textContent=
+        formatoMoneda(saldo);
 
 }
 
 
 function limpiarFormularioCotizacion(){
 
-    document.getElementById("descripcionCotizacion").value="";
+    document.getElementById(
+        "descripcionCotizacion"
+    ).value="";
 
-    document.getElementById("materiales").value="0";
 
-    document.getElementById("manoObra").value="0";
+    document.getElementById(
+        "materiales"
+    ).value="0";
 
-    document.getElementById("otrosCostos").value="0";
 
-    document.getElementById("utilidad").value="40";
+    document.getElementById(
+        "manoObra"
+    ).value="0";
 
-    document.getElementById("precioManual").value="0";
 
-    document.getElementById("anticipo").value="0";
+    document.getElementById(
+        "otrosCostos"
+    ).value="0";
 
-    document.getElementById("observacionesCotizacion").value="";
 
-    document.getElementById("modoPrecio").value="porcentaje";
+    document.getElementById(
+        "utilidad"
+    ).value="40";
 
-    document.getElementById("estadoCotizacion").value="Borrador";
+
+    document.getElementById(
+        "precioManual"
+    ).value="0";
+
+
+    document.getElementById(
+        "anticipo"
+    ).value="0";
+
+
+    document.getElementById(
+        "observacionesCotizacion"
+    ).value="";
+
+
+    document.getElementById(
+        "modoPrecio"
+    ).value="porcentaje";
+
+
+    document.getElementById(
+        "estadoCotizacion"
+    ).value="Borrador";
 
 }
 
 
-/* =================================
-   GUARDAR COTIZACIÓN
-================================= */
-
 function guardarCotizacion(){
 
-    const clienteId =
+    const clienteId=
         Number(
             document.getElementById(
                 "cotizacionCliente"
@@ -1300,7 +1897,7 @@ function guardarCotizacion(){
         );
 
 
-    const descripcion =
+    const descripcion=
         document.getElementById(
             "descripcionCotizacion"
         ).value.trim();
@@ -1309,7 +1906,7 @@ function guardarCotizacion(){
     if(!descripcion){
 
         alert(
-            "Debes escribir la descripción del trabajo."
+            "Debes escribir la descripción."
         );
 
         return;
@@ -1317,30 +1914,40 @@ function guardarCotizacion(){
     }
 
 
-    const materiales =
+    const materiales=
         Number(
-            document.getElementById("materiales").value
-        ) || 0;
+            document.getElementById(
+                "materiales"
+            ).value
+        )||0;
 
 
-    const manoObra =
+    const manoObra=
         Number(
-            document.getElementById("manoObra").value
-        ) || 0;
+            document.getElementById(
+                "manoObra"
+            ).value
+        )||0;
 
 
-    const otros =
+    const otros=
         Number(
-            document.getElementById("otrosCostos").value
-        ) || 0;
+            document.getElementById(
+                "otrosCostos"
+            ).value
+        )||0;
 
 
-    const costoReal =
-        materiales + manoObra + otros;
+    const costoReal=
+        materiales+
+        manoObra+
+        otros;
 
 
-    const modo =
-        document.getElementById("modoPrecio").value;
+    const modo=
+        document.getElementById(
+            "modoPrecio"
+        ).value;
 
 
     let utilidad=0;
@@ -1352,44 +1959,60 @@ function guardarCotizacion(){
 
     if(modo==="porcentaje"){
 
-        porcentaje =
+        porcentaje=
             Number(
-                document.getElementById("utilidad").value
-            ) || 0;
+                document.getElementById(
+                    "utilidad"
+                ).value
+            )||0;
 
-        utilidad =
-            costoReal * porcentaje / 100;
 
-        precioFinal =
-            costoReal + utilidad;
+        utilidad=
+            costoReal*
+            porcentaje/100;
+
+
+        precioFinal=
+            costoReal+
+            utilidad;
 
     }else{
 
-        precioFinal =
+        precioFinal=
             Number(
-                document.getElementById("precioManual").value
-            ) || 0;
+                document.getElementById(
+                    "precioManual"
+                ).value
+            )||0;
 
-        utilidad =
-            precioFinal - costoReal;
+
+        utilidad=
+            precioFinal-
+            costoReal;
 
     }
 
 
-    const anticipo =
+    const anticipo=
         Number(
-            document.getElementById("anticipo").value
-        ) || 0;
+            document.getElementById(
+                "anticipo"
+            ).value
+        )||0;
 
 
-    const saldo =
-        Math.max(0,precioFinal - anticipo);
+    const saldo=
+        Math.max(
+            0,
+            precioFinal-anticipo
+        );
 
 
-    const numero =
-        "COT-" +
-        String(cotizaciones.length + 1)
-        .padStart(4,"0");
+    const numero=
+        "COT-"+
+        String(
+            cotizaciones.length+1
+        ).padStart(4,"0");
 
 
     const cotizacion={
@@ -1401,7 +2024,9 @@ function guardarCotizacion(){
         clienteId:clienteId,
 
         tipoTrabajo:
-            document.getElementById("tipoTrabajo").value,
+            document.getElementById(
+                "tipoTrabajo"
+            ).value,
 
         descripcion:descripcion,
 
@@ -1426,12 +2051,16 @@ function guardarCotizacion(){
         saldo:saldo,
 
         estado:
-            document.getElementById("estadoCotizacion").value,
+            document.getElementById(
+                "estadoCotizacion"
+            ).value,
 
         observaciones:
             document.getElementById(
                 "observacionesCotizacion"
             ).value.trim(),
+
+        convertida:false,
 
         fecha:new Date().toISOString()
 
@@ -1455,55 +2084,52 @@ function guardarCotizacion(){
 
 
     alert(
-        "Cotización " +
-        numero +
+        "Cotización "+
+        numero+
         " guardada correctamente."
     );
 
 }
 
 
-/* =================================
-   MOSTRAR COTIZACIONES
-================================= */
-
 function renderCotizaciones(){
 
-    const contenedor =
+    const contenedor=
         document.getElementById(
             "listaCotizaciones"
         );
 
 
-    const busqueda =
+    const busqueda=
         document.getElementById(
             "busquedaCotizacion"
         ).value.toLowerCase().trim();
 
 
-    const filtradas =
+    const filtradas=
         cotizaciones.filter(function(cotizacion){
 
-            const cliente =
+            const cliente=
                 clientes.find(function(c){
 
-                    return c.id === cotizacion.clienteId;
+                    return c.id===
+                        cotizacion.clienteId;
 
                 });
 
 
-            const nombreCliente =
+            const nombre=
                 cliente
-                ? cliente.nombre
-                : "";
+                ?cliente.nombre
+                :"";
 
 
-            const texto = (
+            const texto=(
 
-                cotizacion.numero +
-                " " +
-                nombreCliente +
-                " " +
+                cotizacion.numero+
+                " "+
+                nombre+
+                " "+
                 cotizacion.descripcion
 
             ).toLowerCase();
@@ -1519,9 +2145,7 @@ function renderCotizaciones(){
         contenedor.innerHTML=`
 
             <div class="card empty">
-
                 No hay cotizaciones registradas.
-
             </div>
 
         `;
@@ -1537,41 +2161,47 @@ function renderCotizaciones(){
     filtradas.slice().reverse()
     .forEach(function(cotizacion){
 
-        const cliente =
+        const cliente=
             clientes.find(function(c){
 
-                return c.id === cotizacion.clienteId;
+                return c.id===
+                    cotizacion.clienteId;
 
             });
 
 
-        const nombreCliente =
+        const nombre=
             cliente
-            ? cliente.nombre
-            : "Cliente eliminado";
+            ?cliente.nombre
+            :"Cliente eliminado";
 
 
-        const elemento =
+        const elemento=
             document.createElement("div");
 
+
         elemento.className="quote";
+
+
+        const convertida=
+            cotizacion.convertida
+            ?"Sí"
+            :"No";
 
 
         elemento.innerHTML=`
 
             <div class="quote-title">
-
                 ${escapar(cotizacion.numero)}
-
             </div>
-
 
             <div class="quote-subtitle">
 
-                ${escapar(nombreCliente)}
-
+                ${escapar(nombre)}
                 -
-                ${escapar(cotizacion.tipoTrabajo)}
+                ${escapar(
+                    cotizacion.tipoTrabajo
+                )}
 
             </div>
 
@@ -1579,34 +2209,59 @@ function renderCotizaciones(){
             <div class="quote-info">
 
                 <strong>Trabajo:</strong>
-                ${escapar(cotizacion.descripcion)}
-
-                <br>
-
-                <strong>Costo real:</strong>
-                ${formatoMoneda(cotizacion.costoReal)}
+                ${escapar(
+                    cotizacion.descripcion
+                )}
 
                 <br>
 
                 <strong>Precio:</strong>
-                ${formatoMoneda(cotizacion.precioFinal)}
-
-                <br>
-
-                <strong>Anticipo:</strong>
-                ${formatoMoneda(cotizacion.anticipo)}
+                ${formatoMoneda(
+                    cotizacion.precioFinal
+                )}
 
                 <br>
 
                 <strong>Saldo:</strong>
-                ${formatoMoneda(cotizacion.saldo)}
+                ${formatoMoneda(
+                    cotizacion.saldo
+                )}
 
                 <br>
 
                 <strong>Estado:</strong>
+
                 <span class="badge">
-                    ${escapar(cotizacion.estado)}
+                    ${escapar(
+                        cotizacion.estado
+                    )}
                 </span>
+
+                <br>
+
+                <strong>Convertida en pedido:</strong>
+                ${convertida}
+
+            </div>
+
+
+            <div class="quote-actions">
+
+                ${
+                    !cotizacion.convertida
+                    ?`
+
+                        <button
+                            class="green"
+                            onclick="convertirCotizacion(${cotizacion.id})">
+
+                            Convertir en pedido
+
+                        </button>
+
+                    `
+                    :""
+                }
 
             </div>
 
@@ -1620,21 +2275,937 @@ function renderCotizaciones(){
 }
 
 
-/* =================================
+/* =====================================
+   PEDIDOS
+===================================== */
+
+function abrirPedido(){
+
+    if(clientes.length===0){
+
+        alert(
+            "Primero debes registrar un cliente."
+        );
+
+        mostrarClientes();
+
+        return;
+
+    }
+
+
+    document.getElementById(
+        "tituloModalPedido"
+    ).textContent="Nuevo pedido";
+
+
+    document.getElementById(
+        "pedidoIdEdicion"
+    ).value="";
+
+
+    llenarClientesPedido();
+
+    llenarCotizacionesPedido();
+
+
+    limpiarFormularioPedido();
+
+
+    document
+        .getElementById("modalPedido")
+        .classList.add("active");
+
+}
+
+
+function cerrarPedido(){
+
+    document
+        .getElementById("modalPedido")
+        .classList.remove("active");
+
+}
+
+
+function llenarClientesPedido(){
+
+    const select=
+        document.getElementById(
+            "pedidoCliente"
+        );
+
+
+    select.innerHTML="";
+
+
+    clientes.forEach(function(cliente){
+
+        const opcion=
+            document.createElement("option");
+
+
+        opcion.value=cliente.id;
+
+
+        opcion.textContent=
+            cliente.nombre+
+            (
+                cliente.empresa
+                ?" - "+cliente.empresa
+                :""
+            );
+
+
+        select.appendChild(opcion);
+
+    });
+
+}
+
+
+function llenarCotizacionesPedido(){
+
+    const select=
+        document.getElementById(
+            "pedidoCotizacion"
+        );
+
+
+    select.innerHTML="";
+
+
+    const ninguna=
+        document.createElement("option");
+
+
+    ninguna.value="";
+
+    ninguna.textContent=
+        "Sin cotización";
+
+
+    select.appendChild(ninguna);
+
+
+    cotizaciones.forEach(function(cotizacion){
+
+        const opcion=
+            document.createElement("option");
+
+
+        opcion.value=
+            cotizacion.id;
+
+
+        opcion.textContent=
+            cotizacion.numero+
+            " - "+
+            formatoMoneda(
+                cotizacion.precioFinal
+            );
+
+
+        select.appendChild(opcion);
+
+    });
+
+}
+
+
+function limpiarFormularioPedido(){
+
+    document.getElementById(
+        "pedidoDescripcion"
+    ).value="";
+
+
+    document.getElementById(
+        "pedidoValor"
+    ).value="0";
+
+
+    document.getElementById(
+        "pedidoAnticipo"
+    ).value="0";
+
+
+    document.getElementById(
+        "pedidoProduccion"
+    ).value="";
+
+
+    document.getElementById(
+        "pedidoObservaciones"
+    ).value="";
+
+
+    document.getElementById(
+        "pedidoEstado"
+    ).value="Pendiente";
+
+}
+
+
+/* =====================================
+   CONVERTIR COTIZACIÓN
+===================================== */
+
+function convertirCotizacion(id){
+
+    const cotizacion=
+        cotizaciones.find(function(c){
+
+            return c.id===id;
+
+        });
+
+
+    if(!cotizacion){
+
+        alert(
+            "No se encontró la cotización."
+        );
+
+        return;
+
+    }
+
+
+    if(cotizacion.convertida){
+
+        alert(
+            "Esta cotización ya fue convertida."
+        );
+
+        return;
+
+    }
+
+
+    const cliente=
+        clientes.find(function(c){
+
+            return c.id===
+                cotizacion.clienteId;
+
+        });
+
+
+    if(!cliente){
+
+        alert(
+            "El cliente de esta cotización no existe."
+        );
+
+        return;
+
+    }
+
+
+    llenarClientesPedido();
+
+    llenarCotizacionesPedido();
+
+
+    document.getElementById(
+        "pedidoCliente"
+    ).value=
+        cotizacion.clienteId;
+
+
+    document.getElementById(
+        "pedidoCotizacion"
+    ).value=
+        cotizacion.id;
+
+
+    document.getElementById(
+        "pedidoTipoTrabajo"
+    ).value=
+        cotizacion.tipoTrabajo;
+
+
+    document.getElementById(
+        "pedidoDescripcion"
+    ).value=
+        cotizacion.descripcion;
+
+
+    document.getElementById(
+        "pedidoValor"
+    ).value=
+        cotizacion.precioFinal;
+
+
+    document.getElementById(
+        "pedidoAnticipo"
+    ).value=
+        cotizacion.anticipo;
+
+
+    document.getElementById(
+        "pedidoEstado"
+    ).value=
+        "Pendiente";
+
+
+    document.getElementById(
+        "pedidoProduccion"
+    ).value="";
+
+
+    document.getElementById(
+        "pedidoObservaciones"
+    ).value=
+        cotizacion.observaciones || "";
+
+
+    document.getElementById(
+        "tituloModalPedido"
+    ).textContent=
+        "Convertir cotización en pedido";
+
+
+    document.getElementById(
+        "pedidoIdEdicion"
+    ).value="";
+
+
+    document
+        .getElementById("modalPedido")
+        .classList.add("active");
+
+}
+
+
+/* =====================================
+   GUARDAR PEDIDO
+===================================== */
+
+function guardarPedido(){
+
+    const idEdicion=
+        document.getElementById(
+            "pedidoIdEdicion"
+        ).value;
+
+
+    const clienteId=
+        Number(
+            document.getElementById(
+                "pedidoCliente"
+            ).value
+        );
+
+
+    const descripcion=
+        document.getElementById(
+            "pedidoDescripcion"
+        ).value.trim();
+
+
+    if(!descripcion){
+
+        alert(
+            "Debes escribir la descripción del pedido."
+        );
+
+        return;
+
+    }
+
+
+    const cotizacionValor=
+        document.getElementById(
+            "pedidoCotizacion"
+        ).value;
+
+
+    const cotizacionId=
+        cotizacionValor
+        ?Number(cotizacionValor)
+        :null;
+
+
+    const valor=
+        Number(
+            document.getElementById(
+                "pedidoValor"
+            ).value
+        )||0;
+
+
+    const anticipo=
+        Number(
+            document.getElementById(
+                "pedidoAnticipo"
+            ).value
+        )||0;
+
+
+    const saldo=
+        Math.max(
+            0,
+            valor-anticipo
+        );
+
+
+    if(idEdicion){
+
+        const pedido=
+            pedidos.find(function(p){
+
+                return p.id===
+                    Number(idEdicion);
+
+            });
+
+
+        if(pedido){
+
+            pedido.clienteId=clienteId;
+
+            pedido.cotizacionId=cotizacionId;
+
+            pedido.tipoTrabajo=
+                document.getElementById(
+                    "pedidoTipoTrabajo"
+                ).value;
+
+            pedido.descripcion=descripcion;
+
+            pedido.valor=valor;
+
+            pedido.anticipo=anticipo;
+
+            pedido.saldo=saldo;
+
+            pedido.estado=
+                document.getElementById(
+                    "pedidoEstado"
+                ).value;
+
+            pedido.produccion=
+                document.getElementById(
+                    "pedidoProduccion"
+                ).value.trim();
+
+            pedido.observaciones=
+                document.getElementById(
+                    "pedidoObservaciones"
+                ).value.trim();
+
+        }
+
+
+    }else{
+
+
+        const numero=
+            "PED-"+
+            String(
+                pedidos.length+1
+            ).padStart(4,"0");
+
+
+        const pedido={
+
+            id:Date.now(),
+
+            numero:numero,
+
+            clienteId:clienteId,
+
+            cotizacionId:cotizacionId,
+
+            tipoTrabajo:
+                document.getElementById(
+                    "pedidoTipoTrabajo"
+                ).value,
+
+            descripcion:descripcion,
+
+            valor:valor,
+
+            anticipo:anticipo,
+
+            saldo:saldo,
+
+            estado:
+                document.getElementById(
+                    "pedidoEstado"
+                ).value,
+
+            produccion:
+                document.getElementById(
+                    "pedidoProduccion"
+                ).value.trim(),
+
+            observaciones:
+                document.getElementById(
+                    "pedidoObservaciones"
+                ).value.trim(),
+
+            fecha:new Date().toISOString()
+
+        };
+
+
+        pedidos.push(pedido);
+
+
+        if(cotizacionId){
+
+            const cotizacion=
+                cotizaciones.find(function(c){
+
+                    return c.id===
+                        cotizacionId;
+
+                });
+
+
+            if(cotizacion){
+
+                cotizacion.convertida=true;
+
+                cotizacion.pedidoId=
+                    pedido.id;
+
+            }
+
+        }
+
+    }
+
+
+    localStorage.setItem(
+        "creativos_pedidos",
+        JSON.stringify(pedidos)
+    );
+
+
+    localStorage.setItem(
+        "creativos_cotizaciones",
+        JSON.stringify(cotizaciones)
+    );
+
+
+    cerrarPedido();
+
+    actualizarDashboard();
+
+    mostrarPedidos();
+
+
+    alert(
+        idEdicion
+        ?"Pedido actualizado correctamente."
+        :"Pedido creado correctamente."
+    );
+
+}
+
+
+/* =====================================
+   RENDER PEDIDOS
+===================================== */
+
+function renderPedidos(){
+
+    const contenedor=
+        document.getElementById(
+            "listaPedidos"
+        );
+
+
+    const busqueda=
+        document.getElementById(
+            "busquedaPedido"
+        ).value.toLowerCase().trim();
+
+
+    const filtrados=
+        pedidos.filter(function(pedido){
+
+            const cliente=
+                clientes.find(function(c){
+
+                    return c.id===
+                        pedido.clienteId;
+
+                });
+
+
+            const nombre=
+                cliente
+                ?cliente.nombre
+                :"";
+
+
+            const texto=(
+
+                pedido.numero+
+                " "+
+                nombre+
+                " "+
+                pedido.descripcion+
+                " "+
+                pedido.estado
+
+            ).toLowerCase();
+
+
+            return texto.includes(busqueda);
+
+        });
+
+
+    if(filtrados.length===0){
+
+        contenedor.innerHTML=`
+
+            <div class="card empty">
+
+                No hay pedidos registrados.
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    contenedor.innerHTML="";
+
+
+    filtrados.slice().reverse()
+    .forEach(function(pedido){
+
+        const cliente=
+            clientes.find(function(c){
+
+                return c.id===
+                    pedido.clienteId;
+
+            });
+
+
+        const nombre=
+            cliente
+            ?cliente.nombre
+            :"Cliente eliminado";
+
+
+        const cotizacion=
+            cotizaciones.find(function(c){
+
+                return c.id===
+                    pedido.cotizacionId;
+
+            });
+
+
+        const elemento=
+            document.createElement("div");
+
+
+        elemento.className="order";
+
+
+        elemento.innerHTML=`
+
+            <div class="order-title">
+
+                ${escapar(pedido.numero)}
+
+            </div>
+
+
+            <div class="order-subtitle">
+
+                ${escapar(nombre)}
+
+                -
+                ${escapar(
+                    pedido.tipoTrabajo
+                )}
+
+            </div>
+
+
+            <div class="order-info">
+
+                <strong>Trabajo:</strong>
+
+                ${escapar(
+                    pedido.descripcion
+                )}
+
+                <br>
+
+                <strong>Valor:</strong>
+
+                ${formatoMoneda(
+                    pedido.valor
+                )}
+
+                <br>
+
+                <strong>Anticipo:</strong>
+
+                ${formatoMoneda(
+                    pedido.anticipo
+                )}
+
+                <br>
+
+                <strong>Saldo:</strong>
+
+                ${formatoMoneda(
+                    pedido.saldo
+                )}
+
+                <br>
+
+                <strong>Estado:</strong>
+
+                <span class="badge">
+
+                    ${escapar(
+                        pedido.estado
+                    )}
+
+                </span>
+
+                ${
+                    cotizacion
+                    ?`
+
+                        <br>
+
+                        <strong>
+                            Cotización:
+                        </strong>
+
+                        ${escapar(
+                            cotizacion.numero
+                        )}
+
+                    `
+                    :""
+                }
+
+            </div>
+
+
+            <div class="production-box">
+
+                <strong>
+                    Información de producción
+                </strong>
+
+                ${
+                    pedido.produccion
+                    ?escapar(
+                        pedido.produccion
+                    )
+                    :"Sin información todavía."
+                }
+
+            </div>
+
+
+            <div class="order-actions">
+
+                <button
+                    class="orange"
+                    onclick="editarPedido(${pedido.id})">
+
+                    Editar
+
+                </button>
+
+
+                <button
+                    class="danger"
+                    onclick="eliminarPedido(${pedido.id})">
+
+                    Eliminar
+
+                </button>
+
+            </div>
+
+        `;
+
+
+        contenedor.appendChild(elemento);
+
+    });
+
+}
+
+
+/* =====================================
+   EDITAR PEDIDO
+===================================== */
+
+function editarPedido(id){
+
+    const pedido=
+        pedidos.find(function(p){
+
+            return p.id===id;
+
+        });
+
+
+    if(!pedido){
+
+        return;
+
+    }
+
+
+    llenarClientesPedido();
+
+    llenarCotizacionesPedido();
+
+
+    document.getElementById(
+        "pedidoIdEdicion"
+    ).value=pedido.id;
+
+
+    document.getElementById(
+        "pedidoCliente"
+    ).value=pedido.clienteId;
+
+
+    document.getElementById(
+        "pedidoCotizacion"
+    ).value=
+        pedido.cotizacionId || "";
+
+
+    document.getElementById(
+        "pedidoTipoTrabajo"
+    ).value=
+        pedido.tipoTrabajo;
+
+
+    document.getElementById(
+        "pedidoDescripcion"
+    ).value=
+        pedido.descripcion;
+
+
+    document.getElementById(
+        "pedidoValor"
+    ).value=
+        pedido.valor;
+
+
+    document.getElementById(
+        "pedidoAnticipo"
+    ).value=
+        pedido.anticipo;
+
+
+    document.getElementById(
+        "pedidoEstado"
+    ).value=
+        pedido.estado;
+
+
+    document.getElementById(
+        "pedidoProduccion"
+    ).value=
+        pedido.produccion || "";
+
+
+    document.getElementById(
+        "pedidoObservaciones"
+    ).value=
+        pedido.observaciones || "";
+
+
+    document.getElementById(
+        "tituloModalPedido"
+    ).textContent=
+        "Editar pedido";
+
+
+    document
+        .getElementById("modalPedido")
+        .classList.add("active");
+
+}
+
+
+/* =====================================
+   ELIMINAR PEDIDO
+===================================== */
+
+function eliminarPedido(id){
+
+    const confirmar=
+        confirm(
+            "¿Seguro que deseas eliminar este pedido?"
+        );
+
+
+    if(!confirmar){
+
+        return;
+
+    }
+
+
+    pedidos=
+        pedidos.filter(function(p){
+
+            return p.id!==id;
+
+        });
+
+
+    localStorage.setItem(
+        "creativos_pedidos",
+        JSON.stringify(pedidos)
+    );
+
+
+    actualizarDashboard();
+
+    renderPedidos();
+
+}
+
+
+/* =====================================
    DASHBOARD
-================================= */
+===================================== */
 
 function actualizarDashboard(){
 
-    document.getElementById("totalClientes")
-        .textContent=clientes.length;
+    document.getElementById(
+        "totalClientes"
+    ).textContent=
+        clientes.length;
 
 
-    document.getElementById("totalCotizaciones")
-        .textContent=cotizaciones.length;
+    document.getElementById(
+        "totalCotizaciones"
+    ).textContent=
+        cotizaciones.length;
 
 
-    const aprobadas =
+    const aprobadas=
         cotizaciones.filter(function(c){
 
             return c.estado==="Aprobada";
@@ -1642,27 +3213,49 @@ function actualizarDashboard(){
         }).length;
 
 
-    document.getElementById("totalAprobadas")
-        .textContent=aprobadas;
+    document.getElementById(
+        "totalAprobadas"
+    ).textContent=
+        aprobadas;
 
 
-    const total =
-        cotizaciones.reduce(function(suma,c){
+    const activos=
+        pedidos.filter(function(p){
 
-            return suma + Number(c.precioFinal || 0);
+            return (
+                p.estado!=="Entregado" &&
+                p.estado!=="Cancelado"
+            );
+
+        }).length;
+
+
+    document.getElementById(
+        "totalPedidos"
+    ).textContent=
+        activos;
+
+
+    const porCobrar=
+        pedidos.reduce(function(total,p){
+
+            return total+
+                Number(p.saldo || 0);
 
         },0);
 
 
-    document.getElementById("valorCotizado")
-        .textContent=formatoMoneda(total);
+    document.getElementById(
+        "totalPorCobrar"
+    ).textContent=
+        formatoMoneda(porCobrar);
 
 }
 
 
-/* =================================
-   FORMATO
-================================= */
+/* =====================================
+   UTILIDADES
+===================================== */
 
 function formatoMoneda(valor){
 
@@ -1678,14 +3271,9 @@ function formatoMoneda(valor){
 }
 
 
-/* =================================
-   SEGURIDAD
-================================= */
-
 function escapar(texto){
 
     return String(texto || "")
-
         .replace(/&/g,"&amp;")
         .replace(/</g,"&lt;")
         .replace(/>/g,"&gt;")
@@ -1695,13 +3283,14 @@ function escapar(texto){
 }
 
 
-/* =================================
+/* =====================================
    INICIO
-================================= */
+===================================== */
 
 actualizarDashboard();
 
 </script>
+
 
 </body>
 </html>
