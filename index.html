@@ -3,83 +3,1174 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Creativos One</title>
 
 <style>
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    background: #f4f6f8;
+
+*{
+    box-sizing:border-box;
 }
 
-header {
-    background: #111827;
-    color: white;
-    padding: 20px;
+body{
+    margin:0;
+    font-family:Arial,Helvetica,sans-serif;
+    background:#f3f4f6;
+    color:#111827;
 }
 
-nav {
-    padding: 20px;
-    background: white;
+button,
+input,
+select,
+textarea{
+    font-family:inherit;
 }
 
-button {
-    padding: 12px 18px;
-    margin: 5px;
-    cursor: pointer;
+button{
+    cursor:pointer;
 }
 
-section {
-    padding: 25px;
+/* SIDEBAR */
+
+.sidebar{
+    position:fixed;
+    left:0;
+    top:0;
+    bottom:0;
+    width:240px;
+    background:#111827;
+    color:white;
+    padding:20px 14px;
 }
+
+.logo{
+    padding:10px;
+    margin-bottom:25px;
+}
+
+.logo h1{
+    margin:0;
+    font-size:23px;
+}
+
+.logo p{
+    margin:5px 0 0;
+    color:#9ca3af;
+    font-size:12px;
+}
+
+.menu-title{
+    color:#6b7280;
+    font-size:11px;
+    text-transform:uppercase;
+    margin:18px 10px 8px;
+}
+
+.menu button{
+    width:100%;
+    border:0;
+    background:transparent;
+    color:#d1d5db;
+    text-align:left;
+    padding:12px;
+    border-radius:7px;
+    margin-bottom:4px;
+}
+
+.menu button:hover,
+.menu button.active{
+    background:#2563eb;
+    color:white;
+}
+
+/* MAIN */
+
+.main{
+    margin-left:240px;
+    min-height:100vh;
+}
+
+.topbar{
+    background:white;
+    border-bottom:1px solid #e5e7eb;
+    padding:18px 25px;
+}
+
+.topbar h2{
+    margin:0;
+    font-size:20px;
+}
+
+.content{
+    padding:25px;
+}
+
+/* CARDS */
+
+.cards{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:15px;
+    margin-bottom:20px;
+}
+
+.card{
+    background:white;
+    border:1px solid #e5e7eb;
+    border-radius:10px;
+    padding:20px;
+}
+
+.card-title{
+    color:#6b7280;
+    font-size:13px;
+}
+
+.card-value{
+    margin-top:10px;
+    font-size:25px;
+    font-weight:bold;
+}
+
+/* SECTION */
+
+.section{
+    background:white;
+    border:1px solid #e5e7eb;
+    border-radius:10px;
+    margin-bottom:20px;
+}
+
+.section-header{
+    padding:18px 20px;
+    border-bottom:1px solid #e5e7eb;
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:10px;
+}
+
+.section-header h3{
+    margin:0;
+    font-size:16px;
+}
+
+.section-body{
+    padding:20px;
+}
+
+/* BUTTONS */
+
+.btn{
+    border:0;
+    border-radius:7px;
+    padding:10px 15px;
+    font-size:13px;
+}
+
+.btn-primary{
+    background:#2563eb;
+    color:white;
+}
+
+.btn-primary:hover{
+    background:#1d4ed8;
+}
+
+.btn-secondary{
+    background:#e5e7eb;
+    color:#111827;
+}
+
+.btn-danger{
+    background:#fee2e2;
+    color:#991b1b;
+}
+
+/* TABLE */
+
+.table-container{
+    overflow-x:auto;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    min-width:700px;
+}
+
+th,
+td{
+    padding:12px;
+    border-bottom:1px solid #e5e7eb;
+    text-align:left;
+    font-size:13px;
+}
+
+th{
+    color:#6b7280;
+    font-size:12px;
+}
+
+.empty{
+    text-align:center;
+    padding:35px;
+    color:#9ca3af;
+}
+
+/* SEARCH */
+
+.search{
+    width:300px;
+    max-width:100%;
+    border:1px solid #d1d5db;
+    border-radius:7px;
+    padding:10px;
+    margin-bottom:15px;
+}
+
+/* MODAL */
+
+.modal{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.55);
+    padding:20px;
+    align-items:center;
+    justify-content:center;
+    z-index:100;
+}
+
+.modal.active{
+    display:flex;
+}
+
+.modal-box{
+    width:100%;
+    max-width:650px;
+    max-height:90vh;
+    overflow-y:auto;
+    background:white;
+    border-radius:12px;
+    padding:25px;
+}
+
+.modal-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:20px;
+}
+
+.modal-header h3{
+    margin:0;
+}
+
+.close{
+    border:0;
+    background:transparent;
+    font-size:25px;
+    color:#6b7280;
+}
+
+.form-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:15px;
+}
+
+.form-group{
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+}
+
+.form-group.full{
+    grid-column:1/-1;
+}
+
+.form-group label{
+    font-size:12px;
+    font-weight:bold;
+    color:#4b5563;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea{
+    border:1px solid #d1d5db;
+    border-radius:7px;
+    padding:10px;
+    font-size:14px;
+}
+
+.form-group textarea{
+    min-height:90px;
+    resize:vertical;
+}
+
+.form-actions{
+    display:flex;
+    justify-content:flex-end;
+    gap:10px;
+    margin-top:20px;
+}
+
+/* MOBILE */
+
+.mobile-menu{
+    display:none;
+    border:0;
+    background:transparent;
+    font-size:24px;
+}
+
+@media(max-width:900px){
+
+    .sidebar{
+        transform:translateX(-100%);
+        transition:.2s;
+        z-index:200;
+    }
+
+    .sidebar.open{
+        transform:translateX(0);
+    }
+
+    .main{
+        margin-left:0;
+    }
+
+    .mobile-menu{
+        display:block;
+    }
+
+    .topbar{
+        display:flex;
+        align-items:center;
+        gap:10px;
+    }
+
+    .cards{
+        grid-template-columns:1fr 1fr;
+    }
+
+}
+
+@media(max-width:600px){
+
+    .content{
+        padding:15px;
+    }
+
+    .cards{
+        gap:10px;
+    }
+
+    .card{
+        padding:15px;
+    }
+
+    .card-value{
+        font-size:19px;
+    }
+
+    .form-grid{
+        grid-template-columns:1fr;
+    }
+
+    .form-group.full{
+        grid-column:auto;
+    }
+
+}
+
 </style>
 </head>
 
 <body>
 
-<header>
-    <h1>Creativos One</h1>
-    <p>Sistema empresarial</p>
-</header>
+<!-- SIDEBAR -->
 
-<nav>
-    <button onclick="mostrar('inicio')">Inicio</button>
-    <button onclick="mostrar('clientes')">Clientes</button>
-    <button onclick="mostrar('ventas')">Ventas</button>
-</nav>
+<aside class="sidebar" id="sidebar">
 
-<section id="contenido">
-    <h2>Inicio</h2>
-    <p>Creativos One está funcionando.</p>
-</section>
+    <div class="logo">
+
+        <h1>Creativos One</h1>
+
+        <p>Sistema empresarial v0.2</p>
+
+    </div>
+
+    <div class="menu">
+
+        <div class="menu-title">
+            Principal
+        </div>
+
+        <button
+            id="menuDashboard"
+            class="active"
+            onclick="showPage('dashboard')">
+
+            📊 Dashboard
+
+        </button>
+
+        <div class="menu-title">
+            Clientes
+        </div>
+
+        <button
+            id="menuClientes"
+            onclick="showPage('clientes')">
+
+            👥 Clientes
+
+        </button>
+
+        <div class="menu-title">
+            Ventas
+        </div>
+
+        <button
+            onclick="showPage('proximamente')">
+
+            💰 Cotizaciones
+
+        </button>
+
+        <button
+            onclick="showPage('proximamente')">
+
+            📋 Pedidos
+
+        </button>
+
+        <div class="menu-title">
+            Finanzas
+        </div>
+
+        <button
+            onclick="showPage('proximamente')">
+
+            💳 Cobros
+
+        </button>
+
+    </div>
+
+</aside>
+
+
+<!-- MAIN -->
+
+<main class="main">
+
+    <header class="topbar">
+
+        <button
+            class="mobile-menu"
+            onclick="toggleSidebar()">
+
+            ☰
+
+        </button>
+
+        <h2 id="pageTitle">
+            Dashboard
+        </h2>
+
+    </header>
+
+
+    <div class="content">
+
+
+        <!-- DASHBOARD -->
+
+        <section
+            id="page-dashboard"
+            class="page">
+
+            <div class="cards">
+
+                <div class="card">
+
+                    <div class="card-title">
+                        Clientes
+                    </div>
+
+                    <div
+                        class="card-value"
+                        id="totalClientes">
+
+                        0
+
+                    </div>
+
+                </div>
+
+
+                <div class="card">
+
+                    <div class="card-title">
+                        Cotizaciones
+                    </div>
+
+                    <div class="card-value">
+                        0
+                    </div>
+
+                </div>
+
+
+                <div class="card">
+
+                    <div class="card-title">
+                        Trabajos activos
+                    </div>
+
+                    <div class="card-value">
+                        0
+                    </div>
+
+                </div>
+
+
+                <div class="card">
+
+                    <div class="card-title">
+                        Por cobrar
+                    </div>
+
+                    <div class="card-value">
+                        $0
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="section">
+
+                <div class="section-header">
+
+                    <h3>
+                        Bienvenido a Creativos One
+                    </h3>
+
+                </div>
+
+                <div class="section-body">
+
+                    <p>
+                        Este será el centro de operaciones
+                        de tu empresa.
+                    </p>
+
+                    <p>
+                        Desde aquí controlaremos clientes,
+                        ventas, producción, cobros,
+                        inventario y finanzas.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="section">
+
+                <div class="section-header">
+
+                    <h3>
+                        Acciones rápidas
+                    </h3>
+
+                </div>
+
+                <div class="section-body">
+
+                    <button
+                        class="btn btn-primary"
+                        onclick="openClientModal()">
+
+                        + Nuevo cliente
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- CLIENTES -->
+
+        <section
+            id="page-clientes"
+            class="page"
+            style="display:none">
+
+            <div class="section">
+
+                <div class="section-header">
+
+                    <h3>
+                        Clientes
+                    </h3>
+
+                    <button
+                        class="btn btn-primary"
+                        onclick="openClientModal()">
+
+                        + Nuevo cliente
+
+                    </button>
+
+                </div>
+
+
+                <div class="section-body">
+
+                    <input
+                        id="clientSearch"
+                        class="search"
+                        type="text"
+                        placeholder="Buscar cliente..."
+                        oninput="renderClients()"
+                    >
+
+
+                    <div class="table-container">
+
+                        <table>
+
+                            <thead>
+
+                                <tr>
+
+                                    <th>
+                                        Nombre
+                                    </th>
+
+                                    <th>
+                                        Empresa
+                                    </th>
+
+                                    <th>
+                                        WhatsApp
+                                    </th>
+
+                                    <th>
+                                        Tipo
+                                    </th>
+
+                                    <th>
+                                        Origen
+                                    </th>
+
+                                    <th>
+                                        Acción
+                                    </th>
+
+                                </tr>
+
+                            </thead>
+
+
+                            <tbody
+                                id="clientsTable">
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- PROXIMAMENTE -->
+
+        <section
+            id="page-proximamente"
+            class="page"
+            style="display:none">
+
+            <div class="section">
+
+                <div class="section-body">
+
+                    <h2>
+                        Módulo en construcción
+                    </h2>
+
+                    <p>
+                        Primero estamos construyendo
+                        correctamente la estructura
+                        de Creativos One.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </div>
+
+</main>
+
+
+<!-- MODAL CLIENTE -->
+
+<div
+    id="clientModal"
+    class="modal">
+
+    <div class="modal-box">
+
+        <div class="modal-header">
+
+            <h3>
+                Nuevo cliente
+            </h3>
+
+            <button
+                class="close"
+                onclick="closeClientModal()">
+
+                ×
+
+            </button>
+
+        </div>
+
+
+        <form
+            onsubmit="saveClient(event)">
+
+            <div class="form-grid">
+
+
+                <div class="form-group">
+
+                    <label>
+                        Nombre *
+                    </label>
+
+                    <input
+                        id="clientName"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Empresa
+                    </label>
+
+                    <input
+                        id="clientCompany"
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        NIT / Documento
+                    </label>
+
+                    <input
+                        id="clientDocument"
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        WhatsApp
+                    </label>
+
+                    <input
+                        id="clientPhone"
+                        type="tel"
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Correo
+                    </label>
+
+                    <input
+                        id="clientEmail"
+                        type="email"
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Ciudad
+                    </label>
+
+                    <input
+                        id="clientCity"
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Tipo de cliente
+                    </label>
+
+                    <select id="clientType">
+
+                        <option>
+                            Particular
+                        </option>
+
+                        <option>
+                            Independiente
+                        </option>
+
+                        <option>
+                            Emprendedor
+                        </option>
+
+                        <option>
+                            Negocio
+                        </option>
+
+                        <option>
+                            Empresa
+                        </option>
+
+                        <option>
+                            Agencia
+                        </option>
+
+                        <option>
+                            Empresa de transporte
+                        </option>
+
+                        <option>
+                            Cliente recurrente
+                        </option>
+
+                        <option>
+                            Otro
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Origen del cliente
+                    </label>
+
+                    <select id="clientSource">
+
+                        <option>
+                            WhatsApp
+                        </option>
+
+                        <option>
+                            Referido
+                        </option>
+
+                        <option>
+                            Visita comercial
+                        </option>
+
+                        <option>
+                            Llamada
+                        </option>
+
+                        <option>
+                            Instagram
+                        </option>
+
+                        <option>
+                            Facebook
+                        </option>
+
+                        <option>
+                            Cliente antiguo
+                        </option>
+
+                        <option>
+                            Otro
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="form-group full">
+
+                    <label>
+                        Observaciones
+                    </label>
+
+                    <textarea
+                        id="clientNotes">
+                    </textarea>
+
+                </div>
+
+            </div>
+
+
+            <div class="form-actions">
+
+                <button
+                    type="button"
+                    class="btn btn-secondary"
+                    onclick="closeClientModal()">
+
+                    Cancelar
+
+                </button>
+
+                <button
+                    type="submit"
+                    class="btn btn-primary">
+
+                    Guardar cliente
+
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
 
 <script>
-function mostrar(pagina) {
 
-    const contenido = document.getElementById("contenido");
+/* ================================
+   DATOS
+================================ */
 
-    if (pagina === "inicio") {
-        contenido.innerHTML = `
-            <h2>Inicio</h2>
-            <p>Dashboard de Creativos One.</p>
-        `;
+let clients = JSON.parse(
+    localStorage.getItem("creativos_clients")
+) || [];
+
+
+/* ================================
+   NAVEGACIÓN
+================================ */
+
+function showPage(page){
+
+    document
+        .querySelectorAll(".page")
+        .forEach(function(section){
+
+            section.style.display = "none";
+
+        });
+
+
+    const selectedPage =
+        document.getElementById(
+            "page-" + page
+        );
+
+    if(selectedPage){
+
+        selectedPage.style.display = "block";
+
     }
 
-    if (pagina === "clientes") {
-        contenido.innerHTML = `
-            <h2>Clientes</h2>
-            <p>Aquí construiremos el módulo de clientes.</p>
-        `;
+
+    document
+        .querySelectorAll(".menu button")
+        .forEach(function(button){
+
+            button.classList.remove("active");
+
+        });
+
+
+    if(page === "dashboard"){
+
+        document
+            .getElementById("menuDashboard")
+            .classList.add("active");
+
+        document
+            .getElementById("pageTitle")
+            .textContent = "Dashboard";
+
     }
 
-    if (pagina === "ventas") {
-        contenido.innerHTML = `
-            <h2>Ventas</h2>
-            <p>Aquí construiremos cotizaciones y ventas.</p>
-        `;
+
+    if(page === "clientes"){
+
+        document
+            .getElementById("menuClientes")
+            .classList.add("active");
+
+        document
+            .getElementById("pageTitle")
+            .textContent = "Clientes";
+
+        renderClients();
+
     }
+
+
+    if(page === "proximamente"){
+
+        document
+            .getElementById("pageTitle")
+            .textContent = "En construcción";
+
+    }
+
+
+    closeMobileMenu();
+
 }
-</script>
 
-</body>
-</html>
+
+/* ================================
+   MENÚ MÓVIL
+================================ */
+
+function toggleSidebar(){
+
+    document
+        .getElementById("sidebar")
+        .classList.toggle("open");
+
+}
+
+
+function closeMobileMenu(){
+
+    if(window.innerWidth <= 900){
+
+        document
+            .getElementById("sidebar")
+            .classList.remove("open");
+
+    }
+
+}
+
+
+/* ================================
+   MODAL
+================================ */
+
+function openClientModal(){
+
+    document
+        .getElementById("clientModal")
+        .classList.add("active");
+
+}
+
+
+function closeClientModal(){
+
+    document
+        .getElementById("clientModal")
+        .classList.remove("active");
+
+}
+
+
+/* ================================
+   GUARDAR CLIENTE
+================================ */
+
+function saveClient(event){
+
+    event.preventDefault();
+
+
+    const client = {
+
+        id: Date.now(),
+
+        name:
+            document
+            .getElementById("clientName")
+            .value
+            .trim(),
+
+        company:
+            document
+            .getElementById("clientCompany")
+            .value
+            .trim(),
+
+        document:
+            document
+            .getElementById("clientDocument")
+            .value
+            .trim(),
+
+        phone:
+            document
+            .getElementById("clientPhone")
+            .value
+            .trim(),
+
+        email:
+            document
+            .getElementById("clientEmail")
+            .value
+            .trim(),
+
+        city:
+            document
+            .getElementById("clientCity")
+            .value
+            .trim(),
+
+        type:
+            document
+            .getElementById("clientType")
+            .value,
+
+        source:
+            
