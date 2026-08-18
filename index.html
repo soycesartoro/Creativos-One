@@ -56,8 +56,7 @@ th{font-size:12px;color:#6b7280;text-transform:uppercase}.empty{text-align:cente
 .nav{display:flex;overflow:auto;gap:5px}.nav button{white-space:nowrap;width:auto;margin:0}.main{margin-left:0;width:100%;padding:15px}
 .cards{grid-template-columns:1fr 1fr}.grid{grid-template-columns:1fr}.full{grid-column:auto}
 .section-header{align-items:flex-start;flex-direction:column}}
-.inline-new-client{margin-top:7px}.multi-products{margin-top:10px}.line-item{display:grid;grid-template-columns:2fr .7fr 1fr auto;gap:8px;align-items:end;border:1px solid #e5e7eb;padding:10px;border-radius:9px;margin:8px 0}.line-item .field{margin:0}.line-total{font-weight:700;padding-bottom:9px}.cost-section{margin-top:14px}@media(max-width:700px){.line-item{grid-template-columns:1fr 1fr}.line-item .line-total{grid-column:1/3}}
-.legacy-single{display:none!important}
+.inline-client{margin-top:7px}.line-item{display:grid;grid-template-columns:minmax(0,2fr) .8fr 1fr auto;gap:8px;align-items:end;border:1px solid #e5e7eb;padding:10px;border-radius:9px;margin:8px 0}.line-item .field{margin:0}.line-total{font-weight:700;padding-bottom:10px;white-space:nowrap}.line-remove{padding:8px 10px}@media(max-width:700px){.line-item{grid-template-columns:1fr 1fr}.line-total,.line-remove{grid-column:auto}}
 </style>
 </head>
 <body>
@@ -77,7 +76,7 @@ th{font-size:12px;color:#6b7280;text-transform:uppercase}.empty{text-align:cente
 </aside>
 
 <main class="main">
-<div class="topbar"><h1 id="pageTitle">Dashboard</h1><span class="version">v0.8</span></div>
+<div class="topbar"><h1 id="pageTitle">Dashboard</h1><span class="version">v1.1</span></div>
 
 <section id="page-dashboard" class="page active">
 <div class="cards">
@@ -85,6 +84,8 @@ th{font-size:12px;color:#6b7280;text-transform:uppercase}.empty{text-align:cente
 <div class="card"><div class="label">Cotizaciones pendientes</div><div class="value" id="statPendingQuotes">0</div></div>
 <div class="card"><div class="label">Pedidos activos</div><div class="value" id="statActiveOrders">0</div></div>
 <div class="card"><div class="label">Ventas</div><div class="value" id="statSales">$0</div></div>
+<div class="card"><div class="label">Costos / inversión</div><div class="value" id="statCosts">$0</div></div>
+<div class="card"><div class="label">Ganancia bruta</div><div class="value" id="statGross">$0</div></div>
 </div>
 
 <div class="cards">
@@ -184,53 +185,44 @@ th{font-size:12px;color:#6b7280;text-transform:uppercase}.empty{text-align:cente
 </div></div><div class="modal-footer"><button type="button" class="btn btn-secondary" onclick="closeClientModal()">Cancelar</button><button class="btn btn-primary">Guardar cliente</button></div></form>
 </div></div>
 
+<div id="inlineClientModal" class="modal"><div class="modal-box"><div class="modal-header"><h3>Nuevo cliente</h3><button class="close" type="button" onclick="closeInlineClient()">×</button></div><form id="inlineClientForm" onsubmit="saveInlineClient(event)"><div class="modal-body"><input type="hidden" id="inlineClientTarget"><div class="grid"><div class="field"><label>Nombre *</label><input id="inlineClientName" required></div><div class="field"><label>Empresa</label><input id="inlineClientCompany"></div><div class="field"><label>WhatsApp</label><input id="inlineClientWhatsapp"></div><div class="field"><label>Tipo</label><select id="inlineClientType"><option>Persona</option><option>Empresa</option></select></div><div class="field"><label>Origen</label><select id="inlineClientOrigin"><option>WhatsApp</option><option>Instagram</option><option>Facebook</option><option>Referido</option><option>Web</option><option>Otro</option></select></div></div></div><div class="modal-footer"><button type="button" class="btn btn-secondary" onclick="closeInlineClient()">Cancelar</button><button class="btn btn-primary">Guardar cliente</button></div></form></div></div>
 <div id="quoteModal" class="modal"><div class="modal-box">
 <div class="modal-header"><h3 id="quoteModalTitle">Nueva cotización</h3><button class="close" onclick="closeQuoteModal()">×</button></div>
 <form id="quoteForm" onsubmit="saveQuote(event)"><div class="modal-body"><input type="hidden" id="quoteId"><div class="grid">
-<div class="field"><label>Cliente *</label><select id="quoteClient" required></select> <button type="button" class="btn btn-secondary inline-new-client" onclick="openInlineClient(\'quoteClient\')">+ Nuevo cliente</button></div>
-<div class="field legacy-single"><label>Concepto *</label><input id="quoteConcept" required></div>
-<div class="field legacy-single"><label>Cantidad</label><input id="quoteQty" type="number" min="1" value="1"></div>
-<div class="field legacy-single"><label>Precio unitario</label><input id="quotePrice" type="number" min="0" step="0.01" value="0"></div>
+<div class="field"><label>Cliente *</label><select id="quoteClient" required></select><button type="button" class="btn btn-secondary inline-client" onclick="openInlineClient('quoteClient')">+ Nuevo cliente</button></div>
+<div class="field"><label>Concepto *</label><input id="quoteConcept" required></div>
+<div class="field"><label>Cantidad</label><input id="quoteQty" type="number" min="1" value="1"></div>
+<div class="field"><label>Precio unitario</label><input id="quotePrice" type="number" min="0" step="0.01" value="0"></div>
 <div class="field"><label>Descuento</label><input id="quoteDiscount" type="number" min="0" step="0.01" value="0"></div>
 <div class="field"><label>Estado</label><select id="quoteStatus"><option>Pendiente</option><option>Aprobada</option><option>Rechazada</option></select></div>
 <div class="field"><label>Fecha</label><input id="quoteDate" type="date"></div>
 <div class="field"><label>Validez (días)</label><input id="quoteValidity" type="number" min="1" value="15"></div>
 </div>
 <div class="total-box"><div>Subtotal: <strong id="quoteSubtotal">$0</strong></div><div>Descuento: <strong id="quoteDiscountView">$0</strong></div><div>Total: <strong id="quoteTotal">$0</strong></div></div>
+<div class="field full"><label>Productos / servicios</label><div id="quoteItems"></div><button type="button" class="btn btn-secondary" onclick="addQuoteItem()">+ Agregar producto</button></div>
+<div class="field full"><label>Costos del trabajo</label><div class="grid"><div class="field"><label>Materiales</label><input id="quoteMaterialCost" type="number" min="0" step="1" value="0" oninput="updateCostPreview('quote')"></div><div class="field"><label>Mano de obra</label><input id="quoteLaborCost" type="number" min="0" step="1" value="0" oninput="updateCostPreview('quote')"></div><div class="field"><label>Otros gastos</label><input id="quoteOtherCost" type="number" min="0" step="1" value="0" oninput="updateCostPreview('quote')"></div></div><div class="total-box">Costo total: <strong id="quoteCostTotal">$0</strong> · Ganancia bruta: <strong id="quoteGrossProfit">$0</strong></div></div>
 <div class="field" style="margin-top:15px"><label>Notas</label><textarea id="quoteNotes"></textarea></div>
-</div><div class="field full multi-products"><label>Productos / servicios</label><div id="quoteItems"></div><button type="button" class="btn btn-secondary" onclick="addQuoteItem()">+ Agregar producto</button></div>
-<div class="field full cost-section"><label>Costos del trabajo</label><div class="grid"><div class="field"><label>Materiales</label><input id="quoteMaterialCost" type="number" min="0" value="0" oninput="recalcQuoteV11()"></div><div class="field"><label>Mano de obra</label><input id="quoteLaborCost" type="number" min="0" value="0" oninput="recalcQuoteV11()"></div><div class="field"><label>Otros gastos</label><input id="quoteOtherCost" type="number" min="0" value="0" oninput="recalcQuoteV11()"></div></div><div class="total-box">Costo total: <strong id="quoteCostTotal">$0</strong> · Ganancia bruta: <strong id="quoteGrossProfit">$0</strong></div></div>
-<div class="modal-footer"><button type="button" class="btn btn-secondary" onclick="closeQuoteModal()">Cancelar</button><button class="btn btn-warning">Guardar cotización</button></div></form>
+</div><div class="modal-footer"><button type="button" class="btn btn-secondary" onclick="closeQuoteModal()">Cancelar</button><button class="btn btn-warning">Guardar cotización</button></div></form>
 </div></div>
 
 <div id="orderModal" class="modal"><div class="modal-box">
 <div class="modal-header"><h3 id="orderModalTitle">Nuevo pedido</h3><button class="close" onclick="closeOrderModal()">×</button></div>
 <form id="orderForm" onsubmit="saveOrder(event)"><div class="modal-body"><input type="hidden" id="orderId"><input type="hidden" id="orderQuoteId">
 <div class="grid">
-<div class="field"><label>Cliente *</label><select id="orderClient" required></select> <button type="button" class="btn btn-secondary inline-new-client" onclick="openInlineClient(\'orderClient\')">+ Nuevo cliente</button></div>
-<div class="field legacy-single"><label>Producto / servicio *</label><input id="orderProduct" required></div>
-<div class="field legacy-single"><label>Cantidad</label><input id="orderQty" type="number" min="1" value="1"></div>
-<div class="field legacy-single"><label>Precio unitario</label><input id="orderPrice" type="number" min="0" step="0.01" value="0"></div>
+<div class="field"><label>Cliente *</label><select id="orderClient" required></select><button type="button" class="btn btn-secondary inline-client" onclick="openInlineClient('orderClient')">+ Nuevo cliente</button></div>
+<div class="field"><label>Producto / servicio *</label><input id="orderProduct" required></div>
+<div class="field"><label>Cantidad</label><input id="orderQty" type="number" min="1" value="1"></div>
+<div class="field"><label>Precio unitario</label><input id="orderPrice" type="number" min="0" step="0.01" value="0"></div>
 <div class="field"><label>Estado</label><select id="orderStatus"><option>Pendiente</option><option>En producción</option><option>Listo</option><option>Entregado</option><option>Cancelado</option></select></div>
 <div class="field"><label>Prioridad</label><select id="orderPriority"><option>Media</option><option>Alta</option><option>Baja</option></select></div>
 <div class="field"><label>Fecha del pedido</label><input id="orderDate" type="date"></div>
 <div class="field"><label>Fecha de entrega</label><input id="orderDelivery" type="date"></div>
+<div class="field full"><label>Productos / servicios</label><div id="orderItems"></div><button type="button" class="btn btn-secondary" onclick="addOrderItem()">+ Agregar producto</button></div>
+<div class="field full"><label>Costos del trabajo</label><div class="grid"><div class="field"><label>Materiales</label><input id="orderMaterialCost" type="number" min="0" step="1" value="0" oninput="updateCostPreview('order')"></div><div class="field"><label>Mano de obra</label><input id="orderLaborCost" type="number" min="0" step="1" value="0" oninput="updateCostPreview('order')"></div><div class="field"><label>Otros gastos</label><input id="orderOtherCost" type="number" min="0" step="1" value="0" oninput="updateCostPreview('order')"></div></div><div class="total-box">Costo total: <strong id="orderCostTotal">$0</strong> · Ganancia bruta: <strong id="orderGrossProfit">$0</strong></div></div>
 <div class="field full"><label>Notas</label><textarea id="orderNotes"></textarea></div>
-</div></div><div class="field full multi-products"><label>Productos / servicios</label><div id="orderItems"></div><button type="button" class="btn btn-secondary" onclick="addOrderItem()">+ Agregar producto</button></div>
-<div class="field full cost-section"><label>Costos del trabajo</label><div class="grid"><div class="field"><label>Materiales</label><input id="orderMaterialCost" type="number" min="0" value="0" oninput="recalcOrderV11()"></div><div class="field"><label>Mano de obra</label><input id="orderLaborCost" type="number" min="0" value="0" oninput="recalcOrderV11()"></div><div class="field"><label>Otros gastos</label><input id="orderOtherCost" type="number" min="0" value="0" oninput="recalcOrderV11()"></div></div><div class="total-box">Costo total: <strong id="orderCostTotal">$0</strong> · Ganancia bruta: <strong id="orderGrossProfit">$0</strong></div></div>
-<div class="modal-footer"><button type="button" class="btn btn-secondary" onclick="closeOrderModal()">Cancelar</button><button class="btn btn-success">Guardar pedido</button></div></form>
+</div></div><div class="modal-footer"><button type="button" class="btn btn-secondary" onclick="closeOrderModal()">Cancelar</button><button class="btn btn-success">Guardar pedido</button></div></form>
 </div></div>
 
-
-<div id="inlineClientModal" class="modal"><div class="modal-box">
-<div class="modal-header"><h3>Nuevo cliente</h3><button class="close" type="button" onclick="closeInlineClient()">×</button></div>
-<form onsubmit="saveInlineClient(event)"><div class="modal-body"><input type="hidden" id="inlineClientTarget">
-<div class="grid"><div class="field"><label>Nombre *</label><input id="inlineClientName" required></div>
-<div class="field"><label>Empresa</label><input id="inlineClientCompany"></div>
-<div class="field"><label>WhatsApp</label><input id="inlineClientWhatsapp"></div>
-<div class="field"><label>Tipo</label><select id="inlineClientType"><option>Persona</option><option>Empresa</option></select></div>
-<div class="field"><label>Origen</label><select id="inlineClientOrigin"><option>Directo</option><option>WhatsApp</option><option>Instagram</option><option>Facebook</option><option>Referido</option><option>Otro</option></select></div></div></div>
-<div class="modal-footer"><button type="button" class="btn btn-secondary" onclick="closeInlineClient()">Cancelar</button><button class="btn btn-primary">Guardar cliente</button></div></form></div></div>
 
 <div id="productionModal" class="modal"><div class="modal-box">
 <div class="modal-header"><h3 id="productionModalTitle">Nueva producción</h3><button class="close" onclick="closeProductionModal()">×</button></div>
@@ -275,7 +267,8 @@ function persist(){
  localStorage.setItem(OK,JSON.stringify(orders));
  localStorage.setItem(PK,JSON.stringify(productions));
  localStorage.setItem(SK,JSON.stringify(settings));
- syncProductionsFromOrders();assignDocumentNumbers();loadSettingsForm();updateDashboard();renderClients();renderQuotes();renderOrders();renderRecent();renderProduction();renderDocumentPicker();
+ assignDocumentNumbers();
+ assignDocumentNumbers();loadSettingsForm();updateDashboard();renderClients();renderQuotes();renderOrders();renderRecent();renderProduction();renderDocumentPicker();
 }
 
 function showPage(n,b){
@@ -285,18 +278,6 @@ function showPage(n,b){
  if(b)b.classList.add('active');
  $('pageTitle').textContent={dashboard:'Dashboard',clientes:'Clientes',cotizaciones:'Cotizaciones',pedidos:'Pedidos',produccion:'Producción',documentos:'Documentos',configuracion:'Configuración',proximamente:'Próximamente'}[n];
 }
-
-function openInlineClient(target){$('inlineClientTarget').value=target;$('inlineClientName').value='';$('inlineClientCompany').value='';$('inlineClientWhatsapp').value='';$('inlineClientModal').classList.add('show')}
-function closeInlineClient(){$('inlineClientModal').classList.remove('show')}
-function saveInlineClient(e){e.preventDefault();let c={id:newId('CLI'),name:$('inlineClientName').value.trim(),company:$('inlineClientCompany').value.trim(),whatsapp:$('inlineClientWhatsapp').value.trim(),type:$('inlineClientType').value,origin:$('inlineClientOrigin').value,date:new Date().toISOString()};clients.unshift(c);let target=$('inlineClientTarget').value;localStorage.setItem(CK,JSON.stringify(clients));fillClientSelect($('quoteClient'));fillClientSelect($('orderClient'));$(target).value=c.id;closeInlineClient();}
-function itemRow(type,item){let n=item?.name||'',q=item?.qty||1,p=item?.price||0;return `<div class="line-item"><div class="field"><label>Producto / servicio</label><input class="item-name" value="${esc(n)}"></div><div class="field"><label>Cantidad</label><input class="item-qty" type="number" min="1" value="${q}" oninput="recalcItemsV11('${type}')"></div><div class="field"><label>Precio unitario</label><input class="item-price" type="number" min="0" value="${p}" oninput="recalcItemsV11('${type}')"></div><div class="line-total">${money(q*p)} <button type="button" class="btn btn-danger" onclick="this.closest('.line-item').remove();recalcItemsV11('${type}')">×</button></div></div>`}
-function addQuoteItem(item={}){$('quoteItems').insertAdjacentHTML('beforeend',itemRow('quote',item));recalcItemsV11('quote')}
-function addOrderItem(item={}){$('orderItems').insertAdjacentHTML('beforeend',itemRow('order',item));recalcItemsV11('order')}
-function getItemsV11(type){let root=$(type==='quote'?'quoteItems':'orderItems');return [...root.querySelectorAll('.line-item')].map(r=>({name:r.querySelector('.item-name').value.trim(),qty:Number(r.querySelector('.item-qty').value)||0,price:Number(r.querySelector('.item-price').value)||0})).filter(x=>x.name&&x.qty>0)}
-function recalcItemsV11(type){let root=$(type==='quote'?'quoteItems':'orderItems'),sum=0;root.querySelectorAll('.line-item').forEach(r=>{let q=Number(r.querySelector('.item-qty').value)||0,p=Number(r.querySelector('.item-price').value)||0,t=q*p;sum+=t;r.querySelector('.line-total').firstChild.textContent=money(t)+' '});let mat=Number($(type+'MaterialCost').value)||0,lab=Number($(type+'LaborCost').value)||0,oth=Number($(type+'OtherCost').value)||0,c=mat+lab+oth;if($(type+'CostTotal'))$(type+'CostTotal').textContent=money(c);if($(type+'GrossProfit'))$(type+'GrossProfit').textContent=money(sum-(type==='quote'?Number($('quoteDiscount').value)||0:0)-c);if(type==='quote')calcQuoteV11();return sum}
-function recalcQuoteV11(){let items=getItemsV11('quote'),sub=items.reduce((s,x)=>s+x.qty*x.price,0),discount=Math.min(Math.max(Number($('quoteDiscount').value)||0,0),sub),cost=(Number($('quoteMaterialCost').value)||0)+(Number($('quoteLaborCost').value)||0)+(Number($('quoteOtherCost').value)||0);$('quoteSubtotal').textContent=money(sub);$('quoteDiscountView').textContent=money(discount);$('quoteTotal').textContent=money(sub-discount);$('quoteCostTotal').textContent=money(cost);$('quoteGrossProfit').textContent=money(sub-discount-cost);return {items,sub,discount,cost}}
-function recalcOrderV11(){let items=getItemsV11('order'),sub=items.reduce((s,x)=>s+x.qty*x.price,0),cost=(Number($('orderMaterialCost').value)||0)+(Number($('orderLaborCost').value)||0)+(Number($('orderOtherCost').value)||0);$('orderCostTotal').textContent=money(cost);$('orderGrossProfit').textContent=money(sub-cost);return {items,sub,cost}}
-function syncProductionsFromOrders(){let changed=false;orders.filter(o=>o.status==='En producción').forEach(o=>{if(!productions.some(p=>p.orderId===o.id)){productions.unshift({id:newId('PRO'),number:(settings.productionPrefix||'PRO')+'-'+String(productions.length+1).padStart(4,'0'),orderId:o.id,status:'En producción',priority:o.priority||'Media',startDate:o.date||'',deliveryDate:o.deliveryDate||'',notes:'',checklist:[],progress:0});changed=true}});if(changed)localStorage.setItem(PK,JSON.stringify(productions));return changed}
 
 function fillClientSelect(el){
  el.innerHTML=clients.length?clients.map(c=>`<option value="${c.id}">${esc(c.name)}${c.company?' — '+esc(c.company):''}</option>`).join(''):'<option value="">Primero crea un cliente</option>';
@@ -336,11 +317,27 @@ function calcQuote(){
  let discount=Math.min(Math.max(Number($('quoteDiscount').value)||0,0),subtotal);
  $('quoteSubtotal').textContent=money(subtotal);$('quoteDiscountView').textContent=money(discount);$('quoteTotal').textContent=money(subtotal-discount);
 }
-$('quoteQty').oninput=calcQuote;$('quotePrice').oninput=calcQuote;$('quoteDiscount').oninput=()=>recalcQuoteV11();
+$('quoteQty').oninput=calcQuote;$('quotePrice').oninput=calcQuote;$('quoteDiscount').oninput=calcQuote;
 
-function openQuoteModal(id=null){$('quoteForm').reset();$('quoteId').value='';fillClientSelect($('quoteClient'));$('quoteItems').innerHTML='';$('quoteDate').value=new Date().toISOString().slice(0,10);$('quoteValidity').value=15;$('quoteModalTitle').textContent=id?'Editar cotización':'Nueva cotización';if(id){let q=quotes.find(x=>x.id===id);if(!q)return;$('quoteId').value=q.id;$('quoteClient').value=q.clientId;$('quoteConcept').value=q.concept||'';$('quoteQty').value=q.qty||1;$('quotePrice').value=q.price||0;$('quoteDiscount').value=q.discount||0;$('quoteStatus').value=q.status||'Pendiente';$('quoteDate').value=q.date||'';$('quoteValidity').value=q.validity||15;$('quoteNotes').value=q.notes||'';$('quoteMaterialCost').value=q.materialCost||0;$('quoteLaborCost').value=q.laborCost||0;$('quoteOtherCost').value=q.otherCost||0;(q.items?.length?q.items:[{name:q.concept||'',qty:q.qty||1,price:q.price||0}]).forEach(addQuoteItem)}else addQuoteItem();recalcQuoteV11();$('quoteModal').classList.add('show')}
+function openQuoteModal(id=null){
+ $('quoteForm').reset();$('quoteId').value='';fillClientSelect($('quoteClient'));
+ $('quoteDate').value=new Date().toISOString().slice(0,10);$('quoteValidity').value=15;
+ $('quoteModalTitle').textContent=id?'Editar cotización':'Nueva cotización';
+ if(id){let q=quotes.find(x=>x.id===id);if(!q)return;
+  $('quoteId').value=q.id;$('quoteClient').value=q.clientId;$('quoteConcept').value=q.concept;$('quoteQty').value=q.qty||1;
+  $('quotePrice').value=q.price||0;$('quoteDiscount').value=q.discount||0;$('quoteStatus').value=q.status||'Pendiente';
+  $('quoteDate').value=q.date||'';$('quoteValidity').value=q.validity||15;$('quoteNotes').value=q.notes||'';
+ }
+ calcQuote();$('quoteModal').classList.add('show');
+}
 function closeQuoteModal(){$('quoteModal').classList.remove('show')}
-function saveQuote(e){e.preventDefault();let client=$('quoteClient').value;if(!client){alert('Selecciona o registra un cliente.');return}let r=recalcQuoteV11(),old=$('quoteId').value,qOld=quotes.find(x=>x.id===old);let d={id:old||newId('COT'),number:qOld?.number||(settings.quotePrefix||'COT')+'-'+String(quotes.length+1).padStart(4,'0'),clientId:client,items:r.items,concept:r.items[0]?.name||$('quoteConcept').value.trim(),qty:r.items[0]?.qty||1,price:r.items[0]?.price||0,subtotal:r.sub,discount:r.discount,total:r.sub-r.discount,status:$('quoteStatus').value,date:$('quoteDate').value,validity:Number($('quoteValidity').value)||15,notes:$('quoteNotes').value.trim(),materialCost:Number($('quoteMaterialCost').value)||0,laborCost:Number($('quoteLaborCost').value)||0,otherCost:Number($('quoteOtherCost').value)||0,costTotal:r.cost,grossProfit:r.sub-r.discount-r.cost};if(old)quotes=quotes.map(x=>x.id===old?d:x);else quotes.unshift(d);closeQuoteModal();persist()}
+function saveQuote(e){
+ e.preventDefault();if(!clients.length){alert('Primero debes crear un cliente.');return}
+ let old=$('quoteId').value,qty=Number($('quoteQty').value)||1,price=Number($('quotePrice').value)||0,subtotal=qty*price,discount=Math.min(Math.max(Number($('quoteDiscount').value)||0,0),subtotal);
+ let d={id:old||newId('COT'),number:old?(quotes.find(x=>x.id===old)?.number||''):(settings.quotePrefix+'-'+String(quotes.length+1).padStart(4,'0')),clientId:$('quoteClient').value,concept:$('quoteConcept').value.trim(),qty,price,subtotal,discount,total:subtotal-discount,status:$('quoteStatus').value,date:$('quoteDate').value,validity:Number($('quoteValidity').value)||15,notes:$('quoteNotes').value.trim()};
+ if(old)quotes=quotes.map(q=>q.id===old?d:q);else quotes.unshift(d);
+ closeQuoteModal();persist();
+}
 function qClass(s){return s==='Aprobada'?'badge-aprobada':s==='Rechazada'?'badge-rechazada':'badge-pendiente'}
 function renderQuotes(){
  let q=($('quoteSearch')?.value||'').toLowerCase(),f=$('quoteFilter')?.value||'';
@@ -362,9 +359,25 @@ function quoteToOrder(id){
  $('orderNotes').value='Generado desde la cotización '+q.id+(q.discount?' · Descuento aplicado: '+money(q.discount):'');
 }
 
-function openOrderModal(id=null){$('orderForm').reset();$('orderId').value='';$('orderQuoteId').value='';fillClientSelect($('orderClient'));$('orderItems').innerHTML='';$('orderDate').value=new Date().toISOString().slice(0,10);$('orderPriority').value='Media';$('orderStatus').value='Pendiente';$('orderModalTitle').textContent=id?'Editar pedido':'Nuevo pedido';if(id){let o=orders.find(x=>x.id===id);if(!o)return;$('orderId').value=o.id;$('orderQuoteId').value=o.quoteId||'';$('orderClient').value=o.clientId;$('orderProduct').value=o.product||'';$('orderQty').value=o.qty||1;$('orderPrice').value=o.price||0;$('orderStatus').value=o.status||'Pendiente';$('orderPriority').value=o.priority||'Media';$('orderDate').value=o.date||'';$('orderDelivery').value=o.deliveryDate||'';$('orderNotes').value=o.notes||'';$('orderMaterialCost').value=o.materialCost||0;$('orderLaborCost').value=o.laborCost||0;$('orderOtherCost').value=o.otherCost||0;(o.items?.length?o.items:[{name:o.product||'',qty:o.qty||1,price:o.price||0}]).forEach(addOrderItem)}else addOrderItem();recalcOrderV11();$('orderModal').classList.add('show')}
+function openOrderModal(id=null){
+ $('orderForm').reset();$('orderId').value='';$('orderQuoteId').value='';fillClientSelect($('orderClient'));
+ $('orderDate').value=new Date().toISOString().slice(0,10);$('orderPriority').value='Media';$('orderStatus').value='Pendiente';
+ $('orderModalTitle').textContent=id?'Editar pedido':'Nuevo pedido';
+ if(id){let o=orders.find(x=>x.id===id);if(!o)return;
+  $('orderId').value=o.id;$('orderQuoteId').value=o.quoteId||'';$('orderClient').value=o.clientId;$('orderProduct').value=o.product;
+  $('orderQty').value=o.qty||1;$('orderPrice').value=o.price||0;$('orderStatus').value=o.status||'Pendiente';
+  $('orderPriority').value=o.priority||'Media';$('orderDate').value=o.date||'';$('orderDelivery').value=o.deliveryDate||'';$('orderNotes').value=o.notes||'';
+ }
+ $('orderModal').classList.add('show');
+}
 function closeOrderModal(){$('orderModal').classList.remove('show')}
-function saveOrder(e){e.preventDefault();let client=$('orderClient').value;if(!client){alert('Selecciona o registra un cliente.');return}let r=recalcOrderV11(),old=$('orderId').value,oOld=orders.find(x=>x.id===old);let d={id:old||newId('PED'),number:oOld?.number||(settings.orderPrefix||'PED')+'-'+String(orders.length+1).padStart(4,'0'),quoteId:$('orderQuoteId').value||'',clientId:client,items:r.items,product:r.items[0]?.name||$('orderProduct').value.trim(),qty:r.items[0]?.qty||1,price:r.items[0]?.price||0,subtotal:r.sub,total:r.sub,status:$('orderStatus').value,priority:$('orderPriority').value,date:$('orderDate').value,deliveryDate:$('orderDelivery').value,notes:$('orderNotes').value.trim(),materialCost:Number($('orderMaterialCost').value)||0,laborCost:Number($('orderLaborCost').value)||0,otherCost:Number($('orderOtherCost').value)||0,costTotal:r.cost,grossProfit:r.sub-r.cost};if(old)orders=orders.map(x=>x.id===old?d:x);else orders.unshift(d);closeOrderModal();persist()}
+function saveOrder(e){
+ e.preventDefault();if(!clients.length){alert('Primero debes crear un cliente.');return}
+ let old=$('orderId').value,qty=Number($('orderQty').value)||1,price=Number($('orderPrice').value)||0;
+ let d={id:old||newId('PED'),number:old?(orders.find(x=>x.id===old)?.number||''):(settings.orderPrefix+'-'+String(orders.length+1).padStart(4,'0')),quoteId:$('orderQuoteId').value||'',clientId:$('orderClient').value,product:$('orderProduct').value.trim(),qty,price,total:qty*price,status:$('orderStatus').value,priority:$('orderPriority').value,date:$('orderDate').value,deliveryDate:$('orderDelivery').value,notes:$('orderNotes').value.trim()};
+ if(old)orders=orders.map(o=>o.id===old?d:o);else orders.unshift(d);
+ closeOrderModal();persist();
+}
 function sClass(s){return{'Pendiente':'badge-pendiente','En producción':'badge-produccion','Listo':'badge-listo','Entregado':'badge-entregado','Cancelado':'badge-cancelado'}[s]||'badge'}
 function pClass(s){return{'Alta':'badge-alta','Media':'badge-media','Baja':'badge-baja'}[s]||'badge'}
 function renderOrders(){
@@ -432,7 +445,6 @@ function saveProduction(e){
 }
 function prodClass(s){return {'Pendiente':'badge-pendiente','En producción':'badge-produccion','Pausada':'badge-pendiente','Listo':'badge-listo'}[s]||'badge'}
 function renderProduction(){
- syncProductionsFromOrders();
  let q=($('productionSearch')?.value||'').toLowerCase();
  let r=productions.filter(p=>{
    let o=orders.find(x=>x.id===p.orderId),c=clients.find(x=>x.id===o?.clientId);
@@ -516,7 +528,7 @@ function updateDashboard(){
  $('statProduction').textContent=orders.filter(o=>o.status==='En producción').length;
  $('statReady').textContent=orders.filter(o=>o.status==='Listo').length;
  $('statDelivered').textContent=orders.filter(o=>o.status==='Entregado').length;
- $('statSales').textContent=money(orders.filter(o=>o.status!=='Cancelado').reduce((s,o)=>s+Number(o.total||0),0)); $('statCosts').textContent=money(orders.filter(o=>o.status!=='Cancelado').reduce((s,o)=>s+Number(o.costTotal||0),0)); $('statGross').textContent=money(orders.filter(o=>o.status!=='Cancelado').reduce((s,o)=>s+Number(o.grossProfit??(Number(o.total||0)-Number(o.costTotal||0)),0));
+ $('statSales').textContent=money(orders.filter(o=>o.status!=='Cancelado').reduce((s,o)=>s+Number(o.total||0),0));
  $('statProdPending').textContent=productions.filter(p=>p.status==='Pendiente').length;
  $('statProdAvg').textContent=productions.length?Math.round(productions.reduce((s,p)=>s+progressOf(p.checklist||[]),0)/productions.length)+'%':'0%';
 }
@@ -528,6 +540,43 @@ function renderRecent(){
 
 document.querySelectorAll('.modal').forEach(m=>m.addEventListener('click',e=>{if(e.target===m)m.classList.remove('show')}));
 assignDocumentNumbers();loadSettingsForm();updateDashboard();renderClients();renderQuotes();renderOrders();renderRecent();renderProduction();renderDocumentPicker();
+
+
+/* ================= CREATIVOS ONE v1.1 - AJUSTES ================= */
+let inlineClientTarget='';
+function openInlineClient(target){inlineClientTarget=target;$('inlineClientForm').reset();$('inlineClientTarget').value=target;$('inlineClientModal').classList.add('show');}
+function closeInlineClient(){$('inlineClientModal').classList.remove('show');}
+function saveInlineClient(e){e.preventDefault();let c={id:newId('CLI'),name:$('inlineClientName').value.trim(),company:$('inlineClientCompany').value.trim(),whatsapp:$('inlineClientWhatsapp').value.trim(),type:$('inlineClientType').value,origin:$('inlineClientOrigin').value,notes:''};if(!c.name)return;clients.unshift(c);fillClientSelect($('quoteClient'));fillClientSelect($('orderClient'));if($(inlineClientTarget))$(inlineClientTarget).value=c.id;closeInlineClient();persist();if($(inlineClientTarget))$(inlineClientTarget).value=c.id;}
+
+function itemRow(type,item={}){let n=item.name||'',q=Number(item.qty)||1,pr=Number(item.price)||0;return `<div class="line-item"><div class="field"><label>Producto / servicio</label><input class="item-name" value="${esc(n)}"></div><div class="field"><label>Cantidad</label><input class="item-qty" type="number" min="1" step="1" value="${q}" oninput="recalcItems('${type}')"></div><div class="field"><label>Precio unitario</label><input class="item-price" type="number" min="0" step="1" value="${pr}" oninput="recalcItems('${type}')"></div><div class="line-total">${money(q*pr)}</div><button type="button" class="btn btn-danger line-remove" onclick="this.closest('.line-item').remove();recalcItems('${type}')">×</button></div>`;}
+function addQuoteItem(item={}){$('quoteItems').insertAdjacentHTML('beforeend',itemRow('quote',item));recalcItems('quote');}
+function addOrderItem(item={}){$('orderItems').insertAdjacentHTML('beforeend',itemRow('order',item));recalcItems('order');}
+function getItems(type){let root=$(type==='quote'?'quoteItems':'orderItems');return [...root.querySelectorAll('.line-item')].map(r=>({name:r.querySelector('.item-name').value.trim(),qty:Number(r.querySelector('.item-qty').value)||0,price:Number(r.querySelector('.item-price').value)||0})).filter(x=>x.name&&x.qty>0);}
+function recalcItems(type){let root=$(type==='quote'?'quoteItems':'orderItems');let subtotal=0;root.querySelectorAll('.line-item').forEach(r=>{let q=Number(r.querySelector('.item-qty').value)||0,pr=Number(r.querySelector('.item-price').value)||0,t=q*pr;subtotal+=t;r.querySelector('.line-total').textContent=money(t);});let discount=type==='quote'?Math.min(Math.max(Number($('quoteDiscount').value)||0,0),subtotal):0;let total=subtotal-discount;let mat=Number($(type+'MaterialCost').value)||0,lab=Number($(type+'LaborCost').value)||0,other=Number($(type+'OtherCost').value)||0,cost=mat+lab+other;let gross=total-cost;if(type==='quote'){ $('quoteSubtotal').textContent=money(subtotal);$('quoteDiscountView').textContent=money(discount);$('quoteTotal').textContent=money(total); }$(type+'CostTotal').textContent=money(cost);$(type+'GrossProfit').textContent=money(gross);return {items:getItems(type),subtotal,discount,total,mat,lab,other,cost,gross};}
+function updateCostPreview(type){recalcItems(type);}
+
+const _openQuoteModal_v10=openQuoteModal;
+openQuoteModal=function(id=null){_openQuoteModal_v10(id);$('quoteItems').innerHTML='';let q=id?quotes.find(x=>x.id===id):null;let items=q&&Array.isArray(q.items)&&q.items.length?q.items:[{name:q?.concept||'',qty:q?.qty||1,price:q?.price||0}];items.forEach(x=>addQuoteItem(x));$('quoteMaterialCost').value=q?.materialCost||0;$('quoteLaborCost').value=q?.laborCost||0;$('quoteOtherCost').value=q?.otherCost||0;recalcItems('quote');};
+
+saveQuote=function(e){e.preventDefault();let clientId=$('quoteClient').value;if(!clientId){alert('Selecciona o crea un cliente.');return}let old=$('quoteId').value,r=recalcItems('quote');if(!r.items.length){alert('Agrega al menos un producto o servicio.');return}let d={id:old||newId('COT'),number:old?(quotes.find(x=>x.id===old)?.number||''):(settings.quotePrefix+'-'+String(quotes.length+1).padStart(4,'0')),clientId,items:r.items,concept:r.items.map(x=>x.name).join(' + '),qty:r.items.reduce((s,x)=>s+x.qty,0),price:r.items[0].price,subtotal:r.subtotal,discount:r.discount,total:r.total,materialCost:r.mat,laborCost:r.lab,otherCost:r.other,costTotal:r.cost,grossProfit:r.gross,status:$('quoteStatus').value,date:$('quoteDate').value,validity:Number($('quoteValidity').value)||15,notes:$('quoteNotes').value.trim()};if(old)quotes=quotes.map(x=>x.id===old?d:x);else quotes.unshift(d);closeQuoteModal();persist();};
+
+const _openOrderModal_v10=openOrderModal;
+openOrderModal=function(id=null){_openOrderModal_v10(id);$('orderItems').innerHTML='';let o=id?orders.find(x=>x.id===id):null;let items=o&&Array.isArray(o.items)&&o.items.length?o.items:[{name:o?.product||'',qty:o?.qty||1,price:o?.price||0}];items.forEach(x=>addOrderItem(x));$('orderMaterialCost').value=o?.materialCost||0;$('orderLaborCost').value=o?.laborCost||0;$('orderOtherCost').value=o?.otherCost||0;recalcItems('order');};
+
+function syncProductionForOrder(o){if(!o||o.status!=='En producción')return;let p=productions.find(x=>x.orderId===o.id);if(p){p.status='En producción';p.priority=o.priority||p.priority||'Media';p.deliveryDate=o.deliveryDate||p.deliveryDate||'';}else{productions.unshift({id:newId('PRO'),number:settings.productionPrefix+'-'+String(productions.length+1).padStart(4,'0'),orderId:o.id,status:'En producción',priority:o.priority||'Media',startDate:o.date||'',deliveryDate:o.deliveryDate||'',notes:'',checklist:[],progress:0});}}
+
+saveOrder=function(e){e.preventDefault();let clientId=$('orderClient').value;if(!clientId){alert('Selecciona o crea un cliente.');return}let old=$('orderId').value,r=recalcItems('order');if(!r.items.length){alert('Agrega al menos un producto o servicio.');return}let d={id:old||newId('PED'),number:old?(orders.find(x=>x.id===old)?.number||''):(settings.orderPrefix+'-'+String(orders.length+1).padStart(4,'0')),quoteId:$('orderQuoteId').value||'',clientId,items:r.items,product:r.items.map(x=>x.name).join(' + '),qty:r.items.reduce((s,x)=>s+x.qty,0),price:r.items[0].price,total:r.total,materialCost:r.mat,laborCost:r.lab,otherCost:r.other,costTotal:r.cost,grossProfit:r.gross,status:$('orderStatus').value,priority:$('orderPriority').value,date:$('orderDate').value,deliveryDate:$('orderDelivery').value,notes:$('orderNotes').value.trim()};if(old)orders=orders.map(x=>x.id===old?d:x);else orders.unshift(d);syncProductionForOrder(d);closeOrderModal();persist();};
+
+const _renderProduction_v10=renderProduction;
+renderProduction=function(){orders.filter(o=>o.status==='En producción').forEach(syncProductionForOrder);localStorage.setItem(PK,JSON.stringify(productions));_renderProduction_v10();};
+
+const _updateDashboard_v10=updateDashboard;
+updateDashboard=function(){_updateDashboard_v10();let sales=orders.filter(o=>o.status!=='Cancelado').reduce((s,o)=>s+Number(o.total||0),0);let costs=orders.filter(o=>o.status!=='Cancelado').reduce((s,o)=>s+Number(o.costTotal||0),0);$('statCosts').textContent=money(costs);$('statGross').textContent=money(sales-costs);};
+
+// Inicializar registros de producción faltantes y los nuevos campos sin tocar datos existentes.
+orders.filter(o=>o.status==='En producción').forEach(syncProductionForOrder);localStorage.setItem(PK,JSON.stringify(productions));
+updateDashboard();renderProduction();
+
 </script>
 </body>
 </html>
