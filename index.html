@@ -707,7 +707,10 @@ function syncDebtors(){
       o.debtStatus='';
     }
   });
-  persist();
+  // FIX: aquí NO se debe llamar a persist(), porque persist() llama a renderDebtors(),
+  // y renderDebtors() llama de nuevo a syncDebtors() -> esto causaba un bucle infinito
+  // que colgaba el navegador cada vez que se guardaba cualquier cosa.
+  localStorage.setItem(OK,JSON.stringify(orders));
 }
 function renderDebtors(){
  syncDebtors();
@@ -794,6 +797,11 @@ const _openOrderModal_v10=openOrderModal;
 openOrderModal=function(id=null){_openOrderModal_v10(id);$('orderItems').innerHTML='';let o=id?orders.find(x=>x.id===id):null;let items=o&&Array.isArray(o.items)&&o.items.length?o.items:[{name:o?.product||'',qty:o?.qty||1,price:o?.price||0}];items.forEach(x=>addOrderItem(x));$('orderMaterialCost').value=o?.materialCost||0;$('orderLaborCost').value=o?.laborCost||0;$('orderOtherCost').value=o?.otherCost||0;recalcItems('order');};
 
 function syncProductionForOrder(o){if(!o||o.status!=='En producción')return;let p=productions.find(x=>x.orderId===o.id);if(p){p.status='En producción';p.priority=o.priority||p.priority||'Media';p.deliveryDate=o.deliveryDate||p.deliveryDate||'';}else{productions.unshift({id:newId('PRO'),number:settings.productionPrefix+'-'+String(productions.length+1).padStart(4,'0'),orderId:o.id,status:'En producción',priority:o.priority||'Media',startDate:o.date||'',deliveryDate:o.deliveryDate||'',notes:'',checklist:[],progress:0});}}
+// FIX: esta función se llamaba en varios lugares (al guardar, al cambiar estado a "En producción")
+// pero nunca existía en el código, y eso rompía el guardado de TODO (clientes, cotizaciones, pedidos).
+function syncProductionsFromOrders(){
+ orders.filter(o=>o.status==='En producción').forEach(o=>syncProductionForOrder(o));
+}
 
 saveOrder=function(e){e.preventDefault();let clientId=$('orderClient').value;if(!clientId){alert('Selecciona o crea un cliente.');return}let old=$('orderId').value,r=recalcItems('order');if(!r.items.length){alert('Agrega al menos un producto o servicio.');return}let d={id:old||newId('PED'),number:old?(orders.find(x=>x.id===old)?.number||''):(settings.orderPrefix+'-'+String(orders.length+1).padStart(4,'0')),quoteId:$('orderQuoteId').value||'',clientId,items:r.items,product:r.items.map(x=>x.name).join(' + '),qty:r.items.reduce((s,x)=>s+x.qty,0),price:r.items[0].price,total:r.total,materialCost:r.mat,laborCost:r.lab,otherCost:r.other,costTotal:r.cost,grossProfit:r.gross,status:$('orderStatus').value,priority:$('orderPriority').value,date:$('orderDate').value,deliveryDate:$('orderDelivery').value,notes:$('orderNotes').value.trim()};if(old)orders=orders.map(x=>x.id===old?d:x);else orders.unshift(d);syncProductionForOrder(d);closeOrderModal();persist();};
 
