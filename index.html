@@ -26,6 +26,7 @@ button,input,select,textarea{font:inherit}button{cursor:pointer;border:0}
 .btn{padding:10px 15px;border-radius:8px;font-weight:700}
 .btn-primary{background:#2563eb;color:#fff}.btn-primary:hover{background:#1d4ed8}
 .btn-secondary{background:#e5e7eb;color:#111827}.btn-danger{background:#dc2626;color:#fff}
+[data-periodo].active{background:#2563eb;color:#fff}
 .btn-success{background:#16a34a;color:#fff}.btn-warning{background:#d97706;color:#fff}
 .btn-info{background:#0891b2;color:#fff}
 .search{width:100%;padding:11px 13px;border:1px solid #d7dce2;border-radius:8px;margin-bottom:16px;outline:none}
@@ -68,11 +69,15 @@ th{font-size:12px;color:#6b7280;text-transform:uppercase}.empty{text-align:cente
 <div class="logo">CREATIVOS ONE<small>Gestión empresarial · v1.2</small></div>
 <nav class="nav">
 <button class="active" onclick="showPage('dashboard',this)">📊 Dashboard</button>
+<button onclick="showPage('resumen',this)">📈 Resumen General</button>
 <button onclick="showPage('clientes',this)">👥 Clientes</button>
 <button onclick="showPage('cotizaciones',this)">📝 Cotizaciones</button>
 <button onclick="showPage('pedidos',this)">🛒 Pedidos</button>
 <button onclick="showPage('produccion',this)">🏭 Producción</button>
 <button onclick="showPage('deudores',this)">💰 Deudores</button>
+<button onclick="showPage('prestamos',this)">🏦 Préstamos</button>
+<button onclick="showPage('gastosempresa',this)">🏢 Gastos Empresa</button>
+<button onclick="showPage('gastos',this)">🧾 Gastos</button>
 <button onclick="showPage('documentos',this)">📄 Documentos</button>
 <button onclick="showPage('configuracion',this)">⚙️ Configuración</button>
 <button onclick="showPage('proximamente',this)">🔧 Próximamente</button>
@@ -111,6 +116,34 @@ th{font-size:12px;color:#6b7280;text-transform:uppercase}.empty{text-align:cente
 
 <div class="section"><div class="section-header"><h3>📋 Tareas y entregas próximas</h3><span class="mini">Hoy, próximos 3 días y prioridad alta</span></div><div class="section-body"><div id="todayTasks" class="task-list"></div></div></div>
 <div class="section"><div class="section-header"><h3>Pedidos recientes</h3></div><div class="section-body"><div id="recentOrders"></div></div></div>
+</section>
+
+<section id="page-resumen" class="page">
+<div class="section"><div class="section-header"><h3>📈 Resumen General</h3><span class="mini">Números de todas las secciones: negocio y personal, en un solo lugar</span></div>
+<div class="section-body">
+
+<div class="field" style="max-width:320px">
+<label>Periodo a consultar</label>
+<div class="quick" style="margin-top:6px">
+<button class="btn btn-secondary" data-periodo="hoy" onclick="setPeriodoResumen('hoy')">Hoy</button>
+<button class="btn btn-secondary" data-periodo="semana" onclick="setPeriodoResumen('semana')">Semana</button>
+<button class="btn btn-secondary" data-periodo="mes" onclick="setPeriodoResumen('mes')">Mes</button>
+<button class="btn btn-secondary" data-periodo="anio" onclick="setPeriodoResumen('anio')">Año</button>
+<button class="btn btn-secondary" data-periodo="todo" onclick="setPeriodoResumen('todo')">Todo</button>
+</div>
+</div>
+
+<h4 style="margin-top:24px">💼 Negocio</h4>
+<div id="resumenNegocio" class="debt-summary"></div>
+<div class="table-container"><h4>Gastos empresa por categoría</h4>
+<table><thead><tr><th>Categoría</th><th>Total en el periodo</th></tr></thead><tbody id="resumenGastosEmpresaTable"></tbody></table></div>
+
+<h4 style="margin-top:24px">🧍 Personal</h4>
+<div id="resumenPersonal" class="debt-summary"></div>
+<div class="table-container"><h4>Gastos personales por categoría</h4>
+<table><thead><tr><th>Categoría</th><th>Total en el periodo</th></tr></thead><tbody id="resumenGastosPersonalTable"></tbody></table></div>
+
+</div></div>
 </section>
 
 <section id="page-clientes" class="page"><div class="section">
@@ -159,6 +192,145 @@ th{font-size:12px;color:#6b7280;text-transform:uppercase}.empty{text-align:cente
 <div id="debtSummary" class="debt-summary"></div>
 <div class="table-container"><table><thead><tr><th>Cliente</th><th>Pedidos pendientes</th><th>Total de pedidos</th><th>Total abonado</th><th>Total por cobrar</th><th>Detalle</th></tr></thead>
 <tbody id="debtTable"></tbody></table></div>
+</div></div>
+</section>
+
+<section id="page-prestamos" class="page">
+<div class="section"><div class="section-header"><h3>🏦 Préstamos</h3><span class="mini">Préstamos a interés a terceros — cuotas, intereses y mora por atraso</span></div>
+<div class="section-body">
+
+<div id="prestamosSummary" class="debt-summary"></div>
+
+<h4>👤 Clientes de préstamos</h4>
+<p class="mini">Esta lista es independiente de tus clientes del negocio.</p>
+<form onsubmit="addClientePrestamo(event)">
+<div class="grid">
+<div class="field"><label>Nombre *</label><input id="clientePrestamoNombre" required></div>
+<div class="field"><label>Teléfono / WhatsApp</label><input id="clientePrestamoTelefono"></div>
+<div class="field"><label>Notas</label><input id="clientePrestamoNotas" placeholder="Opcional"></div>
+</div>
+<div class="modal-footer"><button class="btn btn-primary">+ Agregar cliente</button></div>
+</form>
+<div class="table-container"><table><thead><tr><th>Nombre</th><th>Teléfono</th><th>Notas</th><th></th></tr></thead><tbody id="clientesPrestamoTable"></tbody></table></div>
+
+<hr style="margin:24px 0;border:none;border-top:1px solid #333">
+
+<h4 id="prestamoFormTitle">+ Nuevo préstamo</h4>
+<form onsubmit="addPrestamo(event)">
+<input type="hidden" id="prestamoEditId" value="">
+<div class="grid">
+<div class="field"><label>Cliente *</label><select id="prestamoCliente" required></select></div>
+<div class="field"><label>Monto prestado *</label><input id="prestamoMonto" type="number" min="0" step="1" required></div>
+<div class="field"><label>Interés total (%) *</label><input id="prestamoTasaInteres" type="number" min="0" step="0.1" required placeholder="Ej: 20"></div>
+<div class="field"><label>Plazo (número de cuotas) *</label><input id="prestamoPlazo" type="number" min="1" step="1" required placeholder="Ej: 4"></div>
+<div class="field"><label>Frecuencia de pago (cuotas) *</label><select id="prestamoFrecuenciaPago" required>
+<option value="diario">Diario</option>
+<option value="semanal">Semanal</option>
+<option value="quincenal">Quincenal</option>
+<option value="mensual">Mensual</option>
+</select></div>
+<div class="field"><label>Fecha de inicio *</label><input id="prestamoFechaInicio" type="date" required></div>
+<div class="field"><label>Tasa de mora diaria (%)</label><input id="prestamoTasaMora" type="number" min="0" step="0.1" value="1"></div>
+</div>
+<div class="mini" id="prestamoPreview" style="margin:8px 0 4px"></div>
+<div class="modal-footer"><button type="button" class="btn btn-secondary" id="prestamoCancelEdit" onclick="cancelarEdicionPrestamo()" style="display:none">Cancelar edición</button><button class="btn btn-primary" id="prestamoSubmitBtn">+ Registrar préstamo</button></div>
+</form>
+
+<div class="table-container"><table><thead><tr><th>Cliente</th><th>Monto</th><th>Total con interés</th><th>Cuota fija</th><th>Saldo pendiente</th><th>Cuotas</th><th>Estado</th><th>Acciones</th></tr></thead>
+<tbody id="prestamosTable"></tbody></table></div>
+
+</div></div>
+</section>
+
+<section id="page-gastosempresa" class="page">
+<div class="section"><div class="section-header"><h3>🏢 Gastos Empresa</h3><span class="mini">Control de gastos del negocio — separado de tus gastos personales</span></div>
+<div class="section-body">
+
+<h4>👷 Empleados</h4>
+<form onsubmit="addEmpleado(event)">
+<div class="grid">
+<div class="field"><label>Nombre *</label><input id="empleadoNombre" required></div>
+<div class="field"><label>Cargo</label><input id="empleadoCargo" placeholder="Ej: Diseñador, Operario..."></div>
+<div class="field"><label>Fecha de inicio *</label><input id="empleadoFechaInicio" type="date" required></div>
+</div>
+<div class="modal-footer"><button class="btn btn-primary">+ Agregar empleado</button></div>
+</form>
+<div class="table-container"><table><thead><tr><th>Nombre</th><th>Cargo</th><th>Fecha de inicio</th><th>Antigüedad</th><th></th></tr></thead><tbody id="empleadosTable"></tbody></table></div>
+
+<hr style="margin:24px 0;border:none;border-top:1px solid #333">
+
+<h4>💸 Registrar gasto del negocio</h4>
+<div id="gastosEmpresaSummary" class="debt-summary"></div>
+
+<form onsubmit="addGastoEmpresa(event)">
+<div class="grid">
+<div class="field"><label>Categoría *</label>
+<select id="gastoEmpresaCategoria" required onchange="toggleEmpleadoSelect()">
+<option value="empleados">Pago a empleados</option>
+<option value="inventario">Pedidos de inventario</option>
+<option value="arriendo">Arriendo del local</option>
+<option value="otros">Otros gastos del negocio</option>
+</select></div>
+<div class="field" id="gastoEmpresaEmpleadoField"><label>Empleado</label><select id="gastoEmpresaEmpleado"><option value="">— Ninguno —</option></select></div>
+<div class="field"><label>Concepto *</label><input id="gastoEmpresaConcepto" required placeholder="Ej: Quincena, Papel fotográfico..."></div>
+<div class="field"><label>Valor *</label><input id="gastoEmpresaValor" type="number" min="0" step="1" required></div>
+<div class="field"><label>Fecha</label><input id="gastoEmpresaFecha" type="date"></div>
+</div>
+<div class="modal-footer"><button class="btn btn-primary">+ Agregar gasto</button></div>
+</form>
+
+<div class="table-container"><h4>👷 Pago a empleados</h4>
+<table><thead><tr><th>Concepto</th><th>Empleado</th><th>Fecha</th><th>Valor</th><th></th></tr></thead><tbody id="gastosEmpleadosTable"></tbody></table></div>
+
+<div class="table-container"><h4>📦 Inventario</h4>
+<table><thead><tr><th>Concepto</th><th>Fecha</th><th>Valor</th><th></th></tr></thead><tbody id="gastosInventarioTable"></tbody></table></div>
+
+<div class="table-container"><h4>🏠 Arriendo del local</h4>
+<table><thead><tr><th>Concepto</th><th>Fecha</th><th>Valor</th><th></th></tr></thead><tbody id="gastosArriendoTable"></tbody></table></div>
+
+<div class="table-container"><h4>🧾 Otros gastos del negocio</h4>
+<table><thead><tr><th>Concepto</th><th>Fecha</th><th>Valor</th><th></th></tr></thead><tbody id="gastosOtrosTable"></tbody></table></div>
+
+</div></div>
+</section>
+
+<section id="page-gastos" class="page">
+<div class="section"><div class="section-header"><h3>🧾 Gastos personales</h3><span class="mini">Uso personal — esta sección no aparece en el Dashboard del negocio</span></div>
+<div class="section-body">
+
+<div id="gastosSummary" class="debt-summary"></div>
+
+<form onsubmit="addGasto(event)">
+<div class="grid">
+<div class="field"><label>Categoría *</label>
+<select id="gastoCategoria" required>
+<option value="basico">Gastos básicos (comida, arriendo, servicios, aseo)</option>
+<option value="extra">Gastos extras (fútbol, cerveza, lujos, etc.)</option>
+<option value="necesidad">Necesidades (ropa, electrodomésticos, cosas del hogar)</option>
+</select></div>
+<div class="field"><label>Concepto *</label><input id="gastoConcepto" required placeholder="Ej: Arriendo agosto"></div>
+<div class="field"><label>Valor *</label><input id="gastoValor" type="number" min="0" step="1" required></div>
+<div class="field"><label>Fecha</label><input id="gastoFecha" type="date"></div>
+</div>
+<div class="modal-footer"><button class="btn btn-primary">+ Agregar gasto</button></div>
+</form>
+
+<div class="table-container"><h4>💵 Dinero recibido (abonos y pagos de clientes)</h4>
+<table><thead><tr><th>Pedido</th><th>Cliente</th><th>Fecha</th><th>Monto</th></tr></thead><tbody id="ingresosTable"></tbody></table>
+</div>
+
+<div class="table-container"><h4>🍽️ Gastos básicos</h4>
+<table><thead><tr><th>Concepto</th><th>Fecha</th><th>Valor</th><th></th></tr></thead><tbody id="gastosBasicosTable"></tbody></table>
+</div>
+
+<div class="table-container"><h4>🎉 Gastos extras</h4>
+<table><thead><tr><th>Concepto</th><th>Fecha</th><th>Valor</th><th></th></tr></thead><tbody id="gastosExtrasTable"></tbody></table>
+</div>
+
+<div class="table-container"><h4>🛋️ Necesidades</h4>
+<table><thead><tr><th>Concepto</th><th>Fecha</th><th>Valor</th><th></th></tr></thead><tbody id="gastosNecesidadesTable"></tbody></table>
+</div>
+
 </div></div>
 </section>
 
@@ -335,7 +507,7 @@ function showPage(n,b){
  $('page-'+n).classList.add('active');
  document.querySelectorAll('.nav button').forEach(x=>x.classList.remove('active'));
  if(b)b.classList.add('active');
- $('pageTitle').textContent={dashboard:'Dashboard',clientes:'Clientes',cotizaciones:'Cotizaciones',pedidos:'Pedidos',produccion:'Producción',deudores:'Deudores',documentos:'Documentos',configuracion:'Configuración',proximamente:'Próximamente'}[n];
+ $('pageTitle').textContent={dashboard:'Dashboard',resumen:'Resumen General',clientes:'Clientes',cotizaciones:'Cotizaciones',pedidos:'Pedidos',produccion:'Producción',deudores:'Deudores',prestamos:'Préstamos',gastosempresa:'Gastos Empresa',gastos:'Gastos personales',documentos:'Documentos',configuracion:'Configuración',proximamente:'Próximamente'}[n];
 }
 
 function fillClientSelect(el){
@@ -838,6 +1010,612 @@ saveOrder=function(e){
  updateDashboard();
  if(statusElegido==='Entregado') irADeudores();
 };
+
+/* ================= PATCH: Sección personal de Gastos (no aparece en el Dashboard del negocio) ================= */
+const GK='creativos_one_gastos_v01';
+let gastos=JSON.parse(localStorage.getItem(GK)||'[]');
+
+function persistGastos(){ localStorage.setItem(GK,JSON.stringify(gastos)); }
+
+function addGasto(e){
+ e.preventDefault();
+ const categoria=$('gastoCategoria').value;
+ const concepto=$('gastoConcepto').value.trim();
+ const valor=Number($('gastoValor').value)||0;
+ const fecha=$('gastoFecha').value||new Date().toISOString().slice(0,10);
+ if(!concepto||valor<=0){ alert('Completa el concepto y un valor válido.'); return; }
+ gastos.unshift({id:newId('GAS'),categoria,concepto,valor,fecha});
+ persistGastos();
+ $('gastoConcepto').value='';
+ $('gastoValor').value='';
+ $('gastoFecha').value='';
+ renderGastos();
+}
+
+function deleteGasto(id){
+ if(!confirm('¿Eliminar este gasto?'))return;
+ gastos=gastos.filter(g=>g.id!==id);
+ persistGastos();
+ renderGastos();
+}
+
+function totalIngresosRecibidos(){
+ let total=0;
+ orders.forEach(o=>{ (o.paymentHistory||[]).forEach(p=>{ total+=Number(p.amount||0); }); });
+ return total;
+}
+
+function renderGastos(){
+ let filas=[];
+ orders.forEach(o=>{
+  const c=clients.find(x=>x.id===o.clientId);
+  (o.paymentHistory||[]).forEach(p=>{
+   filas.push({numero:o.number||o.id,cliente:c?c.name:'—',fecha:(p.date||'').slice(0,10),monto:Number(p.amount||0)});
+  });
+ });
+ filas.sort((a,b)=>(b.fecha||'').localeCompare(a.fecha||''));
+ const ingresosTable=$('ingresosTable');
+ if(ingresosTable) ingresosTable.innerHTML=filas.length?filas.map(f=>`<tr><td>${esc(f.numero)}</td><td>${esc(f.cliente)}</td><td>${esc(f.fecha)}</td><td>${money(f.monto)}</td></tr>`).join(''):'<tr><td colspan="4" style="text-align:center;color:#888">Sin ingresos registrados todavía</td></tr>';
+
+ const basicos=gastos.filter(g=>g.categoria==='basico');
+ const extras=gastos.filter(g=>g.categoria==='extra');
+ const necesidades=gastos.filter(g=>g.categoria==='necesidad');
+
+ const pintarTabla=(id,lista)=>{
+  const el=$(id);
+  if(!el)return;
+  el.innerHTML=lista.length?lista.map(g=>`<tr><td>${esc(g.concepto)}</td><td>${esc(g.fecha)}</td><td>${money(g.valor)}</td><td><button class="btn btn-danger" onclick="deleteGasto('${g.id}')">Eliminar</button></td></tr>`).join(''):'<tr><td colspan="4" style="text-align:center;color:#888">Sin registros</td></tr>';
+ };
+ pintarTabla('gastosBasicosTable',basicos);
+ pintarTabla('gastosExtrasTable',extras);
+ pintarTabla('gastosNecesidadesTable',necesidades);
+
+ const totalRecibido=totalIngresosRecibidos();
+ const totalBasicos=basicos.reduce((s,g)=>s+Number(g.valor||0),0);
+ const totalExtras=extras.reduce((s,g)=>s+Number(g.valor||0),0);
+ const totalNecesidades=necesidades.reduce((s,g)=>s+Number(g.valor||0),0);
+ const disponible=totalRecibido-totalBasicos-totalExtras-totalNecesidades;
+
+ const resumen=$('gastosSummary');
+ if(resumen) resumen.innerHTML=`
+  <div class="card"><div class="label">Dinero recibido</div><div class="value">${money(totalRecibido)}</div></div>
+  <div class="card"><div class="label">Gastos básicos</div><div class="value">${money(totalBasicos)}</div></div>
+  <div class="card"><div class="label">Gastos extras</div><div class="value">${money(totalExtras)}</div></div>
+  <div class="card"><div class="label">Necesidades</div><div class="value">${money(totalNecesidades)}</div></div>
+  <div class="card"><div class="label">Disponible</div><div class="value">${money(disponible)}</div></div>
+ `;
+}
+
+// Refresca la sección de Gastos cada vez que se navega a ella.
+const _showPage_gastos=showPage;
+showPage=function(n,b){
+ _showPage_gastos(n,b);
+ if(n==='gastos') renderGastos();
+};
+
+renderGastos();
+
+/* ================= PATCH: Sección Gastos Empresa (empleados, inventario, arriendo, otros gastos del negocio) ================= */
+const EK='creativos_one_empleados_v01';
+let empleados=JSON.parse(localStorage.getItem(EK)||'[]');
+function persistEmpleados(){ localStorage.setItem(EK,JSON.stringify(empleados)); }
+
+function addEmpleado(e){
+ e.preventDefault();
+ const nombre=$('empleadoNombre').value.trim();
+ const cargo=$('empleadoCargo').value.trim();
+ const fechaInicio=$('empleadoFechaInicio').value;
+ if(!nombre||!fechaInicio){ alert('Completa el nombre y la fecha de inicio.'); return; }
+ empleados.unshift({id:newId('EMP'),nombre,cargo,fechaInicio});
+ persistEmpleados();
+ $('empleadoNombre').value='';
+ $('empleadoCargo').value='';
+ $('empleadoFechaInicio').value='';
+ renderGastosEmpresa();
+}
+
+function deleteEmpleado(id){
+ if(!confirm('¿Eliminar este empleado? (sus gastos registrados no se borran)'))return;
+ empleados=empleados.filter(x=>x.id!==id);
+ persistEmpleados();
+ renderGastosEmpresa();
+}
+
+function antiguedadEmpleado(fechaInicio){
+ if(!fechaInicio) return '—';
+ const start=new Date(fechaInicio+'T00:00:00');
+ if(isNaN(start.getTime())) return '—';
+ const now=new Date();
+ let months=(now.getFullYear()-start.getFullYear())*12+(now.getMonth()-start.getMonth());
+ if(now.getDate()<start.getDate()) months--;
+ if(months<0) months=0;
+ const years=Math.floor(months/12);
+ const restMonths=months%12;
+ if(years>0) return years+' año'+(years!==1?'s':'')+(restMonths>0?' '+restMonths+' mes'+(restMonths!==1?'es':''):'');
+ return months+' mes'+(months!==1?'es':'');
+}
+
+const GEK='creativos_one_gastos_empresa_v01';
+let gastosEmpresa=JSON.parse(localStorage.getItem(GEK)||'[]');
+function persistGastosEmpresa(){ localStorage.setItem(GEK,JSON.stringify(gastosEmpresa)); }
+
+function toggleEmpleadoSelect(){
+ const cat=$('gastoEmpresaCategoria')?.value;
+ const field=$('gastoEmpresaEmpleadoField');
+ if(field) field.style.display = cat==='empleados' ? '' : 'none';
+}
+
+function fillEmpleadoSelect(){
+ const sel=$('gastoEmpresaEmpleado');
+ if(!sel)return;
+ sel.innerHTML='<option value="">— Ninguno —</option>'+empleados.map(emp=>`<option value="${emp.id}">${esc(emp.nombre)}</option>`).join('');
+}
+
+function addGastoEmpresa(e){
+ e.preventDefault();
+ const categoria=$('gastoEmpresaCategoria').value;
+ const empleadoId=$('gastoEmpresaEmpleado')?.value||'';
+ const concepto=$('gastoEmpresaConcepto').value.trim();
+ const valor=Number($('gastoEmpresaValor').value)||0;
+ const fecha=$('gastoEmpresaFecha').value||new Date().toISOString().slice(0,10);
+ if(!concepto||valor<=0){ alert('Completa el concepto y un valor válido.'); return; }
+ gastosEmpresa.unshift({id:newId('GEM'),categoria,empleadoId,concepto,valor,fecha});
+ persistGastosEmpresa();
+ $('gastoEmpresaConcepto').value='';
+ $('gastoEmpresaValor').value='';
+ $('gastoEmpresaFecha').value='';
+ renderGastosEmpresa();
+}
+
+function deleteGastoEmpresa(id){
+ if(!confirm('¿Eliminar este gasto?'))return;
+ gastosEmpresa=gastosEmpresa.filter(g=>g.id!==id);
+ persistGastosEmpresa();
+ renderGastosEmpresa();
+}
+
+function renderGastosEmpresa(){
+ fillEmpleadoSelect();
+ toggleEmpleadoSelect();
+
+ const tablaEmp=$('empleadosTable');
+ if(tablaEmp) tablaEmp.innerHTML=empleados.length?empleados.map(emp=>`<tr><td>${esc(emp.nombre)}</td><td>${esc(emp.cargo||'—')}</td><td>${esc(emp.fechaInicio||'—')}</td><td>${antiguedadEmpleado(emp.fechaInicio)}</td><td><button class="btn btn-danger" onclick="deleteEmpleado('${emp.id}')">Eliminar</button></td></tr>`).join(''):'<tr><td colspan="5" style="text-align:center;color:#888">Sin empleados registrados</td></tr>';
+
+ const nombreEmpleado=id=>{ const emp=empleados.find(x=>x.id===id); return emp?emp.nombre:'—'; };
+
+ const empleadosGastos=gastosEmpresa.filter(g=>g.categoria==='empleados');
+ const inventario=gastosEmpresa.filter(g=>g.categoria==='inventario');
+ const arriendo=gastosEmpresa.filter(g=>g.categoria==='arriendo');
+ const otros=gastosEmpresa.filter(g=>g.categoria==='otros');
+
+ const tEmp=$('gastosEmpleadosTable');
+ if(tEmp) tEmp.innerHTML=empleadosGastos.length?empleadosGastos.map(g=>`<tr><td>${esc(g.concepto)}</td><td>${esc(nombreEmpleado(g.empleadoId))}</td><td>${esc(g.fecha)}</td><td>${money(g.valor)}</td><td><button class="btn btn-danger" onclick="deleteGastoEmpresa('${g.id}')">Eliminar</button></td></tr>`).join(''):'<tr><td colspan="5" style="text-align:center;color:#888">Sin registros</td></tr>';
+
+ const pintarSimple=(id,lista)=>{
+  const el=$(id);
+  if(!el)return;
+  el.innerHTML=lista.length?lista.map(g=>`<tr><td>${esc(g.concepto)}</td><td>${esc(g.fecha)}</td><td>${money(g.valor)}</td><td><button class="btn btn-danger" onclick="deleteGastoEmpresa('${g.id}')">Eliminar</button></td></tr>`).join(''):'<tr><td colspan="4" style="text-align:center;color:#888">Sin registros</td></tr>';
+ };
+ pintarSimple('gastosInventarioTable',inventario);
+ pintarSimple('gastosArriendoTable',arriendo);
+ pintarSimple('gastosOtrosTable',otros);
+
+ const totalEmpleados=empleadosGastos.reduce((s,g)=>s+Number(g.valor||0),0);
+ const totalInventario=inventario.reduce((s,g)=>s+Number(g.valor||0),0);
+ const totalArriendo=arriendo.reduce((s,g)=>s+Number(g.valor||0),0);
+ const totalOtros=otros.reduce((s,g)=>s+Number(g.valor||0),0);
+ const totalGeneral=totalEmpleados+totalInventario+totalArriendo+totalOtros;
+
+ const resumen=$('gastosEmpresaSummary');
+ if(resumen) resumen.innerHTML=`
+  <div class="card"><div class="label">Pago a empleados</div><div class="value">${money(totalEmpleados)}</div></div>
+  <div class="card"><div class="label">Inventario</div><div class="value">${money(totalInventario)}</div></div>
+  <div class="card"><div class="label">Arriendo</div><div class="value">${money(totalArriendo)}</div></div>
+  <div class="card"><div class="label">Otros gastos</div><div class="value">${money(totalOtros)}</div></div>
+  <div class="card"><div class="label">Total gastos empresa</div><div class="value">${money(totalGeneral)}</div></div>
+ `;
+}
+
+// Refresca la sección de Gastos Empresa cada vez que se navega a ella.
+const _showPage_gastosEmpresa=showPage;
+showPage=function(n,b){
+ _showPage_gastosEmpresa(n,b);
+ if(n==='gastosempresa') renderGastosEmpresa();
+};
+
+renderGastosEmpresa();
+
+/* ================= PATCH: Resumen General (ingresos y egresos de todas las secciones, por periodo) ================= */
+let periodoResumen='mes';
+
+function fechaEnPeriodo(fechaStr,periodo){
+ if(!fechaStr) return false;
+ const f=new Date(fechaStr+'T00:00:00');
+ if(isNaN(f.getTime())) return false;
+ if(periodo==='todo') return true;
+ const hoy=new Date();
+ hoy.setHours(0,0,0,0);
+ if(periodo==='hoy'){
+  return f.getFullYear()===hoy.getFullYear()&&f.getMonth()===hoy.getMonth()&&f.getDate()===hoy.getDate();
+ }
+ if(periodo==='semana'){
+  const inicioSemana=new Date(hoy);
+  const dia=inicioSemana.getDay();
+  const diff=(dia===0?6:dia-1);
+  inicioSemana.setDate(inicioSemana.getDate()-diff);
+  return f>=inicioSemana&&f<=hoy;
+ }
+ if(periodo==='mes'){
+  return f.getFullYear()===hoy.getFullYear()&&f.getMonth()===hoy.getMonth();
+ }
+ if(periodo==='anio'){
+  return f.getFullYear()===hoy.getFullYear();
+ }
+ return true;
+}
+
+function setPeriodoResumen(p){
+ periodoResumen=p;
+ document.querySelectorAll('#page-resumen [data-periodo]').forEach(btn=>{
+  btn.classList.toggle('active',btn.getAttribute('data-periodo')===p);
+ });
+ renderResumenGeneral();
+}
+
+function renderResumenGeneral(){
+ const btns=document.querySelectorAll('#page-resumen [data-periodo]');
+ if(btns.length) btns.forEach(btn=>btn.classList.toggle('active',btn.getAttribute('data-periodo')===periodoResumen));
+
+ // --- Negocio ---
+ const ventasPeriodo=orders.filter(o=>fechaEnPeriodo(o.date,periodoResumen)).reduce((s,o)=>s+Number(o.total||0),0);
+
+ let ingresosPeriodo=0;
+ orders.forEach(o=>{ (o.paymentHistory||[]).forEach(p=>{ if(fechaEnPeriodo((p.date||'').slice(0,10),periodoResumen)) ingresosPeriodo+=Number(p.amount||0); }); });
+
+ const porCobrarActual=orders.filter(o=>normalizeOrderStatus(o)==='Entregado'||o.debtStatus==='deudor').reduce((s,o)=>s+Math.max(0,Number(o.total||0)-Number(o.paidAmount||0)),0);
+
+ const gastosEmpPeriodo=gastosEmpresa.filter(g=>fechaEnPeriodo(g.fecha,periodoResumen));
+ const totalGastosEmpresa=gastosEmpPeriodo.reduce((s,g)=>s+Number(g.valor||0),0);
+ const balanceNegocio=ingresosPeriodo-totalGastosEmpresa;
+
+ const resumenNegocio=$('resumenNegocio');
+ if(resumenNegocio) resumenNegocio.innerHTML=`
+  <div class="card"><div class="label">Ventas del periodo</div><div class="value">${money(ventasPeriodo)}</div></div>
+  <div class="card"><div class="label">Ingresos recibidos</div><div class="value">${money(ingresosPeriodo)}</div></div>
+  <div class="card"><div class="label">Total por cobrar (actual)</div><div class="value">${money(porCobrarActual)}</div></div>
+  <div class="card"><div class="label">Gastos empresa</div><div class="value">${money(totalGastosEmpresa)}</div></div>
+  <div class="card"><div class="label">Balance del negocio</div><div class="value">${money(balanceNegocio)}</div></div>
+ `;
+
+ const catEmpresaLabels={empleados:'Pago a empleados',inventario:'Inventario',arriendo:'Arriendo del local',otros:'Otros gastos del negocio'};
+ const tablaGastosEmpresa=$('resumenGastosEmpresaTable');
+ if(tablaGastosEmpresa){
+  const filas=Object.keys(catEmpresaLabels).map(cat=>{
+   const total=gastosEmpPeriodo.filter(g=>g.categoria===cat).reduce((s,g)=>s+Number(g.valor||0),0);
+   return `<tr><td>${catEmpresaLabels[cat]}</td><td>${money(total)}</td></tr>`;
+  });
+  tablaGastosEmpresa.innerHTML=filas.join('');
+ }
+
+ // --- Personal ---
+ const gastosPersPeriodo=gastos.filter(g=>fechaEnPeriodo(g.fecha,periodoResumen));
+ const totalGastosPersonal=gastosPersPeriodo.reduce((s,g)=>s+Number(g.valor||0),0);
+ const disponiblePersonal=ingresosPeriodo-totalGastosPersonal;
+
+ const resumenPersonal=$('resumenPersonal');
+ if(resumenPersonal) resumenPersonal.innerHTML=`
+  <div class="card"><div class="label">Ingresos recibidos</div><div class="value">${money(ingresosPeriodo)}</div></div>
+  <div class="card"><div class="label">Gastos personales</div><div class="value">${money(totalGastosPersonal)}</div></div>
+  <div class="card"><div class="label">Disponible</div><div class="value">${money(disponiblePersonal)}</div></div>
+ `;
+
+ const catPersonalLabels={basico:'Gastos básicos',extra:'Gastos extras',necesidad:'Necesidades'};
+ const tablaGastosPersonal=$('resumenGastosPersonalTable');
+ if(tablaGastosPersonal){
+  const filas=Object.keys(catPersonalLabels).map(cat=>{
+   const total=gastosPersPeriodo.filter(g=>g.categoria===cat).reduce((s,g)=>s+Number(g.valor||0),0);
+   return `<tr><td>${catPersonalLabels[cat]}</td><td>${money(total)}</td></tr>`;
+  });
+  tablaGastosPersonal.innerHTML=filas.join('');
+ }
+}
+
+// Refresca el Resumen General cada vez que se navega a él.
+const _showPage_resumen=showPage;
+showPage=function(n,b){
+ _showPage_resumen(n,b);
+ if(n==='resumen') renderResumenGeneral();
+};
+
+renderResumenGeneral();
+
+/* ================= PATCH: Sección Préstamos (clientes propios, interés fijo, edición) ================= */
+
+// --- Clientes de préstamos: lista totalmente separada de los clientes del negocio ---
+const CPK='creativos_one_clientes_prestamo_v01';
+let clientesPrestamo=JSON.parse(localStorage.getItem(CPK)||'[]');
+function persistClientesPrestamo(){ localStorage.setItem(CPK,JSON.stringify(clientesPrestamo)); }
+
+function addClientePrestamo(e){
+ e.preventDefault();
+ const nombre=$('clientePrestamoNombre').value.trim();
+ const telefono=$('clientePrestamoTelefono').value.trim();
+ const notas=$('clientePrestamoNotas').value.trim();
+ if(!nombre){ alert('Escribe el nombre del cliente.'); return; }
+ clientesPrestamo.unshift({id:newId('CLP'),nombre,telefono,notas});
+ persistClientesPrestamo();
+ $('clientePrestamoNombre').value='';$('clientePrestamoTelefono').value='';$('clientePrestamoNotas').value='';
+ renderPrestamos();
+}
+
+function deleteClientePrestamo(id){
+ if(!confirm('¿Eliminar este cliente de préstamos? Los préstamos que tenga registrados no se borran.'))return;
+ clientesPrestamo=clientesPrestamo.filter(c=>c.id!==id);
+ persistClientesPrestamo();
+ renderPrestamos();
+}
+
+function fillClientePrestamoSelect(){
+ const sel=$('prestamoCliente');
+ if(!sel)return;
+ sel.innerHTML=clientesPrestamo.length?clientesPrestamo.map(c=>`<option value="${c.id}">${esc(c.nombre)}</option>`).join(''):'<option value="">Primero crea un cliente de préstamos</option>';
+}
+
+// --- Préstamos ---
+const PRK='creativos_one_prestamos_v01';
+let prestamos=JSON.parse(localStorage.getItem(PRK)||'[]');
+function persistPrestamos(){ localStorage.setItem(PRK,JSON.stringify(prestamos)); }
+
+function fechaSumarPeriodo(fechaBase,frecuencia,n){
+ const d=new Date(fechaBase+'T00:00:00');
+ if(frecuencia==='diario') d.setDate(d.getDate()+n);
+ else if(frecuencia==='semanal') d.setDate(d.getDate()+7*n);
+ else if(frecuencia==='quincenal') d.setDate(d.getDate()+15*n);
+ else if(frecuencia==='mensual') d.setMonth(d.getMonth()+n);
+ return d;
+}
+
+// Fórmula fija: Total a pagar = monto + (monto * interés%). Cuota fija = total / plazo.
+// Cada cuota trae una parte de capital y una parte de interés (proporcional, siempre igual en todas las cuotas).
+// El interés NO se recalcula si el cliente abona a capital: siempre es el mismo, definido una sola vez al crear el préstamo.
+function calcularPrestamo(monto,tasaInteres,plazo){
+ const interesTotal=monto*(tasaInteres/100);
+ const totalConInteres=monto+interesTotal;
+ const cuotaFija=plazo>0?totalConInteres/plazo:0;
+ const capitalCuota=plazo>0?monto/plazo:0;
+ const interesCuota=plazo>0?interesTotal/plazo:0;
+ return {totalConInteres,cuotaFija,interesTotal,capitalCuota,interesCuota};
+}
+
+function actualizarPreviewPrestamo(){
+ const monto=Number($('prestamoMonto')?.value)||0;
+ const tasa=Number($('prestamoTasaInteres')?.value)||0;
+ const plazo=Number($('prestamoPlazo')?.value)||0;
+ const prev=$('prestamoPreview');
+ if(!prev)return;
+ if(monto>0&&tasa>=0&&plazo>0){
+  const {totalConInteres,cuotaFija,capitalCuota,interesCuota}=calcularPrestamo(monto,tasa,plazo);
+  prev.textContent=`${money(monto)} + ${tasa}% = ${money(totalConInteres)} ÷ ${plazo} = ${money(cuotaFija)} por cuota (${money(capitalCuota)} capital + ${money(interesCuota)} interés)`;
+ }else{
+  prev.textContent='';
+ }
+}
+
+function addPrestamo(e){
+ e.preventDefault();
+ const editId=$('prestamoEditId').value;
+ const clienteId=$('prestamoCliente').value;
+ const monto=Number($('prestamoMonto').value)||0;
+ const tasaInteres=Number($('prestamoTasaInteres').value)||0;
+ const plazo=Number($('prestamoPlazo').value)||0;
+ const frecuenciaPago=$('prestamoFrecuenciaPago').value;
+ const fechaInicio=$('prestamoFechaInicio').value;
+ const tasaMora=Number($('prestamoTasaMora').value)||0;
+ if(!clienteId||monto<=0||plazo<=0||!fechaInicio){ alert('Completa cliente, monto, plazo y fecha de inicio.'); return; }
+ const {totalConInteres,cuotaFija,capitalCuota,interesCuota}=calcularPrestamo(monto,tasaInteres,plazo);
+
+ if(editId){
+  const p=prestamos.find(x=>x.id===editId);
+  if(p){
+   Object.assign(p,{clienteId,monto,tasaInteres,plazo,frecuenciaPago,fechaInicio,tasaMora,totalConInteres,cuotaFija,capitalCuota,interesCuota});
+  }
+ }else{
+  prestamos.unshift({
+   id:newId('PRE'),clienteId,monto,tasaInteres,plazo,frecuenciaPago,fechaInicio,tasaMora,
+   totalConInteres,cuotaFija,capitalCuota,interesCuota,estado:'activo',pagosCuotas:[],abonosCapital:[]
+  });
+ }
+ persistPrestamos();
+ cancelarEdicionPrestamo();
+ renderPrestamos();
+}
+
+function editarPrestamo(id){
+ const p=prestamos.find(x=>x.id===id);
+ if(!p)return;
+ $('prestamoEditId').value=p.id;
+ $('prestamoCliente').value=p.clienteId;
+ $('prestamoMonto').value=p.monto;
+ $('prestamoTasaInteres').value=p.tasaInteres;
+ $('prestamoPlazo').value=p.plazo;
+ $('prestamoFrecuenciaPago').value=p.frecuenciaPago;
+ $('prestamoFechaInicio').value=p.fechaInicio;
+ $('prestamoTasaMora').value=p.tasaMora;
+ $('prestamoFormTitle').textContent='✏️ Editando préstamo';
+ $('prestamoSubmitBtn').textContent='Guardar cambios';
+ $('prestamoCancelEdit').style.display='';
+ actualizarPreviewPrestamo();
+}
+
+function cancelarEdicionPrestamo(){
+ $('prestamoEditId').value='';
+ $('prestamoMonto').value='';$('prestamoTasaInteres').value='';$('prestamoPlazo').value='';
+ $('prestamoFechaInicio').value='';$('prestamoTasaMora').value='1';
+ $('prestamoFormTitle').textContent='+ Nuevo préstamo';
+ $('prestamoSubmitBtn').textContent='+ Registrar préstamo';
+ $('prestamoCancelEdit').style.display='none';
+ actualizarPreviewPrestamo();
+}
+
+function deletePrestamo(id){
+ if(!confirm('¿Eliminar este préstamo? Se perderá todo su historial.'))return;
+ prestamos=prestamos.filter(p=>p.id!==id);
+ persistPrestamos();
+ renderPrestamos();
+}
+
+// Genera la tabla de cuotas de un préstamo: la cuota es SIEMPRE fija (total con interés / plazo),
+// compuesta de una parte de capital y una parte de interés (siempre la misma proporción en cada cuota).
+// Si una cuota vence sin pagarse, se le suma mora (cuota fija × tasa de mora × días de atraso).
+function generarCuotas(p){
+ const cuotas=[];
+ const calc=calcularPrestamo(p.monto,p.tasaInteres,p.plazo);
+ const cuotaFija=p.cuotaFija!=null?p.cuotaFija:calc.cuotaFija;
+ const capitalCuota=p.capitalCuota!=null?p.capitalCuota:calc.capitalCuota;
+ const interesCuota=p.interesCuota!=null?p.interesCuota:calc.interesCuota;
+ const hoy=new Date(); hoy.setHours(0,0,0,0);
+ for(let i=1;i<=p.plazo;i++){
+  const fechaVenc=fechaSumarPeriodo(p.fechaInicio,p.frecuenciaPago,i);
+  const pago=(p.pagosCuotas||[]).find(x=>x.numero===i);
+  let estado='pendiente',diasMora=0,moraCalculada=0;
+  if(pago){
+   estado='pagada';
+  }else if(fechaVenc<hoy){
+   diasMora=Math.floor((hoy-fechaVenc)/86400000);
+   moraCalculada=cuotaFija*(p.tasaMora/100)*diasMora;
+   estado='mora';
+  }
+  cuotas.push({numero:i,fechaVenc:fechaVenc.toISOString().slice(0,10),monto:cuotaFija,capital:capitalCuota,interes:interesCuota,estado,diasMora,moraCalculada,totalConMora:cuotaFija+moraCalculada,pago});
+ }
+ return cuotas;
+}
+
+function saldoPendientePrestamo(p){
+ const totalConInteres=p.totalConInteres!=null?p.totalConInteres:calcularPrestamo(p.monto,p.tasaInteres,p.plazo).totalConInteres;
+ const pagadoCuotas=(p.pagosCuotas||[]).reduce((s,pg)=>s+Number(pg.monto||0),0);
+ const abonos=(p.abonosCapital||[]).reduce((s,a)=>s+Number(a.monto||0),0);
+ return Math.max(0,totalConInteres-pagadoCuotas-abonos);
+}
+
+function marcarCuotaPagada(prestamoId,numero){
+ const p=prestamos.find(x=>x.id===prestamoId);
+ if(!p)return;
+ p.pagosCuotas=p.pagosCuotas||[];
+ if(p.pagosCuotas.find(x=>x.numero===numero))return;
+ const cuota=generarCuotas(p).find(c=>c.numero===numero);
+ p.pagosCuotas.push({numero,fecha:new Date().toISOString().slice(0,10),monto:cuota.monto,capital:cuota.capital,interes:cuota.interes,mora:cuota.moraCalculada});
+ if(saldoPendientePrestamo(p)<=0) p.estado='pagado';
+ persistPrestamos();
+ renderPrestamos();
+}
+
+function quitarPagoCuota(prestamoId,numero){
+ const p=prestamos.find(x=>x.id===prestamoId);
+ if(!p)return;
+ if(!confirm('¿Quitar el pago registrado de esta cuota?'))return;
+ p.pagosCuotas=(p.pagosCuotas||[]).filter(x=>x.numero!==numero);
+ if(p.estado==='pagado'&&saldoPendientePrestamo(p)>0) p.estado='activo';
+ persistPrestamos();
+ renderPrestamos();
+}
+
+function registrarAbonoCapital(prestamoId){
+ const p=prestamos.find(x=>x.id===prestamoId);
+ if(!p)return;
+ const val=prompt('¿Cuánto abona a capital? (esto no cambia el interés ya definido, solo reduce el saldo pendiente)','');
+ const monto=Number(val);
+ if(!monto||monto<=0)return;
+ p.abonosCapital=p.abonosCapital||[];
+ p.abonosCapital.push({fecha:new Date().toISOString().slice(0,10),monto});
+ if(saldoPendientePrestamo(p)<=0) p.estado='pagado';
+ persistPrestamos();
+ renderPrestamos();
+}
+
+function toggleLoanDetail(id){
+ const row=$('loan-detail-'+id);
+ if(row) row.style.display=(row.style.display==='none'||!row.style.display)?'table-row':'none';
+}
+
+function renderPrestamos(){
+ fillClientePrestamoSelect();
+
+ const tablaClientes=$('clientesPrestamoTable');
+ if(tablaClientes) tablaClientes.innerHTML=clientesPrestamo.length?clientesPrestamo.map(c=>`<tr><td>${esc(c.nombre)}</td><td>${esc(c.telefono||'—')}</td><td>${esc(c.notas||'—')}</td><td><button class="btn btn-danger" onclick="deleteClientePrestamo('${c.id}')">Eliminar</button></td></tr>`).join(''):'<tr><td colspan="4" class="empty">Sin clientes de préstamos todavía</td></tr>';
+
+ const activos=prestamos.filter(p=>p.estado==='activo');
+ const saldoActivo=activos.reduce((s,p)=>s+saldoPendientePrestamo(p),0);
+ let cuotasEnMora=0, totalMora=0, capitalRecuperado=0, interesesCobrados=0;
+ prestamos.forEach(p=>{
+  if(p.estado!=='pagado'){
+   const cuotas=generarCuotas(p);
+   cuotas.forEach(c=>{ if(c.estado==='mora'){ cuotasEnMora++; totalMora+=c.moraCalculada; } });
+  }
+  (p.pagosCuotas||[]).forEach(pg=>{ capitalRecuperado+=Number(pg.capital||0); interesesCobrados+=Number(pg.interes||0)+Number(pg.mora||0); });
+  (p.abonosCapital||[]).forEach(a=>{ capitalRecuperado+=Number(a.monto||0); });
+ });
+
+ const resumen=$('prestamosSummary');
+ if(resumen) resumen.innerHTML=`
+  <div class="card"><div class="label">Préstamos activos</div><div class="value">${activos.length}</div></div>
+  <div class="card"><div class="label">Saldo pendiente</div><div class="value">${money(saldoActivo)}</div></div>
+  <div class="card"><div class="label">Cuotas en mora</div><div class="value">${cuotasEnMora}</div></div>
+  <div class="card"><div class="label">Mora acumulada</div><div class="value">${money(totalMora)}</div></div>
+  <div class="card"><div class="label">Capital recuperado</div><div class="value">${money(capitalRecuperado)}</div></div>
+  <div class="card"><div class="label">Intereses cobrados</div><div class="value">${money(interesesCobrados)}</div></div>
+ `;
+
+ const tabla=$('prestamosTable');
+ if(!tabla)return;
+ const freqLabel={diario:'Diario',semanal:'Semanal',quincenal:'Quincenal',mensual:'Mensual'};
+ tabla.innerHTML=prestamos.length?prestamos.map(p=>{
+  const c=clientesPrestamo.find(x=>x.id===p.clienteId);
+  const cuotas=generarCuotas(p);
+  const cuotasEnMoraP=p.estado==='pagado'?0:cuotas.filter(x=>x.estado==='mora').length;
+  const totalConInteres=p.totalConInteres!=null?p.totalConInteres:calcularPrestamo(p.monto,p.tasaInteres,p.plazo).totalConInteres;
+  const cuotaFija=p.cuotaFija!=null?p.cuotaFija:calcularPrestamo(p.monto,p.tasaInteres,p.plazo).cuotaFija;
+  return `<tr>
+   <td><strong>${esc(c?.nombre||'Cliente eliminado')}</strong></td>
+   <td>${money(p.monto)}</td>
+   <td>${money(totalConInteres)} <span class="mini">(${p.tasaInteres}%)</span></td>
+   <td>${money(cuotaFija)}</td>
+   <td>${money(saldoPendientePrestamo(p))}</td>
+   <td>${p.plazo} (${freqLabel[p.frecuenciaPago]})${cuotasEnMoraP?' — <span style="color:#dc2626">'+cuotasEnMoraP+' en mora</span>':''}</td>
+   <td>${p.estado==='pagado'?'✅ Pagado':(cuotasEnMoraP?'⚠️ En mora':'Activo')}</td>
+   <td><button class="btn btn-secondary" onclick="toggleLoanDetail('${p.id}')">Ver cuotas</button>${p.estado!=='pagado'?`<button class="btn btn-warning" onclick="registrarAbonoCapital('${p.id}')">+ Abono</button>`:''}<button class="btn btn-secondary" onclick="editarPrestamo('${p.id}')">Editar</button><button class="btn btn-danger" onclick="deletePrestamo('${p.id}')">Eliminar</button></td>
+  </tr>
+  <tr id="loan-detail-${p.id}" style="display:none"><td colspan="8">
+   <div class="table-container"><table><thead><tr><th>Cuota</th><th>Vence</th><th>Capital</th><th>Interés</th><th>Valor cuota</th><th>Días mora</th><th>Mora</th><th>Total</th><th>Estado</th><th>Acción</th></tr></thead><tbody>
+   ${cuotas.map(cu=>`<tr>
+     <td>${cu.numero}</td>
+     <td>${esc(cu.fechaVenc)}</td>
+     <td>${money(cu.capital)}</td>
+     <td>${money(cu.interes)}</td>
+     <td>${money(cu.monto)}</td>
+     <td>${cu.diasMora||0}</td>
+     <td>${money(cu.moraCalculada)}</td>
+     <td><strong>${money(cu.totalConMora)}</strong></td>
+     <td>${cu.estado==='pagada'?'✅ Pagada':(cu.estado==='mora'?'⚠️ En mora':'Pendiente')}</td>
+     <td>${cu.estado==='pagada'?`<button class="btn btn-secondary" onclick="quitarPagoCuota('${p.id}',${cu.numero})">Deshacer</button>`:`<button class="btn btn-success" onclick="marcarCuotaPagada('${p.id}',${cu.numero})">Marcar pagada</button>`}</td>
+   </tr>`).join('')}
+   </tbody></table></div>
+  </td></tr>`;
+ }).join(''):'<tr><td colspan="8" class="empty">No hay préstamos registrados todavía.</td></tr>';
+}
+
+['prestamoMonto','prestamoTasaInteres','prestamoPlazo'].forEach(id=>{
+ const el=$(id);
+ if(el) el.addEventListener('input',actualizarPreviewPrestamo);
+});
+
+// Refresca Préstamos cada vez que se navega a esa sección.
+const _showPage_prestamos=showPage;
+showPage=function(n,b){
+ _showPage_prestamos(n,b);
+ if(n==='prestamos') renderPrestamos();
+};
+
+renderPrestamos();
 
 </script>
 </body>
